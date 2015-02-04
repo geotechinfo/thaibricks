@@ -61,7 +61,7 @@
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary orange modalBtn">Submit</button>
               </div>
-              {{ Form::open(array('route' => array('login'), 'method' => 'post')) }}
+              {{ Form::close()  }}
             </div>
           </div>
         </div>
@@ -78,7 +78,17 @@
     
       <!-- Tabs -->
         <div role="tabpanel">
-        
+          @if(Session::get('success'))
+            <div class="margin-top-10 message">
+            <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{Session::get('success')}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+            </div>
+          @endif
+          @if(Session::get('error'))
+            <div class="margin-top-10 message">
+            <p class="btn-danger  padding-5"><span class="fa fa-cross"></span>{{Session::get('error')}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+            </div>
+          @endif
+         
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#acDetails" aria-controls="acDetails" role="tab" data-toggle="tab">Account Details</a></li>
@@ -92,7 +102,7 @@
           <div class="updateProfileSection">
             <div class="upProHeaderHolder">
                 <h4> Personal Details</h4>
-                <a href="javascript:;" class="profileUpdateBtn flexCenter"><i class="fa fa-edit"></i></a>
+                <a href="javascript:;" data-toggle="modal" data-target="#profile_edit" class="profileUpdateBtn flexCenter"><i class="fa fa-edit"></i></a>
                 <div class="border-bottom"></div>
                 <div class="border-top"></div>
             </div>
@@ -160,14 +170,19 @@
                 <div class="border-bottom"></div>
                 <div class="border-top"></div>
             </div>
+           {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('profile.changepassword'), 'method' => 'post')) }}
+
             <div class="padding chPassword">
                 <div class="accountInfoGroup">
                         <div class="row">
                           <div class="col-sm-4 acInfoLabel">
                             <label>Old Password</label>
+
                           </div>
                           <div class="col-sm-8">
-                            <p class="bold accountInfo"><input type="text" class="form-control" placeholder="Old Password" /></p>
+                            <p class="bold accountInfo">
+                            {{ Form::password('password',array('class'=>'form-control','placeholder'=>'Old Password'))}}
+                            </p>
                           </div>
                         </div>
                 </div>
@@ -177,7 +192,9 @@
                             <label>New Password</label>
                           </div>
                           <div class="col-sm-8">
-                            <p class="bold accountInfo"><input type="text" class="form-control" placeholder="New Password" /></p>
+                            <p class="bold accountInfo">
+                            {{ Form::password('new_password',array('class'=>'form-control','placeholder'=>'New Password'))}}
+                            </p>
                           </div>
                         </div>
                 </div>
@@ -187,7 +204,9 @@
                             <label>Retype New Password</label>
                           </div>
                           <div class="col-sm-8">
-                            <p class="bold accountInfo"><input type="text" class="form-control" placeholder="Retype Password"/></p>
+                            <p class="bold accountInfo">
+                            {{ Form::password('new_password_confirmation',array('class'=>'form-control','placeholder'=>'Confirm Password'))}}
+                            </p>
                           </div>
                         </div>
                 </div>
@@ -195,8 +214,9 @@
                 <div class="text-right">
                 	<input type="submit" class="btn orange" />
                 </div>
-                
-              </div>
+                {{ Form::close()  }}
+            </div>
+           
               </div>
               </div>
             </div>
@@ -225,4 +245,70 @@
     </div>
   </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="profile_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('profile.update'), 'method' => 'post')) }}
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update Your Profile</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+             @foreach ($errors->all() as $message)
+            <div class="margin-top-10 message">
+            <p class="btn-danger text-danger padding-5">
+              <span class="fa fa-exclamation-triangle"></span>{{{ $message }}}
+                <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
+            </p>
+            </div>
+            <?php break; ?>
+            @endforeach
+          </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-2 text-right">Name</label>
+            <div class="col-sm-5">                
+                <?php echo Form::text('first_name',Auth::user()->first_name,array('class'=>'form-control','placeholder'=>'Frist Name')); ?>
+            </div>
+            <div class="col-sm-5">                
+                <?php echo Form::text('last_name',Auth::user()->last_name,array('class'=>'form-control','placeholder'=>'Last Name')); ?>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <label class="col-sm-2  text-right">Location</label>
+            <div class="col-sm-10">
+                <?php echo Form::select('location', array('' => 'Select your location', 'bangkok' => 'Bangkok', 'lampang' => 'Lampang'), Auth::user()->location,array('class'=>'form-control')); ?>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <label class="col-sm-2 text-right">Email</label>
+            <div class="col-sm-10">
+                <?php echo Form::text('email',Auth::user()->email,array('class'=>'form-control')); ?>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <label class="col-sm-2 text-right">Phone</label>
+            <div class="col-sm-10">
+                <?php echo Form::text('phone',Auth::user()->phone,array('class'=>'form-control')); ?>
+            </div>
+        </div>    
+
+      </div>
+      <div class="modal-footer">
+        <!--<button type="button" class="btn btn-warning modalBtn" data-dismiss="modal">Close</button>-->
+        <button type="submit" class="btn btn-primary orange modalBtn">Save changes</button>
+      </div>
+      {{ Form::close()  }}
+    </div>
+  </div>
+</div>
+
 @stop

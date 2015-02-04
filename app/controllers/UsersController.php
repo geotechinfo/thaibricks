@@ -106,10 +106,98 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update()
 	{
-		//
+		$data = Input::only(['first_name','last_name', 'location', 'email', 'phone', 'password', 'password_confirmation']);
+
+		$validator = Validator::make(
+            $data,
+            [
+                'first_name' => 'required|min:2',
+                'last_name' => 'required|min:2',
+				'location' => 'required',
+                'email' => 'required|email|unique:ac_users,email,'.Auth::User()->user_id.",user_id",
+				'phone' => 'required|numeric|unique:ac_users,phone,'.Auth::User()->user_id.",user_id"
+            ]
+        );
+		if($validator->fails()){
+            return Redirect::route('profile',array('#profile_edit'))->withErrors($validator)->withInput();
+        }else{
+
+        	$user = User::find(Auth::User()->user_id);
+        	$user->first_name = $data['first_name'];
+        	$user->last_name = $data['last_name'];
+        	$user->location = $data['location'];
+        	$user->email = $data['email'];
+        	$user->phone = $data['phone'];
+
+        	if($user->save()){
+        	/*Mail::send('template.email.activate', ['link' => URL::route('activate', $code), 'username' => $username], function($message) use ($user)
+            {
+                $message->to($user->email, $user->username)->subject('Account Registration');
+            });*/
+		
+            //Auth::login($user);
+				Session::flash('success', 'Your Profile has been successfuly updated');
+            	
+        	}else{
+        		Session::flash('success', 'Unable to Update Your Profile');	
+        	}
+
+        	return Redirect::route('profile');
+        }
+
 	}
+
+	/**
+	 * Update the specified resource in storage.
+	 * PUT /users/{id}
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function changepassword()
+	{
+		$data = Input::only(['password','new_password', 'new_password_confirmation']);
+
+		$validator = Validator::make(
+            $data,
+            [
+                'password' => 'required|min:6',
+                'new_password' => 'required|min:6|confirmed',
+                'new_password_confirmation'=> 'required|min:6'
+            ]
+        );
+		if($validator->fails()){
+            return Redirect::route('profile',array('#changePass'))->withErrors($validator)->withInput();
+        }else{
+
+        	$user = User::find(Auth::User()->user_id);
+        	
+        	if (Hash::check($data['password'], $user->password)){
+        		$user->password = Hash::make($data['new_password']);
+        		//die($user->password);	
+        		if($user->save()){
+		        	/*Mail::send('emails.changepassword', ['new_password' => $data['new_password'], 'username' => $user->email], function($message) use ($user)
+		            {
+		                $message->from('santanujana1987@gmail.com')->to($user->email, $user->first_name." ".$user->last_name)->subject('New Password');
+		            });*/
+					Session::flash('success', 'Your Password has been successfuly Changed');
+		           	return Redirect::route('profile');
+	        	}else{
+	        		Session::flash('success', 'Unable to Change Your Password');	
+
+	        	}
+        	}else{
+        		Session::flash('error', 'Please Enter Correct Old Password');
+        		return Redirect::route('profile',array('#changePass'));
+        	}
+
+        	
+        }
+
+	}
+
 
 	/**
 	 * Remove the specified resource from storage.
