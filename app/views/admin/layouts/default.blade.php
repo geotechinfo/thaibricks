@@ -30,7 +30,7 @@
       <div class="">
         <div class="navbar-header">
           <button data-target="#topnavdrpdwn" data-toggle="collapse" class="navbar-toggle" type="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-          <a href="javascript:void(0)" class="logo">
+          <a href="{{URL::to('/admin/dashboard')}}" class="logo">
           	{{ HTML::image('images/logo.png', '', array('class' => 'productlogo')) }}
           </a>
         </div>
@@ -83,10 +83,9 @@
                 <li class="footer"><a href="javascript:void(0)">See All Messages</a></li>
               </ul>
             </li>
-            <li class="dropdown user user-menu"> <a data-toggle="dropdown" class="dropdown-user" href="javascript:void(0)"> <span class="glyphicon glyphicon-user"></span> <span>Admin Profile<span class="caret"></span></span> </a>
+            <li class="dropdown user user-menu"> <a data-toggle="dropdown" class="dropdown-user" href="javascript:void(0)" style="padding-left:12px;"> <span class="glyphicon glyphicon-user"></span> &nbsp; Admin <span class="caret"></span></span> </a>
               <ul class="dropdown-menu dropdown-user">
-                <li><a href="javascript:void(0)"><span class="fa fa-user"></span> User Profile </a> </li>
-                <li><a href="{{URL::to('/')}}"><span class="fa fa-gears"></span> Back to home </a> </li>
+                <li><a href="javascript:void(0)"><span class="fa fa-user"></span> Profile </a> </li>
                 <li class="divider"></li>
                 <li class="logout"><a href="javascript:void(0)"><span class="fa fa-sign-out"></span> Logout </a> </li>
               </ul>
@@ -119,7 +118,7 @@
           </div>
           <div class="navbar-collapse collapse" id="submenu">
             <ul class="nav nav-tabs nav-stacked col-xs-12">
-              <li class="dropdown fhmm nav"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-check"></span>Location & Transport <b class="caret"></b></a>
+              <li class="dropdown fhmm nav <?php if(Request::is('admin/location/*') == 1) echo "open"; ?>"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-check"></span>Location & Transport <b class="caret"></b></a>
                 <ul role="menu" class="dropdown-menu">
                   
                   <li>
@@ -128,7 +127,7 @@
                   <li>
                     <div><a href="{{URL::to('/admin/location/transport')}}"><span class="fa fa-angle-right"></span>Manage Transport</a></div>
                   </li>
-                  <li>
+                  <!--<li>
                     <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Registration Details</a></div>
                   </li>
                   <li>
@@ -142,54 +141,15 @@
                   </li>
                   <li>
                     <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Bus - Pickup/Drop Points</a></div>
-                  </li>
+                  </li>-->
                   
                 </ul>
               </li>
-              <li class="dropdown fhmm nav"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-group"></span>Student Management <b class="caret"></b></a>
+              <li class="dropdown fhmm nav <?php if(Request::is('admin/attribute/*') == 1) echo "open"; ?>"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-group"></span>Attributes & Related <b class="caret"></b></a>
                 <ul role="menu" class="dropdown-menu">
-                  
                   <li>
-                    <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Students - List</a></div>
-                  </li>
-                  
-                </ul>
-              </li>
-              
-              <li class="dropdown fhmm nav"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-list-alt"></span>Examination <b class="caret"></b></a>
-                <ul role="menu" class="dropdown-menu">
-                  
-                  <li>
-                    <div><a href="javascript:void(0)">Assessments Period List</a></div>
-                  </li>
-                  <li>
-                    <div><a href="javascript:void(0)">Assessments Details</a></div>
-                  </li>
-                  
-                </ul>
-              </li>
-              
-              <li class="dropdown fhmm nav"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-money"></span>School Accounts <b class="caret"></b></a>
-                <ul role="menu" class="dropdown-menu">
-                  
-                  <li>
-                    <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Fee Collection Period</a></div>
-                    	
-                  </li>
-                  <li>
-                    <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Fee Structure</a></div>
-                    	
-                  </li>
-                  <li>
-                    <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Bus Service Fee</a></div>
-                  </li>
-                  <li>
-                    <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Fee Collection - List</a></div>
-                  </li>
-                  
-                  <li>
-                    <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Fee Late Fine - List</a></div>
-                  </li>
+                    <div><a href="{{URL::to('/admin/attribute/relation')}}"><span class="fa fa-angle-right"></span>Manage Relations</a></div>
+                  </li>                  
                 </ul>
               </li>
             </ul>
@@ -200,9 +160,7 @@
       
       <!-- /Right Dashboard Start -->
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        
         @yield('body')
-        
         <!-- /Page Content End -->
       </div>
       <!-- /Right Dashboard End -->
@@ -228,6 +186,9 @@
 <script src="{{asset("libraries\bootstrap-treeview\src\js\bootstrap-treeview.js")}}"></script>
 <script type="text/javascript">
 	$('#locations').treeview({data: '<?php echo $dataset["locations"]; ?>'});
+	$('#transports').treeview({data: '<?php echo $dataset["transports"]; ?>'});
+	
+	$('#relations').treeview({data: '<?php echo $dataset["relations"]; ?>'});
 </script>
 
 @show
