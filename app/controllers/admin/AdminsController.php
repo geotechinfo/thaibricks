@@ -10,7 +10,7 @@ class AdminsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function dashboard()
 	{
 		return View::make('admin.index');
 	}

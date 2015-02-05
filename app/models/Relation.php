@@ -18,28 +18,8 @@ class Relation extends Eloquent {
 	public function samples(){
 		return $this->belongsTo('Sample');
 	}*/
-	public function deals(){
-		$return =array();
-		foreach (DB::table('pr_deals')->get() as $value){
-			$return[$value->deal_id] = $value->deal_name;
-		}
-		return $return;
-	}
 	
-	public function types(){
-		$return =array();
-		foreach (DB::table('pr_types')->get() as $parent){
-			if($parent->parent_id == 0){
-				$rule = ['parent_id' => $parent->type_id];
-				foreach (DB::table('pr_types')->where($rule)->get() as $child){
-					$return[$parent->type_name][$child->type_id] = $child->type_name;
-				}
-			}
-		}
-		return $return;
-	}
-	
-	public function groups(){
+	public function getlist_groups(){
 		$return =array();
 		foreach (DB::table('pr_groups')->get() as $parent){
 			if($parent->parent_id == 0){
@@ -57,7 +37,7 @@ class Relation extends Eloquent {
 		return $return;
 	}
 	
-	public function attributes(){
+	public function getlist_attributes(){
 		$return =array();
 		foreach (DB::table('pr_attributes')->get() as $value){
 			$return[$value->attribute_id] = $value->attribute_name;

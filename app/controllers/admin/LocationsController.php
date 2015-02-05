@@ -57,7 +57,7 @@ class LocationsController extends Controller {
         );
 
 		if($validator->fails()){
-            return Redirect::route('location.view')->withErrors($validator)->withInput();
+            return Redirect::route('location.transport')->withErrors($validator)->withInput();
         }
 		
 		$location = new Location();
@@ -65,12 +65,20 @@ class LocationsController extends Controller {
 		$location->parent_id = Input::get('parent_location');
 		$location->location_name = Input::get('location_name');
         if($location->save()){
-			return Redirect::route('location.view')->with('success','Location successfully added in ThaiBricks.');
+			return Redirect::route('location.transport')->with('success','Location successfully added in ThaiBricks.');
 		}
 	}
 	
 	public function transport()
 	{
+		$rules = ["parent_id" => 0];
+		$locations = Location::where($rules)->get();
+		$dataset["locations"] = array();
+		$dataset["locations"][""] = "Select Location";
+		foreach($locations as $location){
+			$dataset["locations"][$location->location_id] = $location->location_name;
+		}
+	
 		$rules = ["parent_id" => 0];
 		$parents = Transport::where($rules)->get();
 		$dataset["groups"] = array();
@@ -87,12 +95,12 @@ class LocationsController extends Controller {
 				$builder[$counter_group]["text"] = $group->transport_name;
 				$counter_child = 0;
 				foreach($transports as $child){
-					if($parent->transport_id == $child->parent_id){
+					if($group->transport_id == $child->parent_id){
 						$builder[$counter_group]["nodes"][$counter_child]["text"] = $child->transport_name;
 						$counter_child++;
 					}
 				}
-				$counter_parent++;
+				$counter_group++;
 			}
 		}
 		$dataset["transports"] = json_encode($builder, true);
@@ -100,9 +108,33 @@ class LocationsController extends Controller {
 		return View::make('admin.locations.view', array("dataset"=>$dataset));
 	}
 	
-	public function save(){
+	public function addgroup(){
 		$validators = array(
-			'transport_parent' => 'required',
+			'location_id' => 'required',
+			'group_name' => 'required'
+		);
+		$validator = Validator::make(
+            Input::all(),
+            $validators
+        );
+
+		if($validator->fails()){
+            return Redirect::route('location.transport')->withErrors($validator)->withInput();
+        }
+		
+		$transport = new Transport();
+		
+		$transport->parent_id = 0;
+		$transport->location_id = Input::get('location_id');
+		$transport->transport_name = Input::get('group_name');
+        if($transport->save()){
+			return Redirect::route('location.transport')->with('success','Transport group successfully added in ThaiBricks.');
+		}
+	}
+	
+	public function addtransport(){
+		$validators = array(
+			'transport_group' => 'required',
 			'transport_name' => 'required'
 		);
 		$validator = Validator::make(
@@ -111,15 +143,15 @@ class LocationsController extends Controller {
         );
 
 		if($validator->fails()){
-            return Redirect::route('transport.view')->withErrors($validator)->withInput();
+            return Redirect::route('location.transport')->withErrors($validator)->withInput();
         }
 		
 		$transport = new Transport();
 		
-		$transport->parent_id = Input::get('parent_transport');
+		$transport->parent_id = Input::get('transport_group');
 		$transport->transport_name = Input::get('transport_name');
         if($transport->save()){
-			return Redirect::route('location.view')->with('success','Transport successfully added in ThaiBricks.');
+			return Redirect::route('location.transport')->with('success','Transport successfully added in ThaiBricks.');
 		}
 	}
 	

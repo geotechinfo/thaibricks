@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Controller;
 
-class RelationsController extends Controller {
+class AttributesController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -22,13 +22,7 @@ class RelationsController extends Controller {
 	 * @return Response
 	 */
 	public function create(){
-		$relations = new Relation();
 		
-		$dataset["deals"] = $relations->deals();
-		$dataset["types"] = $relations->types();
-		$dataset["groups"] = $relations->groups();
-		$dataset["attributes"] = $relations->attributes();
-		return View::make('admin.relations.create', array("dataset"=>$dataset));
 	}
 
 	/**
@@ -42,7 +36,7 @@ class RelationsController extends Controller {
 		$relation = Relation::where($rules)->get();
 
 		if(!$relation->isEmpty()){
-			Session::flash('exist', true);
+			return Redirect::route('attribute.relation')->withInput();
 		}else{
 			$relation = new Relation();
 			$relation->deal_id = Input::get('deal_id');
@@ -51,9 +45,9 @@ class RelationsController extends Controller {
 			$relation->attribute_id = Input::get('attribute_id');
 			$relation->save();
 			
-			Session::flash('success', true);
+			return Redirect::route('attribute.relation')->with('success','Attribute relation successfully added in ThaiBricks.');
 		}
-		return Redirect::route('admin.relation.create')->withInput();
+		return Redirect::route('attribute.relation')->withInput();
 		
 	}
 
@@ -66,14 +60,7 @@ class RelationsController extends Controller {
 	 */
 	public function show($id)
 	{
-		$relations = new Relation();
-		$dataset = $relations->relations();
 		
-		if(empty($dataset)){
-			Session::flash('empty', true);
-		}
-		$dataset = json_encode($dataset);
-		return View::make('admin.relations.show', array("dataset"=>$dataset));
 	}
 
 	/**
@@ -110,6 +97,21 @@ class RelationsController extends Controller {
 	public function destroy($id)
 	{
 		//
+	}
+	
+	public function relation(){		
+		$properties = new Property();
+		$dataset["deals"] = $properties->getlist_deals();
+		$dataset["types"] = $properties->getlist_types();
+		
+		$relations = new Relation();
+		$dataset["groups"] = $relations->getlist_groups();
+		$dataset["attributes"] = $relations->getlist_attributes();
+		
+		$builder = $relations->relations();
+		$dataset["relations"] = json_encode($builder);
+		
+		return View::make('admin.attributes.relation', array("dataset"=>$dataset));
 	}
 
 }

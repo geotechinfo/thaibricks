@@ -43,10 +43,11 @@ Route::get('property/edit/{id}', array('as' => 'property.edit', 'uses' => 'Prope
 Route::post('property/update/{id}', array('as' => 'property.update', 'uses' => 'PropertiesController@update'));
 Route::get('property/search', array('as' => 'property.search', 'uses' => 'PropertiesController@search'));
 
-Route::resource('admin', 'AdminsController');
-Route::resource('admin/relation', 'RelationsController');
-//Route::resource('admin/location', 'LocationsController');
+Route::get('admin/dashboard', array('as' => 'admin.dashboard', 'uses' => 'AdminsController@dashboard'));
+Route::get('admin/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AttributesController@relation'));
+Route::post('admin/attribute/store', array('as' => 'attribute.store', 'uses' => 'AttributesController@store'));
 Route::get('admin/location/location', array('as' => 'location.location', 'uses' => 'LocationsController@location'));
 Route::post('admin/location/store', array('as' => 'location.store', 'uses' => 'LocationsController@store'));
 Route::get('admin/location/transport', array('as' => 'location.transport', 'uses' => 'LocationsController@transport'));
-Route::post('admin/location/save', array('as' => 'location.save', 'uses' => 'LocationsController@save'));
+Route::post('admin/location/addgroup', array('as' => 'location.addgroup', 'uses' => 'LocationsController@addgroup'));
+Route::post('admin/location/addtransport', array('as' => 'location.addtransport', 'uses' => 'LocationsController@addtransport'));
