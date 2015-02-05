@@ -17,11 +17,18 @@ class PropertiesController extends Controller {
 	}
 	
 	public function create(){
+		
+
 		$properties = new Property();
 		
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();
-		
+
+		$location = new Location;
+		$dataset['locations']=$location->get_location_with_sub();
+		//echo "<pre>"; print_r($dataset);die;
+
+
 		$valid_deal = false;
 		foreach($dataset["deals"] as $key=>$val){
 			if($_GET["deal_id"] == $key){
@@ -162,6 +169,8 @@ class PropertiesController extends Controller {
 		
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();
+		$location = new Location;
+		$dataset['locations']=$location->get_location_with_sub();
 		
 		$properties = new Property();
 		$property = $properties->get_properties(null, $id);

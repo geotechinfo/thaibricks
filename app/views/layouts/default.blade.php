@@ -101,7 +101,7 @@
       <div class="form-group margin-top quicklocationsearch">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location', array('' => 'Select Location', 'Bangkok' => 'Bangkok', 'Phuket' => 'Phuket'), '', array('class' => 'form-control', 'id'=>"city"))}}
+                    	{{Form::select('location', array('' => 'Select Location', '1' => 'Bangkok', '4' => 'Phuket'), '', array('class' => 'form-control', 'id'=>"city"))}}
                     </div>
                   </div>
                 </div>
@@ -349,8 +349,10 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+  var locationJson = $.parseJSON('{{ json_encode($dataset['locations']) }}');
+  console.log(locationJson);
 	function chnage_rule(){
-		$("#location_sub").empty();
+    $("#location_sub").empty();
 		if($("#location").val() == "Bangkok"){
 			$("#location_sub").append($("<option />").val("").text("Sub Location"));
 			$("#location_sub").append($("<option />").val("Asok").text("Asok"));
@@ -362,8 +364,48 @@ $(document).ready(function(){
 		}
 	}
 	$("#location").change( function(){
-		chnage_rule();
+		//chnage_rule();
+
+    $("#location_sub").empty();
+    $("#transport_id").empty();
+    
+    console.log(locationJson[$(this).val()]);
+    $("#location_sub").append($("<option />").val("").text("Sub Location"));
+      
+    $.each(locationJson[$(this).val()].SubLocation,function(i,obj){
+      $("#location_sub").append($("<option />").val(obj.location_id).text(obj.location_name));
+    })
+    $("#transport_id").append($("<option />").val('').text('Select Transport Group'));
+    $(".cls_transport").empty();
+    $.each(locationJson[$(this).val()].Transport,function(i,obj){
+      var slct = $('<select/>').addClass('form-control cls_transport_select ucontactright').attr({'name':'transport_id[]'});
+      slct.append($("<option />").val('').text('Select Transport'));
+      $.each(obj.Child,function(i1,obj1){
+        slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
+      });
+      var inpt = $('<input/>').addClass('form-control locationcode').attr({'name':'transport_dist[]','placeholder':'Km'});
+      var rw = $('<div/>').addClass('').append(slct).append(inpt);
+
+
+      var html = $('<div/>').addClass('form-group');
+      var lb = $('<label/>').addClass('col-md-4 control-label').text(obj.transport_name);
+      var cn = $('<div/>').addClass('col-md-6').append(rw);
+      $(".cls_transport").append(html.append(lb).append(cn));
+      //$("#transport_id").append($("<option />").val(obj.transport_id).text(obj.transport_name));
+     
+    })
 	});
+  $("#transport_id").change(function(){
+    $(".cls_transport").empty();
+    //$("#transport_child_id").append($("<option />").val('').text('Select Transport'));    
+    $.each(locationJson[$('#location').val()].Transport[$(this).val()].Child,function(i,obj){
+      var html = $('<div/>').addClass('form-group');
+      html.append('<label/>').addClass('col-md-4 control-label').text($(this).find('option:selected').text());
+      html.append('<div/>').addClass('col-md-8').html('ok');
+      //$(".cls_transport").append($("<option />").val(obj.transport_id).text(obj.transport_name));
+    })
+  });
+
 	<?php if(isset($_GET["location"]) && $_GET["location"] != ""){ ?>
 		$("#location").val('<?php echo $_GET["location"]; ?>');
 	<?php } ?>
@@ -376,7 +418,7 @@ $(document).ready(function(){
 		$("#location").val('<?php echo $dataset["property"]->location; ?>');
 	<?php } ?>
 	<?php if(isset($dataset["property"]->location_sub) && $dataset["property"]->location_sub != ""){ ?>
-		chnage_rule();
+		//chnage_rule();
 		$("#location_sub").val('<?php echo $dataset["property"]->location_sub; ?>');
 	<?php } ?>
 	

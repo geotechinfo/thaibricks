@@ -1,6 +1,21 @@
 @extends('layouts.default')
 @section('content')
 <!--/profileimage-->
+<?php  
+    $loc = array(''=>'Select Location');
+    $subloc[''] = array(''=>'Select Location');
+    $transport_group =  array('' => 'Select Transport Group' );
+    foreach ($dataset['locations'] as $k=>$v){
+      $loc[$k]=$v['location_name'];
+       foreach ($v['SubLocation'] as $k1 => $v1) {
+          $subloc[$k][$v1['location_id']]=$v1['location_name'];
+       }
+       foreach ($v['Transport'] as $k1 => $v1) {
+          $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
+       }
+    }
+    //print_r($dataset["property"]->location);die;
+?> 
 <section class="container container2 margin-top-10 white radius-top" id="profileimage">
   <div class="clearfix padding-5 clouds">
     <div class="white clearfix">
@@ -126,7 +141,8 @@
                           <div class="col-md-6">
                             <div class="arrow">
                               <div class="btn-group mutiselectbtn">
-                                {{Form::select('location', array('' => 'Select Location', 'Bangkok' => 'Bangkok', 'Phuket' => 'Phuket'), '', array('class' => 'form-control', 'id'=>"location"))}}
+                               
+                                {{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
                               </div>
                             </div>
                           </div>
@@ -137,7 +153,11 @@
                           <div class="col-md-6">
                             <div class="arrow">
                               <div class="btn-group mutiselectbtn">
-                                {{Form::select('location_sub', array(), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
+                                <?php if(!empty($dataset["property"]->location)){ ?>
+                                {{Form::select('location_sub', $subloc[$dataset["property"]->location], '', array('class' => 'form-control', 'id'=>"location_sub"))}}
+                                <?php }else{ ?>
+                                {{Form::select('location_sub', array(''=>'select Location'), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
+                                <?php } ?>
                               </div>
                             </div>
                           </div>
@@ -204,6 +224,26 @@
                           </div>
                         </div>
                       </div>
+                    
+                       <h4> Transports</h4>
+                      <div class="border-bottom"></div>
+                      <div class="border-top"></div>
+                      <div class="padding cls_transport">
+                        <div class="form-group">
+                          <label for="cdcontact" class="col-md-4 control-label">Transport Group</label>
+                          <div class="col-md-6">
+                            {{Form::select('transport_id', array(''=>'Select Transport group'),'', array('class' => 'form-control','id'=>'transport_id'))}}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-md-4 control-label" for="cdemail">Email
+                            id</label>
+                          <div class="col-md-6">
+                            {{Form::select('transport_child_id', array(''=>'Select Transport'),'', array('class' => 'form-control','id'=>'transport_child_id'))}}
+                          </div>
+                        </div>
+                      </div>
+                     
                     </div>
                     <!--/Step1 Content Basic Property Details -->
                     <!--/Step2 Content Property Feature List -->

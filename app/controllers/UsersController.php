@@ -23,7 +23,10 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
-		return View::make('users.create');
+		$location = new Location;
+		$dataset['locations']=$location->get_location_with_sub();
+		
+		return View::make('users.create',array('dataset'=>$dataset));
 	}
 
 	/**

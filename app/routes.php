@@ -33,6 +33,7 @@ Route::post('/profile/update', array('before' => 'auth', 'as' => 'profile.update
 Route::post('/profile/changepassword', array('before' => 'auth', 'as' => 'profile.changepassword', 'uses' => 'UsersController@changepassword'));
 
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
+Route::get('/locationlist/{id}', array('as' => 'locationlist', 'uses' => 'PagesController@getlocation'));
 
 Route::get('property/create', array('as' => 'property.create', 'uses' => 'PropertiesController@create'));
 Route::post('property/store', array('as' => 'property.store', 'uses' => 'PropertiesController@store'));

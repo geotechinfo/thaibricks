@@ -14,4 +14,10 @@ class PagesController extends Controller {
 	public function about(){
 		return View::make('pages.about');
 	}
+
+
+	public function getlocation($lid = 0){
+		$list = DB::table('pr_locations')->where('parent_id',$lid)->get();
+		echo json_encode($list);exit;
+	}
 }
