@@ -247,10 +247,10 @@ class UsersController extends Controller {
 	}
 	
 	public function profile(){
-		$relations = new Relation();
+		$property = new Property();
 		
-		$dataset["deals"] = $relations->deals();
-		$dataset["types"] = $relations->types();
+		$dataset["deals"] = $property->getlist_deals();
+		$dataset["types"] = $property->getlist_types();
 
 		return View::make('users.profile', array("dataset"=>$dataset));
 	}
