@@ -387,6 +387,15 @@ $(document).ready(function(){
 		chnage_rule();
 		$("#location_sub").val('<?php echo Input::old('location_sub'); ?>');
 	<?php } ?>
+  if(window.location.hash=='#changePass'){
+    //alert('ok')
+    $('[aria-controls="changePass"]').trigger('click');
+  }
+  //profile_edit
+  if(window.location.hash=='#profile_edit'){
+    //alert('ok')
+    $('[data-target="#profile_edit"]').trigger('click');
+  }
 });
 </script>
 
