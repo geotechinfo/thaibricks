@@ -16,20 +16,12 @@
     }
     //print_r($dataset["property"]->location);die;
 ?> 
+<style type="text/css">
+div.arrow_fix:before{height:35px !important;}
+</style>
 <section class="container container2 margin-top-10 white radius-top" id="profileimage">
   <div class="clearfix padding-5 clouds">
-    <div class="white clearfix">
-      <div class="col-md-2 col-sm-2 col-xs-2 no-margin">
-        <div class="white center">
-          <div class="profileimg"><a href="javascript:void(0)"> {{ HTML::image('images/agentprofile/profiledummy.png', '', array('class' => 'img-responsive')) }}</a></div>
-          <div class="padding-5"><a class="" href="javascript:void(0)"> {{{ Auth::user()->first_name }}} {{{ Auth::user()->last_name }}}</a></div>
-          <div> </div>
-        </div>
-      </div>
-      <div class="col-md-10 col-sm-10 col-xs-10 no-margin">
-        <div class="white padding-5">{{ HTML::image('images/agentprofile/banner.png', '', array('class' => 'img-responsive')) }}</div>
-      </div>
-    </div>
+    {{ $dataset['banner_panel'] }}
   </div>
 </section>
 <!--/profileimage-->
@@ -120,128 +112,145 @@
                       <div class="border-bottom"></div>
                       <div class="border-top"></div>
                       <div class="padding">
-                       
-                        <div class="form-group">
-                          <label for="propertyname" class="col-md-4 control-label">Society/Project
-                            Title</label>
-                          <div class="col-md-6">
-                            {{Form::text('title', $dataset["property"]->title, array('class' => 'form-control', 'placeholder' => 'Enter Property Title'))}}
-                          </div>
-                        </div>
-                        
-                        <div class="form-group">
-                          <label for="propertyname" class="col-md-4 control-label">Description</label>
-                          <div class="col-md-6">
-                            {{ Form::textarea('description', $dataset["property"]->description, ['class' => 'form-control']) }}
-                          </div>
-                        </div>
-                        
-                        <div class="form-group">
-                          <label class="col-md-4 control-label">Location</label>
-                          <div class="col-md-6">
-                            <div class="arrow">
-                              <div class="btn-group mutiselectbtn">
-                               
-                                {{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div class="form-group">
-                          <label class="col-md-4 control-label">Sub Location</label>
-                          <div class="col-md-6">
-                            <div class="arrow">
-                              <div class="btn-group mutiselectbtn">
-                                <?php if(!empty($dataset["property"]->location)){ ?>
-                                {{Form::select('location_sub', $subloc[$dataset["property"]->location], '', array('class' => 'form-control', 'id'=>"location_sub"))}}
-                                <?php }else{ ?>
-                                {{Form::select('location_sub', array(''=>'select Location'), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
-                                <?php } ?>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div class="form-group">
-                          <label for="cdaddress" class="col-md-4 control-label">Address</label>
-                          <div class="col-md-6">
-                            {{ Form::textarea('address', $dataset["property"]->address, ['class' => 'form-control']) }}
-                          </div>
-                        </div>
-                        
-                        <div class="form-group">
-                          <label for="cdaddress" class="col-md-4 control-label">Property Price</label>
-                          <div class="col-md-6">
 
-                            <div class="input-group">
-                              <span class="input-group-addon">&#xe3f;</span>
-                                <div class="row no-margin">
-                                	<div class="col-xs-<?php if($dataset["deal_id"] == 2){ ?>6<?php }else{ ?>12<?php } ?>  no-margin">
-                                    	{{Form::text('price', $dataset["property"]->price, array('class' => 'form-control special_input', 'placeholder' => 'Enter Property Price', 'style'=>'height:36px'))}}
-                                    </div>
-                                    <?php if($dataset["deal_id"] == 2){ ?>
-                                    <div class="col-xs-6  no-margin">
-                                    	<style type="text/css">
-										div.arrow_fix:before{
-											height:35px !important;
-										}
-										</style>
-                                        <div class="arrow arrow_fix">
-                                          <div class="btn-group mutiselectbtn">
-                                            {{Form::select('basis', array('M' => 'Monthly'), $dataset["property"]->basis, array('class' => 'form-control special_input', 'style'=>'height:36px'))}}
-                                          </div>
-                                        </div>
-                                    </div>
-                                    <?php }else{ ?>
-                                    	<input type="hidden" name="basis" value="O" />
-                                    <?php } ?>
+                     
+                      
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="propertyname" class="control-label">Society/Project
+                              Title</label>
+                              {{Form::text('title', $dataset["property"]->title, array('class' => 'form-control', 'placeholder' => 'Enter Property Title'))}}
+                          </div>
+                        </div>  
+                        <div class="col-sm-6">  
+                          <div class="form-group">
+                            <label class="control-label">Location</label>                            
+                              <div class="arrow">
+                                <div class="btn-group mutiselectbtn">                                 
+                                  {{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
                                 </div>
+                              </div>                            
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="control-label">Sub Location</label>
+                              <div class="arrow">
+                                <div class="btn-group mutiselectbtn">
+                                  <?php if(!empty($dataset["property"]->location)){ ?>
+                                  {{Form::select('location_sub', $subloc[$dataset["property"]->location], '', array('class' => 'form-control', 'id'=>"location_sub"))}}
+                                  <?php }else{ ?>
+                                  {{Form::select('location_sub', array(''=>'select Location'), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
+                                  <?php } ?>
+                                </div>
+                              </div>
+                          </div> 
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="cdaddress" class="control-label">Property Price</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">&#xe3f;</span>
+                                  <div class="row no-margin">
+                                    <div class="col-xs-<?php if($dataset["deal_id"] == 2){ ?>6<?php }else{ ?>12<?php } ?>  no-margin">
+                                        {{Form::text('price', $dataset["property"]->price, array('class' => 'form-control special_input', 'placeholder' => 'Enter Property Price', 'style'=>'height:36px'))}}
+                                    </div>
+                                      <?php if($dataset["deal_id"] == 2){ ?>
+                                    <div class="col-xs-6  no-margin">
+                                        
+                                          <div class="arrow arrow_fix">
+                                            <div class="btn-group mutiselectbtn">
+                                              {{Form::select('basis', array('M' => 'Monthly'), $dataset["property"]->basis, array('class' => 'form-control special_input', 'style'=>'height:36px'))}}
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <?php }else{ ?>
+                                        <input type="hidden" name="basis" value="O" />
+                                      <?php } ?>
+                                  </div>
                             </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label for="propertyname" class="control-label">Description</label>                            
+                              {{ Form::textarea('description', $dataset["property"]->description, ['class' => 'form-control','rows' => '5']) }}
+                          </div>
+                        </div>
+                       
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label for="cdaddress" class="control-label">Address</label>
+                            {{ Form::textarea('address', $dataset["property"]->address, ['class' => 'form-control','rows' => '5']) }}
                           </div>
                         </div>
                         
                       </div>
-                      <h4> Contact Details</h4>
-                      <div class="border-bottom"></div>
-                      <div class="border-top"></div>
-                      <div class="padding">
-                        <div class="form-group">
-                          <label for="cdcontact" class="col-md-4 control-label">Contact
-                            Number</label>
-                          <div class="col-md-6">
-                          	<?php if(isset($dataset["property"]->phone)){ $phone = $dataset["property"]->phone; }else{ $phone = Auth::user()->phone; } ?>
-                            <input type="text" class="form-control locationcode" id="locationcode" placeholder="+66" value="+66" readonly="readonly" style="background:#111112 !important;"/>
-                            {{Form::text('phone', $phone, array('class' => 'form-control ucontactright', 'placeholder' => 'Enter contact number'))}}
+
+                    </div>
+                    <h4> Contact Details</h4>  
+                    <div class="border-bottom"></div>
+                    <div class="border-top"></div>
+                    <div class="padding">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="cdcontact" class="control-label">Contact Number</label>
+                              <div>
+                              <?php if(isset($dataset["property"]->phone)){ $phone = $dataset["property"]->phone; }else{ $phone = Auth::user()->phone; } ?>
+                              <input type="text" class="form-control locationcode" id="locationcode" placeholder="+66" value="+66" readonly="readonly" style="background:#111112 !important;"/>
+                              {{Form::text('phone', $phone, array('class' => 'form-control ucontactright', 'placeholder' => 'Enter contact number'))}}
+                              </div>
                           </div>
                         </div>
-                        <div class="form-group">
-                          <label class="col-md-4 control-label" for="cdemail">Email
-                            id</label>
-                          <div class="col-md-6">
-                          	<?php if(isset($dataset["property"]->email)){ $email = $dataset["property"]->email; }else{ $email = Auth::user()->email; } ?>
-                          	{{Form::text('email', $email, array('class' => 'form-control', 'placeholder' => 'Enter email address'))}}
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="control-label" for="cdemail">Email id</label>
+                            <div>
+                              <?php if(isset($dataset["property"]->email)){ $email = $dataset["property"]->email; }else{ $email = Auth::user()->email; } ?>
+                              {{Form::text('email', $email, array('class' => 'form-control', 'placeholder' => 'Enter email address'))}}
+                            </div>
                           </div>
                         </div>
+                      </div>
+                        
+                        
                       </div>
                     
                        <h4> Transports</h4>
                       <div class="border-bottom"></div>
                       <div class="border-top"></div>
                       <div class="padding cls_transport">
-                        <div class="form-group">
-                          <label for="cdcontact" class="col-md-4 control-label">Transport Group</label>
-                          <div class="col-md-6">
-                            {{Form::select('transport_id', array(''=>'Select Transport group'),'', array('class' => 'form-control','id'=>'transport_id'))}}
+                        <div class="row">
+                          
+                        
+                        <?php if(isset($dataset["property"]->transports)){ ?>
+                        <?php foreach($dataset["property"]->transports as $k=>$v){?>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="control-label">{{$v->transport_name}}</label>
+                                <div>
+                                  <select class="form-control cls_transport_select ucontactright" name="transport_id[]">
+                                    <option value="">Select Transport</option>
+                                    <?php 
+                                      $km='';$slct = '';
+                                      foreach($v->Child as $ck=>$cv){
+                                      $km = (!empty($dataset["property"]->selected_transports[$cv->transport_id])?$dataset["property"]->selected_transports[$cv->transport_id]:'');
+                                      $slct =  (array_key_exists($cv->transport_id, $dataset["property"]->selected_transports)?'selected':'');
+                                    ?>
+                                    <option <?php echo $slct;?> value="<?php echo $cv->transport_id?>"><?php  echo$cv->transport_name?></option>
+                                    <?php }?>
+                                  </select>
+                                  <input class="form-control locationcode cls_transport_distance" name="transport_dist[]" value="<?php echo $km;?>" placeholder="Km">
+                                </div>
+                              
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-md-4 control-label" for="cdemail">Email
-                            id</label>
-                          <div class="col-md-6">
-                            {{Form::select('transport_child_id', array(''=>'Select Transport'),'', array('class' => 'form-control','id'=>'transport_child_id'))}}
+                          <?php } //endforeach ?>
+                          <?php } //endif ?>
+
                           </div>
-                        </div>
                       </div>
                      
                     </div>
@@ -253,34 +262,38 @@
                       @foreach($dataset["groups"] as $group)
                           <div class="padding unit border">
                             <h5 class="clouds padding-5">{{{ $group["group_name"] }}}</h5>
-                            <div class="padding"></div>
+                            <div class="padding">
+                            <div class="row">
+                              
                             @foreach($group["attributes"] as $attribute)
-                            <div class="form-group">
-                              <label for="pBedrooms" class="col-md-4 control-label">{{{ $attribute["attribute_name"] }}}</label>
-                              <div class="col-md-6">
-                              	<?php
-								if(isset($dataset["property"]->attributes)){
-									foreach($dataset["property"]->attributes as $value){
-										if($attribute["attribute_id"] == $value->attribute_id){
-											$attribute_value = $value->attribute_value;
-										}
-									}
-								}else{
-									$attribute_value = null;
-								}
-								?>
-                              	@if($attribute["attribute_type"] == "number")
-                                    <?php $placeholder = "Number of ".$attribute["attribute_name"]; ?>
-                                    {{Form::number('attributes['.$attribute["attribute_id"].']', $attribute_value, array('min' => 1, 'class' => 'form-control', 'placeholder' => $placeholder))}}
-                                @elseif($attribute["attribute_type"] == "text")
-                                	<?php $placeholder = "Enter ".$attribute["attribute_name"]; ?>
-                                	{{Form::text('attributes['.$attribute["attribute_id"].']', $attribute_value, array('class' => 'form-control', 'placeholder' => $placeholder))}}
-                                @elseif($attribute["attribute_type"] == "check")
-                                	{{Form::checkbox('attributes['.$attribute["attribute_id"].']', "Yes", null, array('class' => 'form-control checkbox_radio'))}}
-                                @endif
-                              </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label for="pBedrooms" class="control-label">{{{ $attribute["attribute_name"] }}}</label>
+                                	<?php
+                  								if(isset($dataset["property"]->attributes)){
+                  									foreach($dataset["property"]->attributes as $value){
+                  										if($attribute["attribute_id"] == $value->attribute_id){
+                  											$attribute_value = $value->attribute_value;
+                  										}
+                  									}
+                  								}else{
+                  									$attribute_value = null;
+                  								}
+                  								?>
+                                	@if($attribute["attribute_type"] == "number")
+                                      <?php $placeholder = "Number of ".$attribute["attribute_name"]; ?>
+                                      {{Form::number('attributes['.$attribute["attribute_id"].']', $attribute_value, array('min' => 1, 'class' => 'form-control', 'placeholder' => $placeholder))}}
+                                  @elseif($attribute["attribute_type"] == "text")
+                                  	<?php $placeholder = "Enter ".$attribute["attribute_name"]; ?>
+                                  	{{Form::text('attributes['.$attribute["attribute_id"].']', $attribute_value, array('class' => 'form-control', 'placeholder' => $placeholder))}}
+                                  @elseif($attribute["attribute_type"] == "check")
+                                  	{{Form::checkbox('attributes['.$attribute["attribute_id"].']', "Yes", null, array('class' => 'form-control checkbox_radio'))}}
+                                  @endif
                             </div>
+                          </div>
                             @endforeach
+                            </div>
+                            </div>
                             <!--<div class="form-group">
                               <label for="pBathrooms" class="col-md-4 control-label">Number
                                 of Bathrooms</label>
@@ -591,7 +604,8 @@
                       <div class="col-md-4 control-label"></div>
                       <div class="col-md-8">
                             <input class="btn btn-danger orange right"  type="submit" id="sbmt" @if(Route::currentRouteAction() == "PropertiesController@edit") value="Update" @else value="Submit" @endif id="sbmt" style="display:none;">
-                            <a href="javascript:void(0);" class="btn btn-danger orange right step_next"  id="next" onclick="property_create_validate();">Next</a>
+                            <!--<a href="javascript:void(0);" class="btn btn-danger orange right step_next"  id="next" onclick="property_create_validate();">Next</a> -->
+                            <a href="javascript:void(0);" class="btn btn-danger orange right step_next"  id="next" >Next</a>
                             <a href="javascript:void(0);" class="btn pitch-black right prev step_prev" id="prev">Prev</a>
                        </div>
                     </div>
@@ -617,5 +631,6 @@
       </div>
     </div>
   </div>
+  
 </section>
 @stop

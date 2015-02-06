@@ -95,7 +95,20 @@ class Property extends Eloquent {
 	public function delete_values($property_id){
 		DB::statement("DELETE FROM `pr_values` WHERE `property_id`=".$property_id);
 	}
-	
+
+	public function delete_property_transport($property_id){
+		DB::statement("DELETE FROM `pr_property_transport` WHERE `property_id`=".$property_id);
+	}
+	public function insert_property_transport($arr=array()){
+		if(!empty($arr)){
+			$str = '';
+			foreach ($arr as $key => $value) {
+				$str = $str."`$key`='$value',";
+			}
+			$str = trim($str,',');
+			DB::statement("INSERT INTO `pr_property_transport` SET $str");
+		}
+	}
 	public function get_properties($user_id=null, $property_id=null, $location_id=null, $sublocation_id=null){
 		$property_sql = "";
 		if($user_id != null){
@@ -144,6 +157,28 @@ class Property extends Eloquent {
 			
 			$returns[$key] = $property;
 			$returns[$key]->attributes = $attributes;
+			//die('SELECT * FROM pr_location_transports WHERE location_id = '.$property->location);
+			$alltransport = DB::select('SELECT * FROM pr_location_transports WHERE location_id = '.$property->location);
+			foreach ($alltransport as $ka => $va) {
+				$alltransport[$ka]->Child= DB::select('SELECT * FROM pr_location_transports WHERE parent_id = '.$va->transport_id);
+			}
+			
+			$trans = DB::select("
+				SELECT 
+						ppt.transport_id,
+						ppt.distance
+				FROM 
+					pr_property_transport ppt
+				WHERE ppt.property_id = ".$property->property_id
+				);
+			$transport_distance = array();
+			foreach ($trans as $kt => $vt) {
+				$transport_distance[$vt->transport_id]=$vt->distance;
+			}
+			//dd($alltransport);
+			
+			$returns[$key]->transports = $alltransport;
+			$returns[$key]->selected_transports = $transport_distance;
 		}
 		
 		$returns = array();

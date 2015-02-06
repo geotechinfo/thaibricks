@@ -31,10 +31,15 @@ Route::post('/login', array('as' => 'login', 'uses' => 'UsersController@handleLo
 Route::get('/profile', array('before' => 'auth', 'as' => 'profile', 'uses' => 'UsersController@profile'));
 Route::post('/profile/update', array('before' => 'auth', 'as' => 'profile.update', 'uses' => 'UsersController@update'));
 Route::post('/profile/changepassword', array('before' => 'auth', 'as' => 'profile.changepassword', 'uses' => 'UsersController@changepassword'));
+Route::post('/profile/changeprofileimage', array('before' => 'auth', 'as' => 'profile.changeprofileimage', 'uses' => 'UsersController@changeprofileimage'));
+Route::post('/profile/changebannerimage', array('before' => 'auth', 'as' => 'profile.changebannerimage', 'uses' => 'UsersController@changebannerimage'));
 
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
 Route::get('/locationlist/{id}', array('as' => 'locationlist', 'uses' => 'PagesController@getlocation'));
-
+Route::get('/wi', function()
+{
+    dd(new WideImage);
+});
 Route::get('property/create', array('as' => 'property.create', 'uses' => 'PropertiesController@create'));
 Route::post('property/store', array('as' => 'property.store', 'uses' => 'PropertiesController@store'));
 Route::get('property/mylist/{id}', array('as' => 'property.mylist', 'uses' => 'PropertiesController@mylist'));

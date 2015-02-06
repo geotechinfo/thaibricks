@@ -2526,3 +2526,6 @@ small.error_special{
 {
 	border:0px;
 }
+
+.propertyformsteps .control-label {text-align: left !important;}
+.propertyformsteps .form-group {padding:0 10px;}

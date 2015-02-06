@@ -56,6 +56,7 @@ class PropertiesController extends Controller {
 
 		$dataset["deal_id"] = $_GET["deal_id"];
 		$dataset["type_id"] = $_GET["type_id"];
+		$dataset['banner_panel'] = View::make('properties.banner_panel');
 		return View::make('properties.create', array("dataset"=>$dataset));
 	}
 
@@ -109,6 +110,17 @@ class PropertiesController extends Controller {
 			foreach(Input::get()["attributes"] as $key=>$value){
 				if($value!=""){
 					$properties->insert_value($property->property_id, $key, $value);
+				}
+			}
+
+			//echo "<pre>";print_r(Input::get()["transport_id"]);die;
+			//$properties->delete_property_transport($id);
+			foreach(Input::get()["transport_id"] as $key=>$value){
+				if($value!=""){
+					$ins_prop_trns['property_id'] = $id;
+					$ins_prop_trns['transport_id'] = $value;
+					$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+					$properties->insert_property_transport($ins_prop_trns);
 				}
 			}
 
@@ -181,6 +193,7 @@ class PropertiesController extends Controller {
 
 		$dataset["deal_id"] = $property->deal_id;
 		$dataset["type_id"] = $property->type_id;
+		$dataset['banner_panel'] = View::make('properties.banner_panel');
 		return View::make('properties.create', array("dataset"=>$dataset));
 	}
 
@@ -237,7 +250,17 @@ class PropertiesController extends Controller {
 					$properties->insert_value($id, $key, $value);
 				}
 			}
-			
+			//echo "<pre>";print_r(Input::get()["transport_id"]);die;
+			$properties->delete_property_transport($id);
+			foreach(Input::get()["transport_id"] as $key=>$value){
+				if($value!=""){
+					$ins_prop_trns['property_id'] = $id;
+					$ins_prop_trns['transport_id'] = $value;
+					$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+					$properties->insert_property_transport($ins_prop_trns);
+				}
+			}
+
 			$image_titles = Input::get('image_titles');
 			$image_files = Input::file('image_files');
 			if(count($image_files)>0){
@@ -299,6 +322,8 @@ class PropertiesController extends Controller {
 		
 		$dataset["hot"] = $properties->get_properties(null, null);
 		$dataset["user_id"] = $id;
+		$dataset['banner_panel'] = View::make('properties.banner_panel');
+		
 		return View::make('properties.mylist', array("dataset"=>$dataset));
 	}
 	

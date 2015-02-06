@@ -222,6 +222,9 @@
       </div>
     </div>
   </div>
+  <div class="progress" style="display:none;position:fixed;bottom:10px;right:10px;width:200px;height:3px;">
+    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+  </div>
 </footer>
 <!--/#footer-->
 <!--<script src="js/jquery.js"></script>
@@ -234,12 +237,15 @@
 <script src="js/main.js"></script>-->
 
 {{ HTML::script('js/jquery.js') }}
+{{ HTML::script('js/jquery-ui.js') }}
 {{ HTML::script('js/bootstrap.min.js') }}
 {{ HTML::script('js/jquery.prettyPhoto.js') }}
 <!--{{ HTML::script('js/jquery.isotope.min.js') }}-->
 {{ HTML::script('libraries/slider/js/bootstrap-slider.js') }}
 {{ HTML::script('libraries/select2/js/select2.js') }}
 {{ HTML::script('libraries/slimheader/classie.js') }}
+{{ HTML::script('libraries/uploadifive/js/jquery.ui.widget.js') }}
+{{ HTML::script('libraries/uploadifive/js/jquery.fileupload.js') }}
 {{ HTML::script('js/main.js') }}
 <script>
     //tooltip
@@ -261,9 +267,9 @@ $(document).ready(function(){
 		if(step_counter == 1){
 			$(".text-danger").empty();
 			var success = true;
-			$("#step1 input, #step1 textarea, #step1 select").each(function() {
+			$("#step1 input, #step1 textarea, #step1 select").not('.cls_transport_select,.cls_transport_distance').each(function() {
 				if($(this).val() == ""){
-					$(this).closest(".col-md-6").append('<small class="text-danger error_special">This field is required. </small>');
+					$(this).after('<small class="text-danger error_special">This field is required. </small>');
 					$(this).focus();
 					success = false;
 					return false;
@@ -285,9 +291,9 @@ $(document).ready(function(){
 		}else if(step_counter == 2){
 			$(".text-danger").empty();
 			var success = true;
-			$("#step2 input, #step1 select").each(function() {
+			$("#step2 input, #step1 select").not('.cls_transport_select,.cls_transport_distance').each(function() {
 				if($(this).val() == ""){
-					$(this).closest(".col-md-6").append('<small class="text-danger">This field is required. </small>');
+					$(this).after('<small class="text-danger">This field is required. </small>');
 					$(this).focus();
 					success = false;
 					return false;
@@ -377,35 +383,33 @@ $(document).ready(function(){
     })
     $("#transport_id").append($("<option />").val('').text('Select Transport Group'));
     $(".cls_transport").empty();
-    $.each(locationJson[$(this).val()].Transport,function(i,obj){
+    var location = $(this).val();
+    var row = $('<div/>').addClass('row');
+      
+    $.each(locationJson[location].Transport,function(i,obj){
       var slct = $('<select/>').addClass('form-control cls_transport_select ucontactright').attr({'name':'transport_id[]'});
       slct.append($("<option />").val('').text('Select Transport'));
       $.each(obj.Child,function(i1,obj1){
         slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
       });
-      var inpt = $('<input/>').addClass('form-control locationcode').attr({'name':'transport_dist[]','placeholder':'Km'});
+      var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]','placeholder':'Km'});
       var rw = $('<div/>').addClass('').append(slct).append(inpt);
 
 
+      var col = $('<div/>').addClass('col-sm-6');
       var html = $('<div/>').addClass('form-group');
-      var lb = $('<label/>').addClass('col-md-4 control-label').text(obj.transport_name);
-      var cn = $('<div/>').addClass('col-md-6').append(rw);
-      $(".cls_transport").append(html.append(lb).append(cn));
+      var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
+      var cn = $('<div/>').addClass('').append(rw);
+      html.append(lb).append(cn)
+      col.append(html);
+      row.append(col);      
+      
       //$("#transport_id").append($("<option />").val(obj.transport_id).text(obj.transport_name));
      
     })
+    $(".cls_transport").append(row);
 	});
-  $("#transport_id").change(function(){
-    $(".cls_transport").empty();
-    //$("#transport_child_id").append($("<option />").val('').text('Select Transport'));    
-    $.each(locationJson[$('#location').val()].Transport[$(this).val()].Child,function(i,obj){
-      var html = $('<div/>').addClass('form-group');
-      html.append('<label/>').addClass('col-md-4 control-label').text($(this).find('option:selected').text());
-      html.append('<div/>').addClass('col-md-8').html('ok');
-      //$(".cls_transport").append($("<option />").val(obj.transport_id).text(obj.transport_name));
-    })
-  });
-
+  
 	<?php if(isset($_GET["location"]) && $_GET["location"] != ""){ ?>
 		$("#location").val('<?php echo $_GET["location"]; ?>');
 	<?php } ?>
@@ -438,6 +442,123 @@ $(document).ready(function(){
     //alert('ok')
     $('[data-target="#profile_edit"]').trigger('click');
   }
+
+
+  $('#profile_image,.profile_image').click(function(){
+   
+    var url = '<?php echo route('profile.changeprofileimage');?>'
+    $('<input/>')
+      .attr({type:'file',name:'image_files'})
+      .fileupload({
+          url: url,
+          dataType: 'json',             
+          done: function (e, data) {               
+            $('#profile_image').attr('src',data.result.file_url);
+          },
+          progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('.progress-bar').animate({'width':progress + '%'});         
+          },
+          stop:function(){
+            $('.progress').hide();
+          },
+          start:function(){
+            $('.progress').show();
+            $('.progress-bar').css('width','0%');
+          },
+          add: function(e, data) {
+                  var uploadErrors = [];
+                  console.log(data.originalFiles[0]);
+                  var acceptFileTypes = /^image\/(jpg|jpeg|png|gif)$/i;
+                  if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                      uploadErrors.push('Not an accepted file type!\nPlease Select image file.\nSupported Extention:JPG,GIF,PNG');
+                  }
+                  if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+                      uploadErrors.push('Filesize is too big');
+                  }
+                  if(uploadErrors.length > 0) {
+                      alert(uploadErrors.join("\n"));
+                  } else {
+                      data.submit();
+                  }
+          }
+                
+      })
+      .trigger('click');  
+  });
+
+  $('#banner_image,.banner_image').click(function(){
+   
+    var url = '<?php echo route('profile.changebannerimage');?>'
+    $('<input/>')
+      .attr({type:'file',name:'image_files'})
+      .fileupload({
+          url: url,
+          dataType: 'json',           
+          imageMaxHeight:10,  
+          done: function (e, data) {
+            var time = new Date();               
+            //alert(data.result.file_url+"?"+time.getTime())
+            $('#banner_image').attr('src',data.result.file_url+"?"+time.getTime());
+          },
+          progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('.progress-bar').animate({'width':progress + '%'});         
+          },
+          stop:function(){
+            $('.progress').hide();
+          },
+          start:function(){
+            $('.progress').show();
+            $('.progress-bar').css('width','0%');
+          },
+          add: function(e, data) {
+                  var uploadErrors = [];
+                  
+
+                  var acceptFileTypes = /^image\/(jpg|jpeg|png|gif)$/i;
+                  if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                      uploadErrors.push('Not an accepted file type!\nPlease Select image file.\nSupported Extention:JPG,GIF,PNG');
+                  }
+                  if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
+                      uploadErrors.push('Filesize is too big');
+                  }
+                  if(uploadErrors.length > 0) {
+                      alert(uploadErrors.join("\n"));
+                  } else {
+                      data.submit();
+                  }
+          }
+                
+      })
+      .trigger('click')
+      ;
+  });
+
+function readImage(file) {
+
+    var reader = new FileReader();
+    var image  = new Image();
+
+    reader.readAsDataURL(file);  
+    reader.onload = function(_file) {
+        image.src    = _file.target.result;              // url.createObjectURL(file);
+        image.onload = function() {
+            var w = this.width,
+                h = this.height,
+                t = file.type,                           // ext only: // file.type.split('/')[1],
+                n = file.name,
+                s = ~~(file.size/1024) +'KB';
+            //$('#uploadPreview').append('<img src="'+ this.src +'"> '+w+'x'+h+' '+s+' '+t+' '+n+'<br>');
+            //alert(this.height)
+            return this;
+        };
+        image.onerror= function() {
+            alert('Invalid file type: '+ file.type);
+        };      
+    };
+
+}
 });
 </script>
 
