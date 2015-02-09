@@ -4,18 +4,12 @@ use Illuminate\Routing\Controller;
 
 class LocationsController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /users
-	 *
-	 * @return Response
-	 */
 	public function location()
 	{
 		$rules = ["parent_id" => 0];
 		$parents = Location::where($rules)->get();
 		$dataset["parents"] = array();
-		$dataset["parents"][0] = "Not Applicable";
+		$dataset["parents"][""] = "Select Location/City";
 		foreach($parents as $parent){
 			$dataset["parents"][$parent->location_id] = $parent->location_name;
 		}
@@ -41,13 +35,7 @@ class LocationsController extends Controller {
 		return View::make('admin.locations.show', array("dataset"=>$dataset));
 	}
 	
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /users
-	 *
-	 * @return Response
-	 */
-	public function store(){
+	public function addlocation(){
 		$validators = array(
 			'location_name' => 'required'
 		);
@@ -57,15 +45,38 @@ class LocationsController extends Controller {
         );
 
 		if($validator->fails()){
-            return Redirect::route('location.transport')->withErrors($validator)->withInput();
+            return Redirect::route('location.location')->withErrors($validator)->withInput();
         }
 		
 		$location = new Location();
 		
-		$location->parent_id = Input::get('parent_location');
+		$location->parent_id = 0;
 		$location->location_name = Input::get('location_name');
         if($location->save()){
-			return Redirect::route('location.transport')->with('success','Location successfully added in ThaiBricks.');
+			return Redirect::route('location.location')->with('success','Location successfully added in ThaiBricks.');
+		}
+	}
+	
+	public function addsublocation(){
+		$validators = array(
+			'location_id' => 'required',
+			'sub_location' => 'required'
+		);
+		$validator = Validator::make(
+            Input::all(),
+            $validators
+        );
+
+		if($validator->fails()){
+            return Redirect::route('location.location')->withErrors($validator)->withInput();
+        }
+		
+		$location = new Location();
+		
+		$location->parent_id = Input::get('location_id');
+		$location->location_name = Input::get('sub_location');
+        if($location->save()){
+			return Redirect::route('location.location')->with('success','Sub Location successfully added in ThaiBricks.');
 		}
 	}
 	
@@ -92,7 +103,7 @@ class LocationsController extends Controller {
 		$counter_group = 0;
 		foreach($transports as $group){
 			if($group->parent_id == 0){
-				$builder[$counter_group]["text"] = $group->transport_name;
+				$builder[$counter_group]["text"] = $group->transport_name."[".$group->location()->location_name."]";
 				$counter_child = 0;
 				foreach($transports as $child){
 					if($group->transport_id == $child->parent_id){

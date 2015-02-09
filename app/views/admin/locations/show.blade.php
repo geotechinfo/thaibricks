@@ -15,35 +15,46 @@
   <div class="divider"></div>
 </div>
 
+<div class="row">
 @if(Session::has('success'))
-<div class="margin-top-10 message">
-<p class="btn-success text-success padding-5">
-    <span class="fa fa-times-circle"></span>{{ Session::get('success') }}
-    <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
-</p>
+<p></p>
+<div class="alert alert-success">
+	<span class="fa fa-tick"></span>&nbsp; {{ Session::get('success') }}
 </div>
 @endif
 
 @foreach ($errors->all() as $message)
-<div class="margin-top-10 message">
-<p class="btn-danger text-danger padding-5">
-    <span class="fa fa-times-circle"></span>{{{ $message }}}
-    <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
-</p>
+<p></p>
+<div class="alert alert-danger">
+	<span class="fa fa-times"></span>&nbsp; {{{ $message }}}
 </div>
 <?php break; ?>
 @endforeach
+</div>
 
 <div class="row">
     <h3>Create Location</h3>
-    {{ Form::open(array('route' => array('location.store'), 'method' => 'post')) }}
-    <div class="form-group col-md-6">
-        {{Form::label('parent','Parent Location')}}
-        {{Form::select('parent_location', $dataset["parents"], null, array('class' => 'form-control'))}}
-    </div>
-    <div class="form-group col-md-6">
+    {{ Form::open(array('route' => array('location.addlocation'), 'method' => 'post')) }}
+    <div class="form-group col-md-12">
         {{Form::label('location','Location Name')}}
         {{Form::text('location_name', null, array('class' => 'form-control'))}}
+    </div>
+    <div class="form-group col-md-2">
+        {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
+    </div>
+    {{ Form::close() }}
+</div>
+
+<div class="row">
+    <h3>Add Sub Location</h3>
+    {{ Form::open(array('route' => array('location.addsublocation'), 'method' => 'post')) }}
+    <div class="form-group col-md-6">
+        {{Form::label('location','Location/City')}}
+        {{Form::select('location_id', $dataset["parents"], null, array('class' => 'form-control'))}}
+    </div>
+    <div class="form-group col-md-6">
+        {{Form::label('location','Sub Location')}}
+        {{Form::text('sub_location', null, array('class' => 'form-control'))}}
     </div>
     <div class="form-group col-md-2">
         {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}

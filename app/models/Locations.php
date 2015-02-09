@@ -9,7 +9,7 @@ class Location extends Eloquent {
 	 *
 	 * @var string
 	 */
-	
+	 	
 	public function getlist_locations(){
 		$return =array();
 		$counter_parent = 0;

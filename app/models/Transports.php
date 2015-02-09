@@ -9,6 +9,11 @@ class Transport extends Eloquent {
 	 *
 	 * @var string
 	 */
+	 
+	public function location()
+	{
+		return $this->belongsTo('Location', 'location_id', 'location_id');
+	}
 	
 	public function getlist_transports(){
 		$return =array();

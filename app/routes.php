@@ -46,7 +46,8 @@ Route::get('admin/dashboard', array('as' => 'admin.dashboard', 'uses' => 'Admins
 Route::get('admin/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AttributesController@relation'));
 Route::post('admin/attribute/store', array('as' => 'attribute.store', 'uses' => 'AttributesController@store'));
 Route::get('admin/location/location', array('as' => 'location.location', 'uses' => 'LocationsController@location'));
-Route::post('admin/location/store', array('as' => 'location.store', 'uses' => 'LocationsController@store'));
+Route::post('admin/location/addlocation', array('as' => 'location.addlocation', 'uses' => 'LocationsController@addlocation'));
+Route::post('admin/location/addsublocation', array('as' => 'location.addsublocation', 'uses' => 'LocationsController@addsublocation'));
 Route::get('admin/location/transport', array('as' => 'location.transport', 'uses' => 'LocationsController@transport'));
 Route::post('admin/location/addgroup', array('as' => 'location.addgroup', 'uses' => 'LocationsController@addgroup'));
 Route::post('admin/location/addtransport', array('as' => 'location.addtransport', 'uses' => 'LocationsController@addtransport'));

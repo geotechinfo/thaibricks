@@ -15,24 +15,22 @@
   <div class="divider"></div>
 </div>
 
+<div class="row">
 @if(Session::has('success'))
-<div class="margin-top-10 message">
-<p class="btn-success text-success padding-5">
-    <span class="fa fa-times-circle"></span>{{ Session::get('success') }}
-    <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
-</p>
+<p></p>
+<div class="alert alert-success">
+	<span class="fa fa-tick"></span>&nbsp; {{ Session::get('success') }}
 </div>
 @endif
 
 @foreach ($errors->all() as $message)
-<div class="margin-top-10 message">
-<p class="btn-danger text-danger padding-5">
-    <span class="fa fa-times-circle"></span>{{{ $message }}}
-    <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
-</p>
+<p></p>
+<div class="alert alert-danger">
+	<span class="fa fa-times"></span>&nbsp; {{{ $message }}}
 </div>
 <?php break; ?>
 @endforeach
+</div>
 
 <div class="row">
     <h3>Transport Group</h3>
@@ -52,7 +50,7 @@
 </div>
 
 <div class="row">
-    <h3>Transport System</h3>
+    <h3>Station Name</h3>
     {{ Form::open(array('route' => array('location.addtransport'), 'method' => 'post')) }}
     <div class="form-group col-md-6">
         {{Form::label('group','Transport Group')}}
