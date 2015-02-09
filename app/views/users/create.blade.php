@@ -87,7 +87,12 @@
                   <div class="form-group">
                     <label for="upassword" class="col-md-4 control-label">{{Form::label('location','Location')}}</label>
                     <div class="col-md-6">
-                		{{Form::select('location', array('' => 'Select your location', 'bangkok' => 'Bangkok', 'lampang' => 'Lampang'), '', array('class' => 'form-control'))}}
+                    <?php  $loc = array(''=>'Select Location');
+                                foreach ($dataset['locations'] as $k=>$v){
+                                  $loc[$k]=$v['location_name'];
+                                }
+                              ?>
+                		{{Form::select('location', $loc, '', array('class' => 'form-control'))}}
                     </div>
                   </div>
                 </div>

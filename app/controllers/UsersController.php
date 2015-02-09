@@ -23,7 +23,10 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
-		return View::make('users.create');
+		$location = new Location;
+		$dataset['locations']=$location->get_location_with_sub();
+		
+		return View::make('users.create',array('dataset'=>$dataset));
 	}
 
 	/**
@@ -244,10 +247,10 @@ class UsersController extends Controller {
 	}
 	
 	public function profile(){
-		$relations = new Relation();
+		$property = new Property();
 		
-		$dataset["deals"] = $relations->deals();
-		$dataset["types"] = $relations->types();
+		$dataset["deals"] = $property->getlist_deals();
+		$dataset["types"] = $property->getlist_types();
 
 		return View::make('users.profile', array("dataset"=>$dataset));
 	}
@@ -261,6 +264,49 @@ class UsersController extends Controller {
 			Auth::logout();
 		}
 		return Redirect::route('login');
+	}
+
+	function changeprofileimage(){
+		$image_files = $_FILES['image_files'];
+		//$image_files = Input::file('image_files');
+			
+		$json = $image_files;
+		if($image_files['error']==0){
+			$file_path = 'files/profileimages/';
+			$file_name = rand(1111111111,9999999999).'.jpg';
+			move_uploaded_file($image_files['tmp_name'], $file_path.$file_name);
+			$json['new_name'] = $file_name;
+			$json['file_url'] = URL::to('/')."/".$file_path.$file_name;
+			$user = User::find(Auth::User()->user_id);
+			$user->profile_image = $file_name;
+			$user->save();
+		}
+
+		echo json_encode($json); exit;
+	}
+
+	function changebannerimage(){
+		$image_files = $_FILES['image_files'];
+		//$image_files = Input::file('image_files');
+		$WI = new WideImage;
+				
+		$json = $image_files;
+		if($image_files['error']==0){
+			$file_path = 'files/user_banner_images/';
+			$file_name = rand(1111111111,9999999999).'.jpg';
+			//move_uploaded_file($image_files['tmp_name'], $file_path.$file_name);
+			$WI::load('image_files')
+			->crop(0,0,'932','200')			
+			->saveToFile($file_path.$file_name);
+			
+			$json['new_name'] = $file_name;
+			$json['file_url'] = URL::to('/')."/".$file_path.$file_name;
+			$user = User::find(Auth::User()->user_id);
+			$user->banner_image = $file_name;
+			$user->save();
+		}
+
+		echo json_encode($json); exit;
 	}
 
 }

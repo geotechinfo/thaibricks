@@ -9,7 +9,7 @@
 <!--/profileimage-->
 <section class="container container2 margin-top-10 white radius-top" id="profileimage">
   <div class="clearfix padding-5 clouds">
-    <div class="white clearfix">
+    <!--- <div class="white clearfix">
       <div class="col-md-2 col-sm-2 col-xs-2 no-margin">
         <div class="white center">
           <div class="profileimg">
@@ -30,7 +30,8 @@
         {{ HTML::image('images/agentprofile/banner.png', '', array('class' => 'img-responsive')) }}
         </div>
       </div>
-    </div>
+    </div> -->
+    {{ $dataset['banner_panel'] }}
   </div>
 </section>
 <!--/profileimage-->
