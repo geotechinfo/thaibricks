@@ -1,9 +1,4 @@
 @extends('layouts.default')
-{{ HTML::style('libraries/startrating/jquery.rating.css') }}
-
-{{ HTML::script('libraries/slick/slick.js') }}
-{{ HTML::script('libraries/startrating/jquery.rating.js') }}
-{{ HTML::script('libraries/slimheader/classie.js') }}
 
 @section('content')
 <!--/profileimage-->
@@ -37,43 +32,9 @@
 <!--/profileimage-->
 <section class="container container2 margin-top-10 white radius-top">
   <aside class="col-sm-3 col-sm-push-9">
+  	@if($dataset["user_id"] == Auth::user()->user_id)
   	<div class="search-btn-wrap clearfix"> <a data-toggle="modal" data-target="#addPrperty" class="btn btn-primary btn-lg search-button margin-top details-search-button adProperty" href=""> <span class="fa fa-plus"></span> <span>Add New Property</span> </a> </div>
-    
-    <!-- Modal -->
-        <div class="modal fade" id="addPrperty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-            	{{ Form::open(array('route' => array('property.create'), 'method' => 'get')) }}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add New Property</h4>
-              </div>
-              <div class="modal-body addPropertyModal">
-                <div class="row">
-                  <div class="col-sm-3 col-sm-offset-1">
-                  <label>Property Type</label>
-                  </div>
-                  <div class="col-sm-7">
-                     {{Form::select('type_id', $dataset["types"], null, array('class' => 'form-control'))}}
-                  </div>
-                </div>
-                <p></p>
-                <div class="row">
-                  <div class="col-sm-3 col-sm-offset-1">
-                  <label>Transaction Type</label>
-                  </div>
-                  <div class="col-sm-7">
-                  	{{Form::select('deal_id', $dataset["deals"], null, array('class' => 'form-control'))}} 
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary orange modalBtn">Submit</button>
-              </div>
-              {{ Form::open(array('route' => array('login'), 'method' => 'post')) }}
-            </div>
-          </div>
-        </div>
+    @endif
 
     <div class="ad-wrap">{{ HTML::image('images/demoimages/ad6.jpg', '', array('class' => '')) }}</div>
     <div class="ad-wrap">{{ HTML::image('images/demoimages/ad8.jpg', '', array('class' => '')) }}</div>
@@ -92,6 +53,7 @@
     </div>
     @endif
   
+  	<?php $validity_days = 7; ?>
   	@foreach($dataset["properties"] as $property)
     <div class="propertylist clearfix new myproperty">
       	<div class="btn-group btn-group-xs edit-delete" role="group" aria-label="...">
@@ -100,17 +62,28 @@
           	<!--<a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-trash-o"></span></a>-->
           @endif
         </div>
-      <div class="col-md-5"><div class="propertyimg" style="overflow:hidden;">
-      	<div class="propertymark"></div>
-        {{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}
-      </div></div>
+      <div class="col-md-5">
+          <div class="propertyimg" style="overflow:hidden;">
+          		<?php if(floor((strtotime("now")-$property->last_active)/3600/24) > $validity_days){ ?>
+          		<div class="disablePropertyHolder">
+                    <div class="disablePropertyText flexCenter enableBtnHolder">
+                        <a href="javascript:;"><i class="fa fa-check-circle"></i> Enable your Property</a>
+                        <!-- <span><i class="fa fa-warning"></i> DISABLED</span> -->
+                    </div>
+                </div>
+                <?php } ?>
+            	<div class="propertymark"></div>
+            	{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}
+          </div>
+          <p>You property is active for next <?php echo ($validity_days - floor((strtotime("now")-$property->last_active)/3600/24)); ?> days.</p>
+      </div>
       <div class="col-md-7 propertylist-body">
         <h3 class="propertylist-heading uppercase">{{{ $property->title }}}</h3>
         <h5 class="uppercase">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</h5>
         <small>{{{ $property->first_name }}} {{{ $property->last_name }}}</small>
         <div class="otherinfo clearfix">
         	<div class="pull-left">
-            <h5>{{{ $property->location_sub }}}, {{{ $property->location }}}</h5>
+            <h5>{{{ $property->locationsub_name }}}, {{{ $property->location_name }}}</h5>
             </div>
             
             <!--<div class="pull-right starwrap">
@@ -122,9 +95,49 @@
             </div>-->
         </div>
         <p class="propertydesc">{{{ substr($property->description, 0, 125) }}} <a class="saveshortlist" href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}"><small>Read More</small></a></p>
-         <div class="linkgroup">
+         <!--<div class="linkgroup">
          	<a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/mtrsmall.png', '', array('class' => 'searchsmallimg')) }}Ekamai station </a>
             <a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/googlemall.png', '', array('class' => 'searchsmallimg')) }}Location</a>
+         </div>-->
+         <div class="row">
+         	<div class="col-sm-12">
+                 <div class="nearLocation">
+					<?php foreach($property->transports as $transports){ ?>
+                        <?php foreach($transports as $transport){ ?>
+                            <?php if(is_array($transport)){ ?>
+                            <?php foreach($transport as $location){ ?>
+                                <?php if(array_key_exists($location->transport_id, $property->selected_transports)){ ?>
+                                  <div class="text-center">
+                                    <div class="location" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
+                                    <p>Near to <?php echo $location->transport_name; ?></p>
+                                  </div>
+                                <?php } ?>
+                            <?php } ?>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
+                      <!--<div class="text-center">
+                        <div class="location nearMrt"></div>
+                        <p>Near MRT</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearAirport"></div>
+                        <p>Near Airport</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearHospital"></div>
+                        <p>Hospital (2Km)</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearSchool"></div>
+                        <p>School (1Km)</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearPark"></div>
+                        <p>Park (4Km)</p>
+                      </div>-->
+                 </div>
+            </div>
          </div>
          <div>
               <div class="pull-right">

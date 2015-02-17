@@ -29,45 +29,7 @@
   <aside class="col-sm-3 col-sm-push-9">
   	<!--<div class="search-btn-wrap clearfix"> <a class="btn btn-primary btn-lg search-button margin-top details-search-button " href=""> <span class="fa fa-plus"></span> <span>Add New Property</span> </a> </div>-->
     <div class="search-btn-wrap clearfix"> <a data-toggle="modal" data-target="#addPrperty" class="btn btn-primary btn-lg search-button margin-top details-search-button adProperty" href=""> <span class="fa fa-plus"></span> <span>Add New Property</span> </a> </div>
-    
-    <!-- Modal -->
-        <div class="modal fade" id="addPrperty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-            	{{ Form::open(array('route' => array('property.create'), 'method' => 'get')) }}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add New Property</h4>
-              </div>
-              <div class="modal-body addPropertyModal">
-                <div class="row">
-                  <div class="col-sm-3 col-sm-offset-1">
-                  <label>Property Type</label>
-                  </div>
-                  <div class="col-sm-7">
-                     {{Form::select('type_id', $dataset["types"], null, array('class' => 'form-control'))}}
-                  </div>
-                </div>
-                <p></p>
-                <div class="row">
-                  <div class="col-sm-3 col-sm-offset-1">
-                  <label>Transaction Type</label>
-                  </div>
-                  <div class="col-sm-7">
-                  	{{Form::select('deal_id', $dataset["deals"], null, array('class' => 'form-control'))}} 
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary orange modalBtn">Submit</button>
-              </div>
-              {{ Form::close()  }}
-            </div>
-          </div>
-        </div>
-        
-        
-        
+   
     <div class="ad-wrap">{{ HTML::image('images/demoimages/ad5.jpg', '', array('class' => '')) }}</div>
     <div class="ad-wrap">{{ HTML::image('images/demoimages/ad1.jpg', '', array('class' => '')) }}</div>
   </aside>

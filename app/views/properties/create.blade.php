@@ -1,21 +1,29 @@
 @extends('layouts.default')
 @section('content')
+
+<?php
+$location = new Location;
+$dataset['locations']=$location->get_location_with_sub();
+
+$loc = array(''=>'Select Location');
+$subloc[''] = array(''=>'Select Location');
+$transport_group =  array('' => 'Select Transport Group' );
+foreach ($dataset['locations'] as $k=>$v){
+  $loc[$k]=$v['location_name'];
+   if($v['SubLocation']){
+	   foreach ($v['SubLocation'] as $k1 => $v1) {
+		  $subloc[$k][$v1['location_id']]=$v1['location_name'];
+	   }
+   }
+   if($v['Transport']){
+	   foreach ($v['Transport'] as $k1 => $v1) {
+		  $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
+	   }
+   }
+}
+?>
+
 <!--/profileimage-->
-<?php  
-    $loc = array(''=>'Select Location');
-    $subloc[''] = array(''=>'Select Location');
-    $transport_group =  array('' => 'Select Transport Group' );
-    foreach ($dataset['locations'] as $k=>$v){
-      $loc[$k]=$v['location_name'];
-       foreach ($v['SubLocation'] as $k1 => $v1) {
-          $subloc[$k][$v1['location_id']]=$v1['location_name'];
-       }
-       foreach ($v['Transport'] as $k1 => $v1) {
-          $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
-       }
-    }
-    //print_r($dataset["property"]->location);die;
-?> 
 <style type="text/css">
 div.arrow_fix:before{height:35px !important;}
 </style>
@@ -42,15 +50,15 @@ div.arrow_fix:before{height:35px !important;}
         @endif
     </h2>
         
-            @foreach ($errors->all() as $message)
-            <div class="margin-top-10 message">
-            <p class="btn-danger text-danger padding-5">
-                <span class="fa fa-times-circle"></span>{{{ $message }}}
-                <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
-            </p>
-            </div>
-            <?php break; ?>
-            @endforeach
+        @foreach ($errors->all() as $message)
+        <div class="margin-top-10 message">
+        <p class="btn-danger text-danger padding-5">
+            <span class="fa fa-times-circle"></span>{{{ $message }}}
+            <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
+        </p>
+        </div>
+        <?php break; ?>
+        @endforeach
             
     <div class="propertylist clearfix new clouds white">
       <div class="formwrap">
@@ -127,7 +135,7 @@ div.arrow_fix:before{height:35px !important;}
                           <div class="form-group">
                             <label class="control-label">Location</label>                            
                               <div class="arrow">
-                                <div class="btn-group mutiselectbtn">                                 
+                                <div class="btn-group mutiselectbtn">                               
                                   {{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
                                 </div>
                               </div>                            
@@ -138,11 +146,7 @@ div.arrow_fix:before{height:35px !important;}
                             <label class="control-label">Sub Location</label>
                               <div class="arrow">
                                 <div class="btn-group mutiselectbtn">
-                                  <?php if(!empty($dataset["property"]->location)){ ?>
-                                  {{Form::select('location_sub', $subloc[$dataset["property"]->location], '', array('class' => 'form-control', 'id'=>"location_sub"))}}
-                                  <?php }else{ ?>
-                                  {{Form::select('location_sub', array(''=>'select Location'), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
-                                  <?php } ?>
+                                  {{Form::select('location_sub', array(''=>'Select Sub Location'), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
                                 </div>
                               </div>
                           </div> 
@@ -218,15 +222,15 @@ div.arrow_fix:before{height:35px !important;}
                         
                       </div>
                     
-                       <h4> Transports</h4>
-                      <div class="border-bottom"></div>
-                      <div class="border-top"></div>
-                      <div class="padding cls_transport">
-                        <div class="row">
-                          
-                        
-                        <?php if(isset($dataset["property"]->transports)){ ?>
-                        <?php foreach($dataset["property"]->transports as $k=>$v){?>
+                     
+                      <div id="transport_system" style="display:none;">
+                        <h4> Transports</h4>
+                        <div class="border-bottom"></div>
+                        <div class="border-top"></div>
+                        <div class="padding cls_transport">
+                        <!--<div class="row">
+                        <?php //if(isset($dataset["property"]->transports)){ ?>
+                        <?php //foreach($dataset["property"]->transports as $k=>$v){?>
                           <div class="col-sm-6">
                             <div class="form-group">
                               <label class="control-label">{{$v->transport_name}}</label>
@@ -234,25 +238,25 @@ div.arrow_fix:before{height:35px !important;}
                                   <select class="form-control cls_transport_select ucontactright" name="transport_id[]">
                                     <option value="">Select Transport</option>
                                     <?php 
-                                      $km='';$slct = '';
+                                      /*$km='';$slct = '';
                                       foreach($v->Child as $ck=>$cv){
                                       $km = (!empty($dataset["property"]->selected_transports[$cv->transport_id])?$dataset["property"]->selected_transports[$cv->transport_id]:'');
-                                      $slct =  (array_key_exists($cv->transport_id, $dataset["property"]->selected_transports)?'selected':'');
+                                      $slct =  (array_key_exists($cv->transport_id, $dataset["property"]->selected_transports)?'selected':'');*/
                                     ?>
-                                    <option <?php echo $slct;?> value="<?php echo $cv->transport_id?>"><?php  echo$cv->transport_name?></option>
-                                    <?php }?>
+                                    <option <?php //echo $slct;?> value="<?php //echo $cv->transport_id?>"><?php  //echo$cv->transport_name?></option>
+                                    <?php //}?>
                                   </select>
-                                  <input class="form-control locationcode cls_transport_distance" name="transport_dist[]" value="<?php echo $km;?>" placeholder="Km">
+                                  <input class="form-control locationcode cls_transport_distance" name="transport_dist[]" value="<?php //echo $km;?>" placeholder="Km">
                                 </div>
                               
                             </div>
                           </div>
-                          <?php } //endforeach ?>
-                          <?php } //endif ?>
-
-                          </div>
-                      </div>
-                     
+                          <?php //} //endforeach ?>
+                          <?php //} //endif ?>
+                          </div>-->
+                        </div>
+                    </div>  
+                      
                     </div>
                     <!--/Step1 Content Basic Property Details -->
                     <!--/Step2 Content Property Feature List -->
@@ -270,16 +274,16 @@ div.arrow_fix:before{height:35px !important;}
                               <div class="form-group">
                                 <label for="pBedrooms" class="control-label">{{{ $attribute["attribute_name"] }}}</label>
                                 	<?php
-                  								if(isset($dataset["property"]->attributes)){
-                  									foreach($dataset["property"]->attributes as $value){
-                  										if($attribute["attribute_id"] == $value->attribute_id){
-                  											$attribute_value = $value->attribute_value;
-                  										}
-                  									}
-                  								}else{
-                  									$attribute_value = null;
-                  								}
-                  								?>
+									if(isset($dataset["property"]->attributes)){
+										foreach($dataset["property"]->attributes as $value){
+											if($attribute["attribute_id"] == $value->attribute_id){
+												$attribute_value = $value->attribute_value;
+											}
+										}
+									}else{
+										$attribute_value = null;
+									}
+									?>
                                 	@if($attribute["attribute_type"] == "number")
                                       <?php $placeholder = "Number of ".$attribute["attribute_name"]; ?>
                                       {{Form::number('attributes['.$attribute["attribute_id"].']', $attribute_value, array('min' => 1, 'class' => 'form-control', 'placeholder' => $placeholder))}}
@@ -505,25 +509,42 @@ div.arrow_fix:before{height:35px !important;}
                       </div>-->
                       <p></p>
                         <div class="form-group">
-                        <label for="propertyname" class="col-md-4 control-label">Add Photos</label>
+                        	<label for="propertyname" class="col-md-4 control-label">Add Photos</label>
                         <div class="col-md-6">
                           <div class="fileHolder">
-                            <div class="row noMargin" id="file_wrap" style="margin-bottom:5px !important;">
-                              <div class="col-sm-6 noPadding">
-                                <input type="text" class='form-control' name="image_titles[]" placeholder="Enter Image Title" />
-                              </div>
-                              <div class="col-sm-6 noPadding">
-                                <div class="fileBack">
-                                  {{ Form::file('image_files[]', array('class' => 'upFile')) }}
-                                  <span><i class="fa fa-plus"></i> Add your image</span>
+								<?php
+                                $image_types = array("Locality", "Building", "Floor Plan", "Bedroom 1", "Bedroom 2", "Kitchen", "Others");
+                                foreach($image_types as $image_type){
+                                ?>
+                                <div class="row noMargin" id="file_wrap" style="margin-bottom:5px !important;">
+                                  <div class="col-sm-6 noPadding" style="min-height:inherit !important;">
+                                    <input type="text" class='form-control' name="image_titles[]" placeholder="Enter Title" value="<?php echo $image_type; ?>" readonly="readonly" style="color:#333333;"/>
+                                  </div>
+                                  <div class="col-sm-6 noPadding" style="min-height:inherit !important;">
+                                    <div class="fileBack">
+                                      {{ Form::file('image_files[]', array('class' => 'upFile')) }}
+                                      <span><i class="fa fa-plus"></i> Add Image</span>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                            <a href="javascript:;" class="adFile" id="file_add"><i class="fa fa-plus"></i> Add More Images</a>
+                                <?php } ?>
+                                <!--<a href="javascript:;" class="adFile" id="file_add"><i class="fa fa-plus"></i> Add More Images</a>-->
                           </div>
                         </div>
                         </div>
                       <p></p>
+                      	<div class="form-group">
+                        	<?php if($dataset["property"]->media){ ?>
+                            @foreach($dataset["property"]->media as $key=>$media)
+                            <div class="portfolio-item col-md-3">
+                                <a class="item-inner btn-block" href="javascript:void(0);"> <img alt="{{{ $media->media_title }}}" src="{{{ asset('files/properties')."/".$media->media_data }}}">
+                                	{{{ $media->media_title }}}
+                                    <input type="checkbox" name="image_deletes[]" value="<?php echo $media->media_id; ?>" />
+                                </a>
+                            </div>  
+                            @endforeach
+                            <?php } ?>
+                        </div>
                       <br />
                     
                       <div class="border-bottom"></div>

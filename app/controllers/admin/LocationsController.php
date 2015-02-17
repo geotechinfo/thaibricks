@@ -103,7 +103,7 @@ class LocationsController extends Controller {
 		$counter_group = 0;
 		foreach($transports as $group){
 			if($group->parent_id == 0){
-				$builder[$counter_group]["text"] = $group->transport_name."[".$group->location()->location_name."]";
+				$builder[$counter_group]["text"] = $group->transport_name."[".$group->location->location_name."]";
 				$counter_child = 0;
 				foreach($transports as $child){
 					if($group->transport_id == $child->parent_id){

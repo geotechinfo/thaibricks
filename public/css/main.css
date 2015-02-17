@@ -40,7 +40,7 @@ font-style: normal;
 
 .bold{font-family: 'latobold';}
 .light{font-family: 'latolight';}
-.relargu{font-family: 'latoregular';}
+.regular{font-family: 'latoregular';}
 
 
 .clearfix {
@@ -1673,7 +1673,7 @@ a.saveshortlist
 	width:66px;
 	height:67px;
 	position:absolute;
-	z-index:100;
+	z-index:1;
 	top:0;
 	right:0;
 }
@@ -1691,17 +1691,18 @@ a.saveshortlist
 
 .ad-wrap:before
 {
- position:absolute;
- content:"Advertisement";
- z-index:60000;
- background:rgba(255, 255, 255, 0.8);
- display:block;
- pointer-events:none;
- right:0;
- top:0;
- color:#333;
- padding:5px;
- border:1px solid #ddd;
+ position: absolute;
+content: "Advertisement";
+z-index: 1;
+background: none repeat scroll 0% 0% #444;
+display: block;
+pointer-events: none;
+right: 6px;
+letter-spacing:1px;
+top: -7px;
+padding: 2px 4px;
+font-size: 7.8pt;
+color: #FFF;
 }
 
 .quicklocationsearch .form-control
@@ -2130,7 +2131,7 @@ a.details-search-button.adProperty:focus,.orange:focus{background:#D51B00;}
 .optgroup{margin:5px;}
 .addPropertyModal label{margin-top:4px;font-weight: normal;}
 .addPropertyModal select option {padding: 5px;line-height: 20px;}
-.tab-content{border-top: #EDEDED solid 1px;box-shadow: 0px -1px 1px rgba(0,0,0,0.2) !important;position: relative;z-index: 2;border-bottom: 1px #F1F1F1 solid;padding-bottom: 10px;}
+.tab-content{border-top: #EDEDED solid 1px;box-shadow: 0px -1px 1px rgba(0,0,0,0.2) !important;position: relative;z-index: 2; border-bottom: 1px #F1F1F1 solid;padding-bottom: 10px;}
 .upProHeaderHolder{position: relative;}
 .updateProfileSection .padding{background:#F1F1F1;}
 .chPassword label{margin-top:5px;}
@@ -2138,12 +2139,15 @@ a.details-search-button.adProperty:focus,.orange:focus{background:#D51B00;}
 #carousel-bounding-box .carousel-control{bottom:auto;}
 .input-group-addon{background: none repeat scroll 0% 0% rgb(0, 0, 0);color:#C1C1C1;border: 1px #000 solid;border-radius: 0;}
 #portfolio .tab-content{box-shadow:none !important;}
-
+.ntAmtSbmt {text-align: right;}
 input.checkbox_radio[type="checkbox"], input.checkbox_radio[type="radio"]
 {
 	margin-top:10px;
 	height:18px;
 	width:18px;
+	display:inline-block;
+	position:relative;
+	top:3px;margin-left:4px;
 }
 
 /*media style*/
@@ -2257,6 +2261,9 @@ input.checkbox_radio[type="checkbox"], input.checkbox_radio[type="radio"]
 	{
 		margin-bottom:20px;
 	}
+
+	.ntAmtgap {height:10px !important;}
+	.ntAmtSbmt {text-align: left;}
 	
 	/*.ad-text
 	{
@@ -2317,7 +2324,7 @@ input.checkbox_radio[type="checkbox"], input.checkbox_radio[type="radio"]
 		padding:0 3px;
 	}
   
-        .search-btn-wrap, .searchby-wrap{width:100%;}
+        /*.search-btn-wrap, .searchby-wrap{width:100%;}*/
 	/*.ad-text 
 	{
 		padding:1px 5px 2px;
@@ -2397,8 +2404,8 @@ input.checkbox_radio[type="checkbox"], input.checkbox_radio[type="radio"]
 	
   .search-btn-wrap, .searchby-wrap
   {
-    width:49%;
-    float:left;
+    width:100%;
+    float:left;text-align: center;
   }
 	
 	.nav-tabs > li > a
@@ -2529,3 +2536,111 @@ small.error_special{
 
 .propertyformsteps .control-label {text-align: left !important;}
 .propertyformsteps .form-group {padding:0 10px;}
+.propertyformsteps .row > .col-sm-6 .form-group { position:relative; }
+.propertyformsteps .row > .col-sm-6 .form-group small { position:absolute; }
+
+/* mtpropertylist lines: 214 - 238; */
+.nearLocation{margin:0;}
+.nearLocation > div {display: inline-block;margin-right:10px;font-size: 10px;width:45px;vertical-align: top;line-height: 12px;}
+.nearLocation div.location {width:35px;height:35px;display: inline-block;border-radius: 50%;background-color:#FAFAFA;border:1px #AAA solid; background-repeat:no-repeat; background-position:center; }
+/*.nearLocation div.nearHospital {background: #FAFAFA url("../images/nearlocation/hospital.png") no-repeat center;}
+.nearLocation div.nearPark {background: #FAFAFA url("../images/nearlocation/park.png") no-repeat center;}
+.nearLocation div.nearSchool {background: #FAFAFA url("../images/nearlocation/school.png") no-repeat center;}
+.nearLocation div.nearBts {background: #FAFAFA url("../images/nearlocation/bts.png") no-repeat center;}
+.nearLocation div.nearMrt {background: #FAFAFA url("../images/nearlocation/mrt.png") no-repeat center;}
+.nearLocation div.nearAirport {background: #FAFAFA url("../images/nearlocation/airport.png") no-repeat center;}*/
+
+.disablePropertyHolder {position: absolute;width: 100%;height:100%;background: rgba(255, 255, 255, 0.5)}
+.disablePropertyText {width: 100%;height:100%;}
+.disablePropertyText span {padding: 10px;background: #FAFAFA; border:1px #AAA solid;border-radius: 4px;font-size: 20px;box-shadow: 0 0 5px rgba(0,0,0,.2);}
+.enableBtnHolder a {color:#FFF;background: #54AE18;padding:5px 10px;border-radius: 4px;display: inline-block;margin-top:10px;font-size: 16px;opacity:1;}
+.enableBtnHolder a:hover {opacity: .8}
+.enableBtnHolder span {font-size: 11px;color:#888;display: block;text-align: center;}
+
+/* index lines: 275 - 280; */
+.srchByLocation img {width:100%;border-radius: 4px;margin:0;display: block;}
+.srchByLocation a {display:inline-block;width:25%;max-width: 50px;}
+.google a {display: block;text-align: center;}
+.google img {max-width: 200px;}
+.propertyformsteps .row > .col-sm-6 { min-height:78px; }
+.commentwrap,.portfolio-item .item-inner {margin:0 10px;}
+.srchByLocation a {margin: 0px 1.64px;}
+.srchByLocation a:first-child {position: relative;left:-1px;}
+.srchByLocation a:last-child {position: relative;left:0px;}
+.srchByLocation a:last-child:hover {}
+#portfolio .nav-tabs > li {width:25%;}
+#portfolio .nav-tabs > li > a {text-align: center;padding: 5px 0}
+
+@media screen and (max-width:768px) {
+ #portfolio .nav-tabs > li,
+ #portfolio .nav-tabs > li > a {text-align: center;display: block;width: 100%;}
+ .commentwrap.asbestos {margin: 0 11px;}
+}
+
+/* Tenancy Form */
+.addTransactionForm .well,.tenancyForm .well {margin-top:14px;}
+.addNewDoc .fa {background:#C0392B;display: inline-block;padding:7px 10px;color:#FFF;}
+.addTransactionForm span,.tenancyForm span {font-size: 18px;margin-left: 7px;}
+.addTransactionForm .fileBack span,.tenancyForm .fileBack span {font-size: 14px;margin-left: 7px;}
+.repeatNewHolder > .row {border-bottom: 1px #AAA solid;margin-bottom: 15px;} 
+.addTransactionForm .input-group-addon span,.tenancyForm .input-group-addon span {font-size: 17px;}
+.addNewDoc span {position: relative;top: 1px;}
+
+/* Add Transaction Form */
+.selectDropper {display: block;width: 100%;border-radius: 0;background: #111112;color:#AAA; text-align: left;position: relative;cursor: default;}
+.selectDropper:hover,.selectDropper:focus {color:#AAA;}
+.selectSropGroup {width:100%;}
+.selectDropper .caret {color:#000;}
+.selectDropper .caretHolder {
+	background:-moz-linear-gradient(top , #f2f2f2 0%, #ebebeb 50%, #dddddd 51%, #cfcfcf 100% );
+	background:-ms-linear-gradient(top , #f2f2f2 0%, #ebebeb 50%, #dddddd 51%, #cfcfcf 100% );
+	background:-o-linear-gradient(top , #f2f2f2 0%, #ebebeb 50%, #dddddd 51%, #cfcfcf 100% );
+	background:-webkit-linear-gradient(top , #f2f2f2 0%, #ebebeb 50%, #dddddd 51%, #cfcfcf 100% );
+	height: 30px;position: absolute;right: 1px;top: 1px;padding: 0 2px;outline: 1px #707070 solid;border:1px #fcfcfc solid;}
+.selectDrop > li > a {color: #AAA;padding: 8px;}
+.selectDrop > li > a:hover {color: #FFF;background: #3399ff;}
+.selectDrop {padding: 0;}
+option {background: #000;}
+optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-size: 14px;background: #444;display: block;margin: 0;}
+.selectDropper .caretHolder:not(*:root) {
+	background: transparent;
+	height: 30px;position: absolute;right: 1px;top: 1px;padding: 0 2px;outline: none;border:none;}
+
+.selectDrop > li > a:not(*:root) {color: #AAA;padding:0 10px;}
+.selectDrop > li > a:hover:not(*:root) {color: #FFF;}
+
+.adVendorholder {display: block;width: 100%;background: #FFF;padding: 5px 0;text-align: center;}
+.adVendorholder button {background: #c0392b;color:#FFF;}
+.adVendorholder button:hover {background: #d51b00;color:#FFF;}
+.vendorIn {background: none repeat scroll 0 0 #FFF;padding: 6px 15px 0;}
+.transAmount {font-size: 20px;color: #222;margin:0;}
+.vandorName,.vendorToggle {display: none;}
+.modBodyHolder {padding: 0 50px;}
+.orange:focus {color:#FFF;}
+.ntAmtgap {height:24px;	}
+
+/* February 16 */
+.social-network-menu>li>ul {display: none;position: absolute;list-style: none;border-top-left-radius:2px !important;background: #FFF;border-color:#FFF;box-shadow: none;}
+.social-network-menu>li:hover>ul {display: block;}
+.navbar-inverse .social-network-menu > li > ul  a {font-size: 12px;}
+.navbar-inverse .social-network-menu > li > ul i {display: inline-block;margin-right: 5px;}
+.navbar-inverse .social-network-menu > li > ul  a:hover {background: #c0392b;color:#FFF;}
+
+.borderThin {display: block;border-top: 1px #CCC solid;margin:5px 0;}
+.tenantDetailHead {padding:5px;color:#444;background: #000;color: #FFF;}
+.tenantRow {background: #FAFAFA;padding: 10px 5px;border-bottom: 1px #DDD solid;}
+.tenantRow:nth-child(even) {background: #FDFDFD;padding: 10px 5px;}
+.viewTenantbtn {padding: 0px;}
+.tenDetails {margin-top:10px;border-radius: 0;margin-bottom: 0;padding: 20px;background: rgba(0,0,0,0.07);border:1px #CCC solid;display: none;}
+.tenDetails p {margin-bottom: 4px;color: #777}
+.tenDetails h3 {color:#444;}
+.doc {background: #AAA;padding: 10px;}
+.doc:nth-child(even) {background: #999;padding: 10px;}
+.doc p {font-size: 15px;color:#FFF;}
+.doc span {color:#DDD;font-size: 13px;}
+.doc span span {color:#EEE;font-size: 13px;}
+.tenInfo {background: #FAFAFA;padding: 10px;}
+.addNewVendorButton {margin-top:50px;}
+.navbar-inverse .social-network-menu li:hover a.welcomeuser, .navbar-inverse .social-network-menu > li:hover > a.welcomeuser {
+	background: #FFF;border-top-left-radius: 2px;border-top-right-radius: 2px;color:#000;
+}

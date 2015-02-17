@@ -10,6 +10,7 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
+	 
 	public function index()
 	{
 		//
@@ -247,11 +248,7 @@ class UsersController extends Controller {
 	}
 	
 	public function profile(){
-		$property = new Property();
-		
-		$dataset["deals"] = $property->getlist_deals();
-		$dataset["types"] = $property->getlist_types();
-
+		$dataset = array();
 		return View::make('users.profile', array("dataset"=>$dataset));
 	}
 	
@@ -272,7 +269,7 @@ class UsersController extends Controller {
 			
 		$json = $image_files;
 		if($image_files['error']==0){
-			$file_path = 'files/profileimages/';
+			$file_path = 'files/profiles/';
 			$file_name = rand(1111111111,9999999999).'.jpg';
 			move_uploaded_file($image_files['tmp_name'], $file_path.$file_name);
 			$json['new_name'] = $file_name;
@@ -292,7 +289,7 @@ class UsersController extends Controller {
 				
 		$json = $image_files;
 		if($image_files['error']==0){
-			$file_path = 'files/user_banner_images/';
+			$file_path = 'files/banners/';
 			$file_name = rand(1111111111,9999999999).'.jpg';
 			//move_uploaded_file($image_files['tmp_name'], $file_path.$file_name);
 			$WI::load('image_files')

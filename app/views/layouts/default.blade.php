@@ -1,3 +1,26 @@
+<?php
+$location = new Location;
+$dataset['locations']=$location->get_location_with_sub();
+
+$loc = array(''=>'Select Location');
+$subloc[''] = array(''=>'Select Location');
+$transport_group =  array('' => 'Select Transport Group' );
+foreach ($dataset['locations'] as $k=>$v){
+	$loc[$k]=$v['location_name'];
+	if($v['SubLocation']){
+	   foreach ($v['SubLocation'] as $k1 => $v1) {
+		  $subloc[$k][$v1['location_id']]=$v1['location_name'];
+	   }
+	}
+	if($v['Transport']){
+	   foreach ($v['Transport'] as $k1 => $v1) {
+		  $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
+	   }
+	}
+}
+//print_r($dataset["property"]->location);die;
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,12 +44,21 @@
 {{ HTML::style('libraries/slider/css/slider.css') }}
 {{ HTML::style('libraries/select2/css/select2.css') }}
 {{ HTML::style('libraries/slick/slick.css') }}
+{{ HTML::style('libraries/startrating/jquery.rating.css') }}
 {{ HTML::style('css/prettyPhoto.css') }}
 {{ HTML::style('css/main.css') }}
+{{ HTML::style('css/date.css') }}
 <!--[if lt IE 9]>
     {{ HTML::script('js/html5shiv.js') }}
     {{ HTML::script('js/respond.min.js') }}
 <![endif]-->
+
+{{ HTML::script('js/jquery.js') }}
+{{ HTML::script('js/jquery-ui.js') }}
+{{ HTML::script('js/bootstrap.min.js') }}
+{{ HTML::script('js/jquery.prettyPhoto.js') }}
+{{ HTML::script('js/moment.js') }}
+{{ HTML::script('js/date.js') }}
     
 <link rel="shortcut icon" href="images/ico/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
@@ -70,17 +102,74 @@
               -->           
               
               @if(Auth::check())
-              <li><a href="javascript:void(0);" class="welcomeuser">
+              <!--<li><a href="javascript:void(0);" class="welcomeuser">
               	<span class="fa fa-user"></span> Welcome {{{ Auth::user()->first_name }}}</a>
               </li>
               <li><a href="{{URL::to('/property/mylist/me')}}" class="toplinks">My Properties</a></li>
               <li><a href="{{URL::to('/profile')}}" class="toplinks">Profile</a></li>
-              <li><a href="{{URL::to('/logout')}}" class="toplinks">Logout</a></li>
+              <li><a href="{{URL::to('/logout')}}" class="toplinks">Logout</a></li>-->
+              <li><a href="{{URL::to('/property/mylist/me')}}" data-toggle="tooltip" data-placement="bottom" title="Dashboard" class="toplinks">Dashboard</a></li>
+              <li>
+                  <a href="javascript:void(0);" title="Register" class="welcomeuser" data-toggle="dropdown" aria-expanded="false">
+                      <span class="fa fa-user"></span> Welcome {{{ Auth::user()->first_name }}} <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="" data-toggle="modal" data-target="#addPrperty"><i class="fa fa-plus"></i> Add Property</a></li>
+                      <li><a href="{{URL::to('/property/mylist/me')}}"><i class="fa fa-dashboard"></i> My Properties</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{{URL::to('/tenancy/create')}}"><i class="fa fa-plus"></i> Add Tenancy</a></li>
+                      <li><a href="{{URL::to('/tenancy/transaction')}}"><i class="fa fa-plus"></i> Add Transactions</a></li>
+                      <li><a href="{{URL::to('/tenancy/tenancies')}}"><i class="fa fa-plus"></i> View Tenancies</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{{URL::to('/profile')}}"><i class="fa fa-eye"></i> Profile Manage</a></li>
+                      <li><a href="{{URL::to('/logout')}}"><i class="fa fa-eye"></i> Logout</a></li>
+                  </ul>
+              </li>
               @else
               <li><a href="javascript:void(0);" class="toplinks login">Login</a></li>
               <li><a href="{{URL::to('/create')}}" class="toplinks">Register</a></li>
               @endif
             </ul>
+            
+            <?php
+				$property_types = CommonHelper::propertyTypes();
+				$deal_types = CommonHelper::dealTypes();
+			?>
+            <div class="modal fade" id="addPrperty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                    {{ Form::open(array('route' => array('property.create'), 'method' => 'get')) }}
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="color:#333333;">Add New Property</h4>
+                  </div>
+                  <div class="modal-body addPropertyModal" style="color:#333333;">
+                    <div class="row">
+                      <div class="col-sm-3 col-sm-offset-1">
+                      <label>Property Type</label>
+                      </div>
+                      <div class="col-sm-7">
+                         {{Form::select('type_id', $property_types, null, array('class' => 'form-control'))}}
+                      </div>
+                    </div>
+                    <p></p>
+                    <div class="row">
+                      <div class="col-sm-3 col-sm-offset-1">
+                      <label>Transaction Type</label>
+                      </div>
+                      <div class="col-sm-7">
+                        {{Form::select('deal_id', $deal_types, null, array('class' => 'form-control'))}} 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary orange modalBtn">Submit</button>
+                  </div>
+                  {{ Form::close() }}
+                </div>
+              </div>
+            </div>
+            
             <div class="login_popupdiv white" style="display:none;">
                 <div class="">
                 {{ Form::open(array('class' => 'form-inline', 'route' => array('login'), 'method' => 'post')) }}
@@ -101,7 +190,7 @@
       <div class="form-group margin-top quicklocationsearch">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location', array('' => 'Select Location', '1' => 'Bangkok', '4' => 'Phuket'), '', array('class' => 'form-control', 'id'=>"city"))}}
+                    	{{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"city"))}}
                     </div>
                   </div>
                 </div>
@@ -236,13 +325,11 @@
 <script type="text/javascript" src="libraries/slimheader/classie.js"></script>
 <script src="js/main.js"></script>-->
 
-{{ HTML::script('js/jquery.js') }}
-{{ HTML::script('js/jquery-ui.js') }}
-{{ HTML::script('js/bootstrap.min.js') }}
-{{ HTML::script('js/jquery.prettyPhoto.js') }}
 <!--{{ HTML::script('js/jquery.isotope.min.js') }}-->
 {{ HTML::script('libraries/slider/js/bootstrap-slider.js') }}
 {{ HTML::script('libraries/select2/js/select2.js') }}
+{{ HTML::script('libraries/slick/slick.js') }}
+{{ HTML::script('libraries/startrating/jquery.rating.js') }}
 {{ HTML::script('libraries/slimheader/classie.js') }}
 {{ HTML::script('libraries/uploadifive/js/jquery.ui.widget.js') }}
 {{ HTML::script('libraries/uploadifive/js/jquery.fileupload.js') }}
@@ -355,10 +442,9 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-  var locationJson = $.parseJSON('{{ json_encode($dataset['locations']) }}');
-  console.log(locationJson);
+	var locationJson = $.parseJSON('{{ json_encode($dataset['locations']) }}');
 	function chnage_rule(){
-    $("#location_sub").empty();
+    	/*$("#location_sub").empty();
 		if($("#location").val() == "Bangkok"){
 			$("#location_sub").append($("<option />").val("").text("Sub Location"));
 			$("#location_sub").append($("<option />").val("Asok").text("Asok"));
@@ -367,85 +453,109 @@ $(document).ready(function(){
 			$("#location_sub").append($("<option />").val("").text("Sub Location"));
 			$("#location_sub").append($("<option />").val("Patong").text("Patong"));
 			$("#location_sub").append($("<option />").val("Laguna").text("Laguna"));
+		}*/
+		var location = $("#location").val();
+		$("#location_sub").empty();
+		$("#transport_id").empty();
+
+		$("#location_sub").append($("<option />").val("").text("Select Sub Location"));
+		if(locationJson[location] != undefined){
+			if(locationJson[location].SubLocation){
+				$.each(locationJson[location].SubLocation,function(i,obj){
+				  $("#location_sub").append($("<option />").val(obj.location_id).text(obj.location_name));
+				});
+			}
+		}
+		$("#transport_id").append($("<option />").val('').text('Select Transport Group'));
+		$("#transport_system").hide();
+		$(".cls_transport").empty();	
+		
+		var selected_transports = [];
+		<?php
+		if($dataset["property"]->selected_transports){
+			foreach($dataset["property"]->selected_transports as $transport_id=>$kilometer){
+		?>
+			selected_transports[<?php echo $transport_id; ?>] = <?php echo $kilometer; ?>;
+		<?php
+			}
+		}
+		?>
+		
+		if(locationJson[location] != undefined){
+			if(locationJson[location].Transport){
+				var row = $('<div/>').addClass('row');
+				$.each(locationJson[location].Transport, function(i, obj){
+				  var slct = $('<select/>').addClass('form-control cls_transport_select ucontactright').attr({'name':'transport_id[]'});
+				  slct.append($("<option />").val('').text('Select Transport'));
+				  
+				  var kilometer = null;
+				  $.each(obj.Child,function(i1,obj1){
+				  	if(selected_transports[obj1.transport_id] != undefined){
+						slct.append($("<option />").attr("selected", "selected").val(obj1.transport_id).text(obj1.transport_name));
+						kilometer = selected_transports[obj1.transport_id];
+					}else{
+						slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
+					}
+				  });
+				  var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
+				  var rw = $('<div/>').addClass('').append(slct).append(inpt);
+			
+			
+				  var col = $('<div/>').addClass('col-sm-6');
+				  var html = $('<div/>').addClass('form-group');
+				  var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
+				  var cn = $('<div/>').addClass('').append(rw);
+				  html.append(lb).append(cn)
+				  col.append(html);
+				  row.append(col);
+				});
+			}
+		}
+
+		if(row){
+			$(".cls_transport").append(row);
+			$("#transport_system").show();
 		}
 	}
 	$("#location").change( function(){
-		//chnage_rule();
-
-    $("#location_sub").empty();
-    $("#transport_id").empty();
-    
-    console.log(locationJson[$(this).val()]);
-    $("#location_sub").append($("<option />").val("").text("Sub Location"));
-      
-    $.each(locationJson[$(this).val()].SubLocation,function(i,obj){
-      $("#location_sub").append($("<option />").val(obj.location_id).text(obj.location_name));
-    })
-    $("#transport_id").append($("<option />").val('').text('Select Transport Group'));
-    $(".cls_transport").empty();
-    var location = $(this).val();
-    var row = $('<div/>').addClass('row');
-      
-    $.each(locationJson[location].Transport,function(i,obj){
-      var slct = $('<select/>').addClass('form-control cls_transport_select ucontactright').attr({'name':'transport_id[]'});
-      slct.append($("<option />").val('').text('Select Transport'));
-      $.each(obj.Child,function(i1,obj1){
-        slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
-      });
-      var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]','placeholder':'Km'});
-      var rw = $('<div/>').addClass('').append(slct).append(inpt);
-
-
-      var col = $('<div/>').addClass('col-sm-6');
-      var html = $('<div/>').addClass('form-group');
-      var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
-      var cn = $('<div/>').addClass('').append(rw);
-      html.append(lb).append(cn)
-      col.append(html);
-      row.append(col);      
-      
-      //$("#transport_id").append($("<option />").val(obj.transport_id).text(obj.transport_name));
-     
-    })
-    $(".cls_transport").append(row);
+		chnage_rule();
 	});
   
 	<?php if(isset($_GET["location"]) && $_GET["location"] != ""){ ?>
 		$("#location").val('<?php echo $_GET["location"]; ?>');
+		chnage_rule();
 	<?php } ?>
 	<?php if(isset($_GET["location_sub"]) && $_GET["location_sub"] != ""){ ?>
-		chnage_rule();
 		$("#location_sub").val('<?php echo $_GET["location_sub"]; ?>');
 	<?php } ?>
 	
 	<?php if(isset($dataset["property"]->location) && $dataset["property"]->location != ""){ ?>
 		$("#location").val('<?php echo $dataset["property"]->location; ?>');
+		chnage_rule();
 	<?php } ?>
 	<?php if(isset($dataset["property"]->location_sub) && $dataset["property"]->location_sub != ""){ ?>
-		//chnage_rule();
 		$("#location_sub").val('<?php echo $dataset["property"]->location_sub; ?>');
 	<?php } ?>
 	
 	<?php if(Input::old('location') != ""){ ?>
 		$("#location").val('<?php echo Input::old('location'); ?>');
+		chnage_rule();
 	<?php } ?>
 	<?php if(Input::old('location_sub') != ""){ ?>
-		chnage_rule();
 		$("#location_sub").val('<?php echo Input::old('location_sub'); ?>');
 	<?php } ?>
+});
+
+$(document).ready(function(){  
   if(window.location.hash=='#changePass'){
-    //alert('ok')
     $('[aria-controls="changePass"]').trigger('click');
   }
-  //profile_edit
+
   if(window.location.hash=='#profile_edit'){
-    //alert('ok')
     $('[data-target="#profile_edit"]').trigger('click');
   }
 
-
   $('#profile_image,.profile_image').click(function(){
-   
     var url = '<?php echo route('profile.changeprofileimage');?>'
     $('<input/>')
       .attr({type:'file',name:'image_files'})
@@ -487,8 +597,7 @@ $(document).ready(function(){
       .trigger('click');  
   });
 
-  $('#banner_image,.banner_image').click(function(){
-   
+  $('#banner_image,.banner_image').click(function(){ 
     var url = '<?php echo route('profile.changebannerimage');?>'
     $('<input/>')
       .attr({type:'file',name:'image_files'})
@@ -514,7 +623,6 @@ $(document).ready(function(){
           },
           add: function(e, data) {
                   var uploadErrors = [];
-                  
 
                   var acceptFileTypes = /^image\/(jpg|jpeg|png|gif)$/i;
                   if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
@@ -536,7 +644,6 @@ $(document).ready(function(){
   });
 
 function readImage(file) {
-
     var reader = new FileReader();
     var image  = new Image();
 

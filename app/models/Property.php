@@ -12,6 +12,7 @@ class Property extends Eloquent {
 	 *
 	 * @var string
 	 */
+	 
 	public function getlist_deals(){
 		$return =array();
 		foreach (DB::table('pr_deals')->get() as $value){
@@ -127,13 +128,26 @@ class Property extends Eloquent {
 		$properties = DB::select("
 			SELECT
 			`pr_properties`.*,
+			`location`.`location_name` AS `location_name`,
+			`location_sub`.`location_name` AS `locationsub_name`,
 			`ac_users`.`first_name`,
 			`ac_users`.`last_name`
 			FROM
-			`pr_properties`,
+			`pr_properties`
+			INNER JOIN
 			`ac_users`
+			ON
+			`pr_properties`.`user_id` = `ac_users`.`user_id`
+			LEFT JOIN
+			`pr_locations` AS `location`
+			ON
+			`location`.`location_id` = `pr_properties`.`location`
+			LEFT JOIN
+			`pr_locations` AS `location_sub`
+			ON
+			`location_sub`.`location_id` = `pr_properties`.`location_sub`
 			WHERE
-			`pr_properties`.`user_id`=`ac_users`.`user_id`
+			1 = 1
 			".$property_sql."
 			ORDER BY
 			`pr_properties`.`property_id` DESC

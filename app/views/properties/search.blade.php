@@ -6,6 +6,30 @@
 {{ HTML::script('libraries/slimheader/classie.js') }}
 
 @section('content')
+<?php
+$location = new Location;
+$dataset['locations']=$location->get_location_with_sub();
+
+$loc = array(''=>'Select Location');
+$subloc[''] = array(''=>'Select Location');
+$transport_group =  array('' => 'Select Transport Group' );
+foreach ($dataset['locations'] as $k=>$v){
+  $loc[$k]=$v['location_name'];
+   if($v['SubLocation']){
+	   foreach ($v['SubLocation'] as $k1 => $v1) {
+		  $subloc[$k][$v1['location_id']]=$v1['location_name'];
+	   }
+   }
+   if($v['Transport']){
+	   foreach ($v['Transport'] as $k1 => $v1) {
+		  $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
+	   }
+   }
+}
+//print_r($dataset["property"]->location);die;
+?> 
+
+
 <!--/Main Theme & Search-->
 <section class="no-margin" id="list-search">
   <div class="container searchcontent container2">
@@ -147,7 +171,7 @@
                 <div class="form-group margin-top">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location', array('' => 'Select Location', 'Bangkok' => 'Bangkok', 'Phuket' => 'Phuket'), '', array('class' => 'form-control', 'id'=>"location"))}}
+                    	{{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
                       <!--<button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Location <b class="caret"></b></button>
                       <div class="multiselect-container dropdown-menu">
                         <div class="col-md-12">

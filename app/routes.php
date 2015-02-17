@@ -36,8 +36,7 @@ Route::post('/profile/changebannerimage', array('before' => 'auth', 'as' => 'pro
 
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
 Route::get('/locationlist/{id}', array('as' => 'locationlist', 'uses' => 'PagesController@getlocation'));
-Route::get('/wi', function()
-{
+Route::get('/wi', function(){
     dd(new WideImage);
 });
 Route::get('property/create', array('as' => 'property.create', 'uses' => 'PropertiesController@create'));
@@ -47,6 +46,13 @@ Route::get('property/show/{id}', array('as' => 'property.show', 'uses' => 'Prope
 Route::get('property/edit/{id}', array('as' => 'property.edit', 'uses' => 'PropertiesController@edit'));
 Route::post('property/update/{id}', array('as' => 'property.update', 'uses' => 'PropertiesController@update'));
 Route::get('property/search', array('as' => 'property.search', 'uses' => 'PropertiesController@search'));
+
+Route::get('tenancy/create', array('as' => 'tenancy.create', 'uses' => 'TenancyController@create'));
+Route::post('tenancy/store', array('as' => 'tenancy.store', 'uses' => 'TenancyController@store'));
+Route::get('tenancy/tenancies', array('as' => 'tenancy.tenancies', 'uses' => 'TenancyController@tenancies'));
+Route::get('tenancy/edit/{id}', array('as' => 'tenancy.edit', 'uses' => 'TenancyController@edit'));
+Route::post('tenancy/update/{id}', array('as' => 'tenancy.update', 'uses' => 'TenancyController@update'));
+Route::get('tenancy/transaction/{id}', array('as' => 'tenancy.transaction', 'uses' => 'TenancyController@transaction'));
 
 Route::get('admin/dashboard', array('as' => 'admin.dashboard', 'uses' => 'AdminsController@dashboard'));
 Route::get('admin/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AttributesController@relation'));

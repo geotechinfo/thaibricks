@@ -10,24 +10,17 @@ class PropertiesController extends Controller {
 	 *
 	 * @return Response
 	 */
-	 
+
 	public function index()
 	{
 		//
 	}
 	
 	public function create(){
-		
-
 		$properties = new Property();
 		
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();
-
-		$location = new Location;
-		$dataset['locations']=$location->get_location_with_sub();
-		//echo "<pre>"; print_r($dataset);die;
-
 
 		$valid_deal = false;
 		foreach($dataset["deals"] as $key=>$val){
@@ -105,6 +98,7 @@ class PropertiesController extends Controller {
 		$property->basis = Input::get('basis');
 		$property->email = Input::get('email');
 		$property->phone = Input::get('phone');
+		$property->last_active = strtotime("now");
         if($property->save()){
 			$properties = new Property();
 			foreach(Input::get()["attributes"] as $key=>$value){
@@ -113,17 +107,17 @@ class PropertiesController extends Controller {
 				}
 			}
 
-			//echo "<pre>";print_r(Input::get()["transport_id"]);die;
-			//$properties->delete_property_transport($id);
-			foreach(Input::get()["transport_id"] as $key=>$value){
-				if($value!=""){
-					$ins_prop_trns['property_id'] = $id;
-					$ins_prop_trns['transport_id'] = $value;
-					$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
-					$properties->insert_property_transport($ins_prop_trns);
+			if(Input::get()["transport_id"]){
+				foreach(Input::get()["transport_id"] as $key=>$value){
+					if($value!=""){
+						$ins_prop_trns['property_id'] = $id;
+						$ins_prop_trns['transport_id'] = $value;
+						$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+						$properties->insert_property_transport($ins_prop_trns);
+					}
 				}
 			}
-
+			
 			$image_titles = Input::get('image_titles');
 			$image_files = Input::file('image_files');
 			if(count($image_files)>0){
@@ -175,15 +169,12 @@ class PropertiesController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id){
 		$properties = new Property();
 		
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();
-		$location = new Location;
-		$dataset['locations']=$location->get_location_with_sub();
-		
+				
 		$properties = new Property();
 		$property = $properties->get_properties(null, $id);
 		$property = $property[0];
@@ -241,6 +232,7 @@ class PropertiesController extends Controller {
 		$property->basis = Input::get('basis');
 		$property->email = Input::get('email');
 		$property->phone = Input::get('phone');
+		$property->last_active = strtotime("now");
         if($property->save()){
 			$properties = new Property();
 			
@@ -252,12 +244,21 @@ class PropertiesController extends Controller {
 			}
 			//echo "<pre>";print_r(Input::get()["transport_id"]);die;
 			$properties->delete_property_transport($id);
-			foreach(Input::get()["transport_id"] as $key=>$value){
-				if($value!=""){
-					$ins_prop_trns['property_id'] = $id;
-					$ins_prop_trns['transport_id'] = $value;
-					$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
-					$properties->insert_property_transport($ins_prop_trns);
+			if(Input::get()["transport_id"]){
+				foreach(Input::get()["transport_id"] as $key=>$value){
+					if($value!=""){
+						$ins_prop_trns['property_id'] = $id;
+						$ins_prop_trns['transport_id'] = $value;
+						$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+						$properties->insert_property_transport($ins_prop_trns);
+					}
+				}
+			}
+			
+			$image_deletes = Input::get('image_deletes');
+			if(count($image_deletes)>0){
+				foreach($image_deletes as $image_id){
+					Media::where(array("media_id" => $image_id))->delete();
 				}
 			}
 
@@ -268,6 +269,8 @@ class PropertiesController extends Controller {
 					$rules = array('file' => 'required'); //'required|mimes:png,gif,jpeg,txt,pdf,doc'
 					$validator = Validator::make(array('file'=> $image_file), $rules);
 					if($validator->passes()){
+						Media::where(array("property_id" => $id, "media_title" => $image_titles[$image_key]))->delete();
+					
 						$file_path = 'files/properties';
 						$file_name = rand(1111111111,9999999999).'.jpg';
 						$image_file->move($file_path, $file_name);
@@ -309,11 +312,7 @@ class PropertiesController extends Controller {
 			$id = Auth::user()->user_id;
 		}
 	
-		$properties = new Property();
-		
-		$dataset["deals"] = $properties->getlist_deals();
-		$dataset["types"] = $properties->getlist_types();
-		
+		$properties = new Property();		
 		$dataset["properties"] = $properties->get_properties($id, null);
 		
 		if(empty($dataset["properties"])){

@@ -1,5 +1,4 @@
 jQuery(function($) {
-
 	//#main-slider
 	$(function(){
 		$('#main-slider.carousel').carousel({
@@ -16,25 +15,6 @@ jQuery(function($) {
 			$(this).css('margin-top',  ($('#main-slider').height() - $(this).height())/2);
 		});
 	});
-
-	//portfolio
-	/*$(window).load(function(){
-		$portfolio_selectors = $('.portfolio-filter >li>a');
-		if($portfolio_selectors!='undefined'){
-			$portfolio = $('.portfolio-items');
-			$portfolio.isotope({
-				itemSelector : 'li',
-				layoutMode : 'fitRows'
-			});
-			$portfolio_selectors.on('click', function(){
-				$portfolio_selectors.removeClass('active');
-				$(this).addClass('active');
-				var selector = $(this).attr('data-filter');
-				$portfolio.isotope({ filter: selector });
-				return false;
-			});
-		}
-	});*/
 
 	//contact form
 	var form = $('.contact-form');
@@ -158,60 +138,6 @@ jQuery(function($) {
 	}
 	window.onload = init();
 	
-	/*$(document).ready(function(){
-    $(".propertyinfo .propertyformsteps").each(function(e) {
-        if (e != 0)
-            $(this).hide();
-    });
-
-    $("#next").click(function(){
-        if ($(".propertyinfo .propertyformsteps:visible").next().length != 0)
-            $(".propertyinfo .propertyformsteps:visible").next().show().prev().hide();
-        else {
-            $(".propertyinfo .propertyformsteps:visible").hide();
-            $(".propertyinfo .propertyformsteps:first").show();
-        }
-        return false;
-    });
-
-    $("#prev").click(function(){
-        if ($(".propertyinfo .propertyformsteps:visible").prev().length != 0)
-            $(".propertyinfo .propertyformsteps:visible").prev().show().next().hide();
-        else {
-            $(".propertyinfo .propertyformsteps:visible").hide();
-            $(".propertyinfo .propertyformsteps:last").show();
-        }
-        return false;
-    });
-	
-	
-	$(".cpropertyinfo .propertyformsteps").each(function(e) {
-        if (e != 0)
-            $(this).hide();
-    });
-
-    $("#cnext").click(function(){
-        if ($(".cpropertyinfo .propertyformsteps:visible").next().length != 0)
-            $(".cpropertyinfo .propertyformsteps:visible").next().show().prev().hide();
-        else {
-            $(".cpropertyinfo .propertyformsteps:visible").hide();
-            $(".cpropertyinfo .propertyformsteps:first").show();
-        }
-        return false;
-    });
-
-    $("#cprev").click(function(){
-        if ($(".cpropertyinfo .propertyformsteps:visible").prev().length != 0)
-            $(".cpropertyinfo .propertyformsteps:visible").prev().show().next().hide();
-        else {
-            $(".cpropertyinfo .propertyformsteps:visible").hide();
-            $(".cpropertyinfo .propertyformsteps:last").show();
-        }
-        return false;
-    });
-});*/
-	
-	
 	$(document).ready(function() {
     $('.stepwrap a').on('click', function(e)  {
         var currentAttrValue = jQuery(this).attr('href');
@@ -227,4 +153,50 @@ jQuery(function($) {
 	});
 });
 
-						   
+// By Antaroop
+$(function(){
+	/* Date */
+	$(document).ready(function(){
+	  $(".addNewBtn").click( function(){
+	    //alert(12);
+	    $('.newForms').clone().removeClass("newForms").addClass("theNewForm").insertAfter(".repeatNewHolder > .row:last").find($("input")).val("");
+
+	    //$('.theNewForm:last');
+
+	    $('.datetimepicker1').datetimepicker();
+	  });
+	      $(function () {
+	          $('.datetimepicker1').datetimepicker({
+					format: 'DD/MM/YYYY'
+			  });
+	      });
+	});
+
+	/* Vendor Toggle */
+	$(document).ready(function(){
+	  $("#vandor").removeAttr('checked');
+	})
+	$(function(){
+		$(".vendorShow").click(function(){
+		  $(".vendorToggle").slideDown();
+		})
+		$(".vendorHide").click(function(){
+		  $(".vendorToggle").slideUp();
+		})
+
+		$('#vandor').click(function(){
+		    if (this.checked) {
+		        $('.vandorName').fadeIn();
+		    } else {
+		        $('.vandorName').fadeOut();          
+		    }
+		});
+	});
+	
+	/* Tenancy dropview */
+	$(".viewTenantbtn").click(function(){
+		//$(".tenDetails").not(this).slideUp();
+		$(this).closest(".tenantRow").siblings(".tenantRow").find(".tenDetails").slideUp();
+		$(this).closest(".tenantRow").find(".tenDetails").slideToggle();
+	});
+});

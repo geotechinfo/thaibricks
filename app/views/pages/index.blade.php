@@ -1,5 +1,29 @@
 @extends('layouts.default')
 @section('content')
+
+<?php
+$location = new Location;
+$dataset['locations']=$location->get_location_with_sub();
+
+$loc = array(''=>'Select Location');
+$subloc[''] = array(''=>'Select Location');
+$transport_group =  array('' => 'Select Transport Group' );
+foreach ($dataset['locations'] as $k=>$v){
+  $loc[$k]=$v['location_name'];
+   if($v['SubLocation']){
+	   foreach ($v['SubLocation'] as $k1 => $v1) {
+		  $subloc[$k][$v1['location_id']]=$v1['location_name'];
+	   }
+   }
+   if($v['Transport']){
+	   foreach ($v['Transport'] as $k1 => $v1) {
+		  $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
+	   }
+   }
+}
+//print_r($dataset["property"]->location);die;
+?>
+
 <!--/Main Theme & Search-->
 <section class="no-margin" id="main-slider">
   <div class="container ad-text-wrap">
@@ -135,7 +159,7 @@
                 <div class="form-group margin-top">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location', array('' => 'Select Location', 'Bangkok' => 'Bangkok', 'Phuket' => 'Phuket'), '', array('class' => 'form-control', 'id'=>"location"))}}
+                    	{{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
                       <!--<button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Location <b class="caret"></b></button>
                       <div class="multiselect-container dropdown-menu">
                         <div class="col-md-12">
@@ -183,8 +207,13 @@
               <div class="col-md-4 col-sm-12 search-map-btn">
                 <div class="col-md-5 search-btn-wrap"> <a href="javascript:void(0);" onclick='document.forms["search"].submit();' class="btn btn-primary btn-lg search-button orange margin-top"> <span class="fa fa-search block"></span> <span>Search</span> </a> </div>
                 <div class="col-md-7 searchby-wrap">
-                  <div class="mtr margin-top"><a href="javascript:void(0);"><img src="images/searchwrapbuttons/searchbymtr.png" style="width:100%; height:auto; "></a></div>
-                  <div class="google"><a href="javascript:void(0);"><img src="images/searchwrapbuttons/searchbygooglemap.png" style="width:100%; height:auto; "></a></div>
+                  <div class="mtr margin-top srchByLocation">
+                  	<!-- <a href=""><img src="images/searchwrapbuttons/searchbymtr.png" style="width:100%; height:auto; "></a> -->
+                    <a data-original-title="Search near BTS" href="javascvript:;" data-toggle="tooltip" data-placement="top" title=""><img src="images/nearLocation/btsLogo.png" alt=""></a>
+                    <a data-original-title="Search near MRT" href="javascvript:;" data-toggle="tooltip" data-placement="top" title=""><img src="images/nearLocation/mrLogo.png" alt=""></a>
+                    <a data-original-title="Airport Link" href="javascvript:;" data-toggle="tooltip" data-placement="top" title=""><img src="images/nearLocation/airportLogo.png" alt=""></a>                   
+                   </div>
+                  <div class="google"><a href="javascript:void(0);"><img src="images/searchwrapbuttons/searchbygooglemap.png" style="width:98%; height:auto; "></a></div>
                 </div>
               </div>
             </fieldset>
@@ -901,6 +930,7 @@
 <!--/Need Help-->
 
 <!-- Latest properties -->
+@if(count($dataset["properties"])>0)
 <section class="container">
   <div class="row">
 	<h2>Latest Properties</h2>
@@ -929,6 +959,7 @@
     
   </div>
 </section>
+@endif
 <!-- Latest properties -->
 
 <!--/Featured Agent-->
