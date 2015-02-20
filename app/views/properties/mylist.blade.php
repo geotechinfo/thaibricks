@@ -62,20 +62,35 @@
           	<!--<a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-trash-o"></span></a>-->
           @endif
         </div>
-      <div class="col-md-5">
+      <div class="col-md-5 cls_extend">
           <div class="propertyimg" style="overflow:hidden;">
           		<?php if(floor((strtotime("now")-$property->last_active)/3600/24) > $validity_days){ ?>
           		<div class="disablePropertyHolder">
                     <div class="disablePropertyText flexCenter enableBtnHolder">
-                        <a href="javascript:;"><i class="fa fa-check-circle"></i> Enable your Property</a>
+                        <a href="javascript:;" class="cls_extend_btn" data-id="{{ $property->property_id}}"><i class="fa fa-check-circle"></i> Enable your Property</a>
                         <!-- <span><i class="fa fa-warning"></i> DISABLED</span> -->
                     </div>
                 </div>
                 <?php } ?>
             	<div class="propertymark"></div>
             	{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}
+              
           </div>
-          <p>You property is active for next <?php echo ($validity_days - floor((strtotime("now")-$property->last_active)/3600/24)); ?> days.</p>
+          <p>
+            <span class="cls_extend_text">
+              <?php 
+                  $day_renmain = ($validity_days - floor((strtotime("now")-$property->last_active)/3600/24)); 
+                  if($day_renmain>=0){echo "This property is active for next $day_renmain days. ";}
+                  else{echo "This property was inactive  for last ".($day_renmain*(-1)). " days";}
+              ?>
+              
+            </span>
+            <?php if($day_renmain<=($validity_days-2) && $day_renmain!=0){ ?>
+              
+              <a href="javascript:;" class="btn btn-primary btn-xs cls_extend_btn" data-id="{{ $property->property_id}}">Extend</a>
+              
+            <?php }?>
+          </p>
       </div>
       <div class="col-md-7 propertylist-body">
         <h3 class="propertylist-heading uppercase">{{{ $property->title }}}</h3>
@@ -370,4 +385,25 @@
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.cls_extend_btn').click(function(){
+      var ths = $(this);
+      ths.button('loading')
+      var property_id = $(this).data('id')
+      $.post(
+        '<?php echo URL::to("property/extend")?>',
+        {
+          property_id:property_id
+        },
+        function(m){
+          //alert(m);
+          ths.button('reset');
+          ths.closest('.cls_extend').find('.cls_extend_text').text('You property is active for next 7 days.');
+          ths.closest('.cls_extend').find('.cls_extend_btn').hide();
+        }
+      )
+    });
+  });
+</script>
 @stop

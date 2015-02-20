@@ -8,6 +8,9 @@ class PagesController extends Controller {
 
 		$dataset["types"] = $properties->getlist_types();
 		$dataset["properties"] = $properties->get_properties(null, null);
+		$price['min'] = DB::table('pr_properties')->min('price');
+		$price['max'] = DB::table('pr_properties')->max('price');
+		$dataset['price'] = $price;
 		
 		return View::make('pages.index', array("dataset"=>$dataset));
 	}

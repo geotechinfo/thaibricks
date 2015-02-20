@@ -329,6 +329,8 @@ class PropertiesController extends Controller {
 	}
 	
 	public function search(){
+
+
 		if(isset($_GET["location"]) && $_GET["location"] != ""){
 			$location_id = $_GET["location"];
 		}else{
@@ -340,18 +342,40 @@ class PropertiesController extends Controller {
 		}else{
 			$sublocation_id = null;
 		}
-	
+		$bedroom = array();
+		if(!empty($_GET['bedroom'])){
+			$bedroom = $_GET['bedroom'];
+		}
+		$types = array();
+		if(!empty($_GET['types'])){
+			$types = $_GET['types'];
+		}
+		$price_range = array();
+		if(!empty($_GET['price_range'])){
+			$price_range = explode(',', $_GET['price_range']);
+		}
 		$properties = new Property();
 		
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();
 		
-		$dataset["properties"] = $properties->get_properties(null, null, $location_id, $sublocation_id);
+		$dataset["properties"] = $properties->get_properties(null, null, $location_id, $sublocation_id,$bedroom,$types,$price_range);
 		
 		if(empty($dataset["properties"])){
 			Session::flash('info', "No properties found for above search criteria!");
 		}
+		//pr($dataset["properties"]);
+		//pr($_GET,1);
+		
 		return View::make('properties.search', array("dataset"=>$dataset));
+	}
+
+	function date_extend(){
+		$properties = new Property();
+		$row = $properties::find($_POST['property_id']);
+		$row->last_active = strtotime("now");
+		$row->save();
+		echo json_encode($row);exit;
 	}
 
 }

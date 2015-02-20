@@ -48,24 +48,40 @@ foreach ($dataset['locations'] as $k=>$v){
                 <div class="form-group margin-top propertytype">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                      <button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Property
+                      <button  class="multiselect form-control" type="button" title="None selected">Property
                       Type <b class="caret"></b></button>
                       <div class="multiselect-container dropdown-menu">
                       <?php $types = $dataset["types"]; ?>
-						@foreach($types as $key=>$value)
+						            @foreach($types as $key=>$value)
                          	<div class="col-md-4 col-sm-4">
                               <div>
                                 <h5>{{{ $key }}}</h5>
                               </div>
-                              @foreach($value as $child)
-                              <div class="checkoptions"><a href="javascript:void(0);">
+                              @foreach($value as $ck=> $child)
+                              <div class="checkoptions">
                                 <label class="checkbox">
-                                  <input type="checkbox" value="Flat" >
-                                  {{{ $child }}}</label>
-                                </a></div>
+                                  <input type="checkbox" name="types[]"  value="<?php echo $ck; ?>" >
+                                  {{{ $child }}}
+                                </label>
+                              </div>
                               @endforeach
                             </div>
                         @endforeach
+                        <script type="text/javascript">
+                        $(document).ready(function(){
+                          $('.multiselect').click(function(event){
+                            event.stopPropagation();
+                            var ths = $(this);
+                            $('.multiselect-container').not(ths.closest('.mutiselectbtn').find('.multiselect-container')).hide();
+                            ths.closest('.mutiselectbtn').find('.multiselect-container').toggle();
+                          });
+                          $(document).click(function(e) {
+                              if (!$(e.target).is('.mutiselectbtn *')) {
+                                  $(".multiselect-container").hide();
+                              }
+                          });
+                        });
+                        </script>
                         <!--<div class="col-md-4 col-sm-4">
                           <div>
                             <h5>RESIDENTIAL</h5>
@@ -121,10 +137,9 @@ foreach ($dataset['locations'] as $k=>$v){
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="price_range" class="searchlabel pull-left">Price
-                    range</label>
-                  <span class="pricerangeval pull-right"><span class="min-price">&#xe3f;8,000</span> - <span class="max-price">&#xe3f;40,000</span></span>
-                  <input id="price_range" type="text" class="price_range" value="" data-slider-id="price_selector" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>
+                  <label for="price_range" class="searchlabel pull-left">Price range</label>
+                  <span class="pricerangeval pull-right"><span class="min-price">&#xe3f;{{$dataset['price']['min']}}</span> - <span class="max-price">&#xe3f;{{$dataset['price']['max']}}</span></span>
+                  <input id="price_range" name="price_range" type="text" class="price_range" value="" data-slider-id="price_selector" data-slider-min="{{$dataset['price']['min']}}" data-slider-max="{{$dataset['price']['max']}}" data-slider-step="100" data-slider-value="[{{$dataset['price']['min']}},{{$dataset['price']['max']}}]"/>
                 </div>
                 
               </div>
@@ -132,24 +147,27 @@ foreach ($dataset['locations'] as $k=>$v){
                 <div class="form-group margin-top">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                      <button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Bedroom <b class="caret"></b></button>
+                      <button  class="multiselect form-control" type="button" title="None selected">Bedroom <b class="caret"></b></button>
                       <div class="multiselect-container dropdown-menu">
                         <div class="col-md-12">
-                          <div class="checkoptions"><a href="javascript:void(0);">
+                          <div class="checkoptions">
                             <label class="checkbox">
-                              <input type="checkbox" value="1BHK" >
-                              1 BHK</label>
-                            </a></div>
-                          <div class="checkoptions"><a href="javascript:void(0);">
+                              <input type="checkbox" name="bedroom[]" value="1" >
+                              1 BHK
+                              </label>
+                          </div>
+                          <div class="checkoptions">
                             <label class="checkbox">
-                              <input type="checkbox" value="2BHK" >
-                              2 BHK</label>
-                            </a></div>
-                          <div class="checkoptions"><a href="javascript:void(0);">
+                              <input type="checkbox" name="bedroom[]" value="2" >
+                              2 BHK
+                            </label>
+                          </div>
+                          <div class="checkoptions">
                             <label class="checkbox">
-                              <input type="checkbox" value="3BHK" >
-                              3 BHK</label>
-                            </a></div>
+                              <input type="checkbox" name="bedroom[]" value="3" >
+                              3 BHK
+                              </label>
+                          </div>
                         </div>
                       </div>
                     </div>

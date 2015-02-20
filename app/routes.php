@@ -49,6 +49,7 @@ Route::get('property/show/{id}', array('as' => 'property.show', 'uses' => 'Prope
 Route::get('property/edit/{id}', array('as' => 'property.edit', 'uses' => 'PropertiesController@edit'));
 Route::post('property/update/{id}', array('as' => 'property.update', 'uses' => 'PropertiesController@update'));
 Route::get('property/search', array('as' => 'property.search', 'uses' => 'PropertiesController@search'));
+Route::post('property/extend', array('before' => 'auth','as' => 'property.extend', 'uses' => 'PropertiesController@date_extend'));
 
 Route::get('tenancy/create', array('as' => 'tenancy.create', 'uses' => 'TenancyController@create'));
 Route::post('tenancy/store', array('as' => 'tenancy.store', 'uses' => 'TenancyController@store'));

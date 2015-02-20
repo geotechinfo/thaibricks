@@ -36,3 +36,10 @@ CREATE TABLE IF NOT EXISTS `ll_document_tenancy` (
 )
 
 ALTER TABLE `pr_location_transports` CHANGE `type` `type` SMALLINT(1) NOT NULL DEFAULT '1' COMMENT '1->Transport, 2->Near By';
+
+
+-- DATE 20-02-15
+----------------------------------------
+ALTER TABLE `pr_properties` ADD `is_tenancy` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '0->No Tenancy,1->Tenancy' AFTER `last_active`;
+
+CREATE TRIGGER `trg_ai_tenancy` AFTER INSERT ON `ll_tenancy` FOR EACH ROW BEGIN UPDATE `pr_properties` SET `is_tenancy` = 1 WHERE `property_id` = NEW.property_id; END
