@@ -21,6 +21,7 @@
 	{{ HTML::script('https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js') }}
     {{ HTML::script('https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js') }}
 <![endif]-->
+{{ HTML::script('admin/js/jquery.min.js') }}
 </head>
 <body>
 <div class="innerpage">
@@ -127,6 +128,9 @@
                   <li>
                     <div><a href="{{URL::to('/admin/location/transport')}}"><span class="fa fa-angle-right"></span>Manage Transport</a></div>
                   </li>
+                  <li>
+                    <div><a href="{{URL::to('/admin/location/nearby')}}"><span class="fa fa-angle-right"></span>Manage NearBy</a></div>
+                  </li>
                   <!--<li>
                     <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Registration Details</a></div>
                   </li>
@@ -175,20 +179,95 @@
   <!-- /Footer End -->
 </div>
 <!-- jQuery 2.0.2 -->
-<script src="js/jquery.min.js" type="text/javascript"></script>
-{{ HTML::script('admin/js/jquery.min.js') }}
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>-->
+
+ <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>-->
 <!-- Bootstrap -->
 {{ HTML::script('admin/js/bootstrap.js') }}
 {{ HTML::script('admin/js/custom.js') }}
 
 <link type="text/css" href="{{asset("libraries\bootstrap-treeview\src\css\bootstrap-treeview.css")}}" />
 <script src="{{asset("libraries\bootstrap-treeview\src\js\bootstrap-treeview.js")}}"></script>
-<script type="text/javascript">
-	$('#locations').treeview({data: '<?php echo $dataset["locations"]; ?>'});
-	$('#transports').treeview({data: '<?php echo $dataset["transports"]; ?>'});
-	
-	$('#relations').treeview({data: '<?php echo $dataset["relations"]; ?>'});
+<div class="modal fade" id="adminUpdateTransport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update</h4>
+      </div>
+      <div class="modal-body">
+      {{ Form::open(array('id'=>'frm','class' => '', 'route' => array('location.update_transport'), 'method' => 'post')) }} 
+      
+        <div class="row">
+          <div class="col-sm-5 col-sm-offset-2">
+            <input type="hidden" id="nodeid">
+            <input type="hidden" name="transport_id" id="transport_id">
+            <input type="text" name="transport_name" id="transport_name" class="form-control">
+          </div>
+          <div class="col-sm-3">
+            <button type="button" id="save_transport" class="btn btn-success"> Update</button>
+          </div>
+        </div>
+      {{ Form::close() }}  
+        
+      </div>
+    </div>  
+  </div>
+</div>    
+
+
+<script>
+  $(function(){
+    //alert('ok');
+  
+  $('#locations').treeview({data: '<?php echo $dataset["locations"]; ?>'});
+  $('#transports,#nearby_tree')
+        .treeview({data:''})
+        .on('nodeSelected', function(event, node) {
+            $('#nodeid').val(node.nodeId)
+            $('#transport_id').val(node.transport_id);
+            $('#transport_name').val(node.transport_name);
+            $('#adminUpdateTransport').modal('toggle');
+        });
+
+
+  var getTransportTree = function(){
+    if( $('#transports').length){
+      $.getJSON('<?php echo URL::to("admin/get_transport_tree/");?>/1',function(data){ //alert(data);
+        $('#transports').treeview({data:data})
+      });
+    }
+  }
+
+  var getNearbyTree = function(){
+    if($('#nearby_tree').length){
+      $.getJSON('<?php echo URL::to("admin/get_transport_tree/");?>/2',function(data){ 
+        $('#nearby_tree').treeview({data:data})
+      });
+    }
+  }
+  //$('#transports').treeview({data: '<?php echo $dataset["transports"]; ?>'})
+
+  getTransportTree();
+  getNearbyTree();
+  $('#relations').treeview({data: '<?php echo $dataset["relations"]; ?>'});
+
+
+  $('#save_transport').click(function(){
+    var ths = $(this);
+    ths.button('loading')
+      $.post(
+        $('#frm').attr('action'),
+        $('#frm').serialize(),
+        function(m){
+          var  o = $.parseJSON(m);
+          $('#adminUpdateTransport').modal('toggle');
+          getTransportTree();
+          getNearbyTree();
+          ths.button('reset')
+        }
+      )
+    });
+});
 </script>
 
 @show

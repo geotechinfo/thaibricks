@@ -227,7 +227,8 @@ div.arrow_fix:before{height:35px !important;}
                         <h4> Transports</h4>
                         <div class="border-bottom"></div>
                         <div class="border-top"></div>
-                        <div class="padding cls_transport">
+                        <div class="padding">
+                        <div class="row cls_transport"></div>
                         <!--<div class="row">
                         <?php //if(isset($dataset["property"]->transports)){ ?>
                         <?php //foreach($dataset["property"]->transports as $k=>$v){?>
@@ -256,7 +257,17 @@ div.arrow_fix:before{height:35px !important;}
                           </div>-->
                         </div>
                     </div>  
-                      
+                    
+
+                    <div id="nearby_system" style="display:none;">
+                        <h4> NearBy</h4>
+                        <div class="border-bottom"></div>
+                        <div class="border-top"></div>
+                        <div class="padding">
+                          <div class="row cls_nearby"></div>
+                        </div>
+                    </div>  
+                        
                     </div>
                     <!--/Step1 Content Basic Property Details -->
                     <!--/Step2 Content Property Feature List -->

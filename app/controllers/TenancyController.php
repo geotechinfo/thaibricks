@@ -150,7 +150,12 @@ class TenancyController extends Controller {
 		if(empty($dataset["tenancies"])){
 			Session::flash('info', "You don't have any tenancies yet!");
 		}
+		//echo "<pre>";print_r($dataset["tenancies"]);die;
+		$document = new Document();
+		$dataset['document_head']=$document->getlist_head();
+		$dataset['documents']=$document->getlist_document(Auth::User()->user_id);
 		
+
 		return View::make('tenancies.list', array("dataset"=>$dataset));
 	}
 	
@@ -162,5 +167,82 @@ class TenancyController extends Controller {
 		$dataset["tenancy_id"] = $id;
 		
 		return View::make('tenancies.transaction', array("dataset"=>$dataset));
+	}
+
+	public function adddocument(){
+
+
+		//dd($_FILES);die;
+		$document = new Document;
+		
+		if(!empty(Input::get('document_id'))){
+			$insert_document_tenancy = array();
+			
+			$insert_document_tenancy['user_id']=Auth::User()->user_id;
+			$insert_document_tenancy['tenancy_id']=Input::get('tenancy_id');
+			$insert_document_tenancy['document_id']=Input::get('document_id');
+			try{
+				$document_tenancy_id = DB::table('ll_document_tenancy')->insertGetId($insert_document_tenancy);
+				return Redirect::route('tenancy.tenancies')->with('success','Additional Document successfully Attached With This Tenancy in ThaiBricks.');	
+			}catch(Exception $e){
+				//Session::flash('danger', "This Document Already Added.");
+				return Redirect::route('tenancy.tenancies')->with('info','This Document Already Added.');		
+			}
+			
+
+		}else{
+			if (Input::hasFile('upfile'))
+			{
+				$insert_document = array();
+			    $newfile = time()."".rand(10000,999999).".".$extension = Input::file('upfile')->getClientOriginalExtension();
+			    $destinationPath= 'files/documents/';
+			    Input::file('upfile')->move($destinationPath,$newfile);
+			    $insert_document['user_id']=Auth::User()->user_id;
+			    $insert_document['document_head_id']=Input::get('document_head_id');
+			    $insert_document['document_file']=$newfile;
+			    $insert_document['documentation_date']=CommonHelper::dateToDb(Input::get('documentation_date'));
+
+				if(!empty(Input::get('expiry_date'))){
+					$insert_document['expiry_date'] = CommonHelper::dateToDb(Input::get('expiry_date'));
+				}
+				$lastdocumentid = DB::table('ll_documents')->insertGetId($insert_document);
+
+				$insert_document_tenancy = array();
+				$insert_document_tenancy['document_id'] = $lastdocumentid;
+				$insert_document_tenancy['tenancy_id'] = Input::get('tenancy_id');
+				$insert_document_tenancy['user_id']=Auth::User()->user_id;
+				$document_tenancy_id = DB::table('ll_document_tenancy')->insertGetId($insert_document_tenancy);
+				return Redirect::route('tenancy.tenancies')->with('success','Additional Document successfully added in ThaiBricks.');	
+			}else{
+				return Redirect::route('tenancy.tenancies')->with('info','Please Select Document');		
+			}
+		}
+			
+		
+		
+	}
+
+	public function mail_alert(){
+
+		$sql_alert = "SELECT 
+						d.*,
+						dh.*,
+						u.first_name,
+						u.last_name,
+						u.email,
+						DATE_ADD(CURDATE(),INTERVAL ``.`alert_before` DAY) AS EXP_DATE
+					FROM ll_documents d
+					LEFT JOIN ll_document_heads dh ON dh.document_head_id = d.document_head_id
+					LEFT JOIN ac_users u ON u.user_id = d.user_id
+					HAVING 	EXP_DATE = d.expiry_date			
+		";
+
+		$all = DB::select($sql_alert);
+		pr($all);
+		/*foreach ($all as $k => $v) {
+			Mail::send('template.email.documanet_alert', ['data' =>$v], function($message){
+                $message->to($v->email, $v->first_name." ".$v->last_name)->subject('Alert For Document Expiration');
+            });
+		}*/
 	}
 }

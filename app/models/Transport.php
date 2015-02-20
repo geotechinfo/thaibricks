@@ -2,6 +2,7 @@
 
 class Transport extends Eloquent {
 	protected $table = 'pr_location_transports';
+	protected $primaryKey = 'transport_id';
 	public $timestamps = false;
 	
 	/**

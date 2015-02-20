@@ -1,6 +1,11 @@
 @extends('layouts.default')
 @section('content')
 <!--/profileimage-->
+<?php  $loc = array(''=>'Select Location');
+  foreach ($dataset['locations'] as $k=>$v){
+    $loc[$k]=$v['location_name'];
+  }
+?>
 <section class="container container2 margin-top-10 white radius-top" id="profileimage">
   <div class="clearfix padding-5 clouds">
     <div class="white clearfix">
@@ -85,7 +90,8 @@
                             <label>Location</label>
                           </div>
                           <div class="col-sm-8">
-                            <p class="bold accountInfo">{{{ Auth::user()->location }}}</p>
+                            <p class="bold accountInfo">{{{  $loc[Auth::user()->location] }}}</p>
+                            <?php //dd($dataset['location']);?>
                           </div>
                         </div>
                 </div>
@@ -245,7 +251,8 @@
         <div class="row">
             <label class="col-sm-2  text-right">Location</label>
             <div class="col-sm-10">
-                <?php echo Form::select('location', array('' => 'Select your location', 'bangkok' => 'Bangkok', 'lampang' => 'Lampang'), Auth::user()->location,array('class'=>'form-control')); ?>
+            
+                <?php echo Form::select('location', $loc, Auth::user()->location,array('class'=>'form-control')); ?>
             </div>
         </div>
         <p></p>

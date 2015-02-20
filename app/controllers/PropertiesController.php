@@ -109,10 +109,11 @@ class PropertiesController extends Controller {
 
 			if(Input::get()["transport_id"]){
 				foreach(Input::get()["transport_id"] as $key=>$value){
-					if($value!=""){
+					$distanc = Input::get()["transport_dist"][$key];
+					if($value!="" && !empty($distanc)){
 						$ins_prop_trns['property_id'] = $id;
 						$ins_prop_trns['transport_id'] = $value;
-						$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+						$ins_prop_trns['distance'] = $distanc;;
 						$properties->insert_property_transport($ins_prop_trns);
 					}
 				}
@@ -246,10 +247,11 @@ class PropertiesController extends Controller {
 			$properties->delete_property_transport($id);
 			if(Input::get()["transport_id"]){
 				foreach(Input::get()["transport_id"] as $key=>$value){
-					if($value!=""){
+					$distanc = Input::get()["transport_dist"][$key];
+					if($value!="" && !empty($distanc)){
 						$ins_prop_trns['property_id'] = $id;
 						$ins_prop_trns['transport_id'] = $value;
-						$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+						$ins_prop_trns['distance'] = $distanc;
 						$properties->insert_property_transport($ins_prop_trns);
 					}
 				}

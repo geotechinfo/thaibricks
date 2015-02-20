@@ -2562,7 +2562,7 @@ small.error_special{
 .srchByLocation a {display:inline-block;width:25%;max-width: 50px;}
 .google a {display: block;text-align: center;}
 .google img {max-width: 200px;}
-.propertyformsteps .row > .col-sm-6 { min-height:78px; }
+.propertyformsteps .row > .col-sm-6 {  }
 .commentwrap,.portfolio-item .item-inner {margin:0 10px;}
 .srchByLocation a {margin: 0px 1.64px;}
 .srchByLocation a:first-child {position: relative;left:-1px;}
@@ -2644,3 +2644,5 @@ optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-si
 .navbar-inverse .social-network-menu li:hover a.welcomeuser, .navbar-inverse .social-network-menu > li:hover > a.welcomeuser {
 	background: #FFF;border-top-left-radius: 2px;border-top-right-radius: 2px;color:#000;
 }
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled]  {cursor: not-allowed;background-color: #111112;opacity: 1;}

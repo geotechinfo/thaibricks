@@ -119,7 +119,7 @@ class UsersController extends Controller {
             [
                 'first_name' => 'required|min:2',
                 'last_name' => 'required|min:2',
-				'location' => 'required',
+				'location' => 'required|min:1',
                 'email' => 'required|email|unique:ac_users,email,'.Auth::User()->user_id.",user_id",
 				'phone' => 'required|numeric|unique:ac_users,phone,'.Auth::User()->user_id.",user_id"
             ]
@@ -127,7 +127,7 @@ class UsersController extends Controller {
 		if($validator->fails()){
             return Redirect::route('profile',array('#profile_edit'))->withErrors($validator)->withInput();
         }else{
-
+        	//dd($data);die;
         	$user = User::find(Auth::User()->user_id);
         	$user->first_name = $data['first_name'];
         	$user->last_name = $data['last_name'];
@@ -249,6 +249,10 @@ class UsersController extends Controller {
 	
 	public function profile(){
 		$dataset = array();
+		//echo Auth::user()->location;die;
+		$location = new Location;
+		$dataset['locations']=$location->get_location_with_sub();
+		
 		return View::make('users.profile', array("dataset"=>$dataset));
 	}
 	
@@ -283,7 +287,7 @@ class UsersController extends Controller {
 	}
 
 	function changebannerimage(){
-		$image_files = $_FILES['image_files'];
+		//$image_files = $_FILES['image_files'];
 		//$image_files = Input::file('image_files');
 		$WI = new WideImage;
 				

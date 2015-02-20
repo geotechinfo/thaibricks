@@ -1,4 +1,5 @@
 $(document).ready(function(){
 /*--Top Navigation--*/
-$('#session').daterangepicker();
+if($('#session').length){$('#session').daterangepicker();}
+	
 }); 
