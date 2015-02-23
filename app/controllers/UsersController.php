@@ -252,6 +252,7 @@ class UsersController extends Controller {
 		//echo Auth::user()->location;die;
 		$location = new Location;
 		$dataset['locations']=$location->get_location_with_sub();
+		$dataset['banner_panel'] = View::make('properties.banner_panel');
 		
 		return View::make('users.profile', array("dataset"=>$dataset));
 	}

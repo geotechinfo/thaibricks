@@ -8,25 +8,7 @@
 ?>
 <section class="container container2 margin-top-10 white radius-top" id="profileimage">
   <div class="clearfix padding-5 clouds">
-    <div class="white clearfix">
-      <div class="col-md-2 col-sm-2 col-xs-2 no-margin">
-        <div class="white center">
-          <div class="profileimg"> 
-          <a href="javascript:void(0)" class="editphoto"><span class="fa fa-camera"></span><a href="javascript:void(0)">
-          <a href="javascript:void(0)"> <img class="img-responsive" src="images/agentprofile/profiledummy.png"></a>
-          </div>
-          <div class="padding-5"><a class="" href="javascript:void(0)"> User
-              Name </a></div>
-          <div> </div>
-        </div>
-      </div>
-      <div class="col-md-10 col-sm-10 col-xs-10 no-margin">
-        <div class="white padding-5 coverpic">
-        <a href="javascript:void(0)" class="editphoto"><span class="fa fa-camera"></span><a href="javascript:void(0)">
-        <img src="images/agentprofile/banner.png" class="img-responsive"/>
-        </div>
-      </div>
-    </div>
+    {{ $dataset['banner_panel'] }}
   </div>
 </section>
 <!--/profileimage-->

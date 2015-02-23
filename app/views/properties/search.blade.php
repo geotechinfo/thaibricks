@@ -47,225 +47,9 @@ foreach ($dataset['locations'] as $k=>$v){
     </div>
     <div class="tab-content searchparam">
       <div role="tabpanel" class="tab-pane active" id="bsearch">
-        {{ Form::open(array('class' => 'center', 'id' => 'search', 'route' => array('property.search'), 'method' => 'get')) }}
-          <fieldset class="search-form">
-            <div class="col-md-12 lefttxt"> <span>Rental duration</span>
-              <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                Long - term </label>
-              <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                Short - Term ( up to 6 months ) </label>
-            </div>
-            <div class="col-md-3 col-sm-6">
-              <div class="form-group margin-top propertytype">
-                <div class="arrow">
-                  <div class="btn-group mutiselectbtn">
-                    <button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Property
-                    Type <b class="caret"></b></button>
-                    <div class="multiselect-container dropdown-menu" style="z-index:999999999;">
-						<?php $types = $dataset["types"]; ?>
-                        @foreach($types as $key=>$value)
-                            <div class="col-md-4 col-sm-4">
-                              <div>
-                                <h5>{{{ $key }}}</h5>
-                              </div>
-                              @foreach($value as $child)
-                              <div class="checkoptions"><a href="javascript:void(0);">
-                                <label class="checkbox">
-                                  <input type="checkbox" value="Flat" >
-                                  {{{ $child }}}</label>
-                                </a></div>
-                              @endforeach
-                            </div>
-                        @endforeach
-                      <!--<div class="col-md-4 col-sm-4">
-                        <div>
-                          <h5>RESIDENTIAL</h5>
-                        </div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="Flat" >
-                            Flat</label>
-                          </a></div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="House/Villa" >
-                            House/Villa</label>
-                          </a></div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="Plot" >
-                            Plot</label>
-                          </a></div>
-                      </div>
-                      <div class="col-md-4 col-sm-4">
-                        <div>
-                          <h5>COMMERCIAL</h5>
-                        </div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="Office" >
-                            Office</label>
-                          </a></div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="Shop/Showroom" >
-                            Shop/Showroom</label>
-                          </a></div>
-                      </div>
-                      <div class="col-md-4 col-sm-4">
-                        <div>
-                          <h5>Others</h5>
-                        </div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="type1" >
-                            type1</label>
-                          </a></div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="type2" >
-                            type2</label>
-                          </a></div>
-                      </div>-->
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="price_range" class="searchlabel pull-left">Price
-                  range</label>
-                <span class="pricerangeval pull-right"><span class="min-price">&#xe3f;8,000</span> - <span class="max-price">&#xe3f;40,000</span></span>
-                <input id="price_range" type="text" class="price_range" value="" data-slider-id="price_selector" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-              <div class="form-group margin-top">
-                <div class="arrow">
-                  <div class="btn-group mutiselectbtn">
-                    <button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Bedroom <b class="caret"></b></button>
-                    <div class="multiselect-container dropdown-menu">
-                      <div class="col-md-12">
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="1BHK" >
-                            1 BHK</label>
-                          </a></div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="2BHK" >
-                            2 BHK</label>
-                          </a></div>
-                        <div class="checkoptions"><a href="javascript:void(0);">
-                          <label class="checkbox">
-                            <input type="checkbox" value="3BHK" >
-                            3 BHK</label>
-                          </a></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 no-margin">
-                <div class="form-group margin-top">
-                  <div class="arrow">
-                    <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
-                      <!--<button data-toggle="dropdown" class="multiselect form-control" type="button" title="None selected">Location <b class="caret"></b></button>
-                      <div class="multiselect-container dropdown-menu">
-                        <div class="col-md-12">
-                          <div class="checkoptions"><a href="javascript:void(0);">
-                            <label class="radio">
-                              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                              Location 1</label>
-                            </a></div>
-                          <div class="checkoptions"><a href="javascript:void(0);">
-                            <label class="radio">
-                              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                              Location 2</label>
-                            </a></div>
-                          <div class="checkoptions"><a href="javascript:void(0);">
-                            <label class="radio">
-                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
-                              Location 3</label>
-                            </a></div>
-                        </div>
-                      </div>-->
-                    </div>
-                  </div>
-                </div>
-                
-                </div>
-              <div class="col-md-6 no-margin">
-                <div class="form-group margin-top">
-                  <div class="arrow">
-                    <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location_sub', array(), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
-                      <!--<select class="js-example-placeholder-multiple form-control" multiple="multiple">
-                        <option value="SubLocation1">Sub Location1</option>
-                        <option value="SubLocation2">Sub Location2</option>
-                        <option value="SubLocation3">Sub Location3</option>
-                        <option value="SubLocation4">Sub Location4</option>
-                        <option value="SubLocation5">Sub Location5</option>
-                        <option value="SubLocation6">Sub Location6</option>
-                      </select>-->
-                    </div>
-                  </div>
-                </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6 listoption">
-              <div class="pull-left">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    Pet Friendly </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-              </div>
-              <div class="">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox" value="">
-                    other items </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <div class="search-btn-wrap"> <a href="javascript:void(0);" onclick='document.forms["search"].submit();' class="btn btn-primary btn-lg search-button orange margin-top"> <span class="fa fa-search block"></span> <span>Search</span> </a> </div>
-            </div>
-          </fieldset>
-        {{ Form::close() }}
+        
+        {{ $dataset['search_panel'] }}
+        
       </div>
       <div role="tabpanel" class="tab-pane active" id="bts"> </div>
       <div role="tabpanel" class="tab-pane active" id="gmap"></div>
@@ -467,7 +251,7 @@ foreach ($dataset['locations'] as $k=>$v){
         <small>{{{ $property->first_name }}} {{{ $property->last_name }}}</small>
         <div class="otherinfo clearfix">
         	<div class="pull-left">
-            <h5>{{{ $property->location_sub }}}, {{{ $property->location }}}</h5>
+            <h5>{{{ $property->locationsub_name }}}, {{{ $property->location_name }}}</h5>
             </div>
             
             <!--<div class="pull-right starwrap">
@@ -480,8 +264,22 @@ foreach ($dataset['locations'] as $k=>$v){
         </div>
         <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="saveshortlist"><small>Read More</small></a></p>
          <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
+         	  <!--<a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
+            <a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>-->
+            <?php foreach($property->transports as $transports){ ?>
+                <?php foreach($transports as $transport){ ?>
+                    <?php if(is_array($transport)){ ?>
+                    <?php foreach($transport as $location){ ?>
+                        <?php if(array_key_exists($location->transport_id, $property->selected_transports)){ ?>
+                          <div class="text-center">
+                            <div class="location" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
+                            <p>Near to <?php echo $location->transport_name; ?></p>
+                          </div>
+                        <?php } ?>
+                    <?php } ?>
+                    <?php } ?>
+                <?php } ?>
+            <?php } ?>
          </div>
          <div>
               <div class="pull-right">

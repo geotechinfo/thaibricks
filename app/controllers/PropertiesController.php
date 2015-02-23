@@ -367,6 +367,18 @@ class PropertiesController extends Controller {
 		//pr($dataset["properties"]);
 		//pr($_GET,1);
 		
+		$properties = new Property();
+		$location = new Location;
+		
+		$dataset['locations']=$location->get_location_with_sub();
+		$dataset["types"] = $properties->getlist_types();
+		$dataset["properties"] = $properties->get_properties(null, null);
+		$price['min'] = DB::table('pr_properties')->min('price');
+		$price['max'] = DB::table('pr_properties')->max('price');
+		$dataset['price'] = $price;
+		$dataset['search_panel'] = View::make('pages.search_panel',array("dataset"=>$dataset));
+
+		
 		return View::make('properties.search', array("dataset"=>$dataset));
 	}
 
