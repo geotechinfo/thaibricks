@@ -2658,4 +2658,4 @@ optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-si
 .deleteCheck {position: absolute;top: 8px;left: 8px;display: inline-block;padding: 2px 5px;background: rgba(255, 255, 255, 0.9);border-radius: 3px}
 .delImgAlert {position: absolute;width: 100%;padding: 2px 5px;left:0;top:-30px;}
 
-.form-control[disabled], .form-control[readonly], fieldset[disabled]  {cursor: not-allowed;background-color: #111112;opacity: 1;}
+.form-control[disabled], .form-control[readonly], fieldset[disabled]  {cursor: default;background-color: #111112;opacity: 1;}

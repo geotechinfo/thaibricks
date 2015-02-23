@@ -60,6 +60,7 @@ Route::get('tenancy/transaction/{id}', array('as' => 'tenancy.transaction', 'use
 Route::post('tenancy/transactionsave/{id}', array('as' => 'tenancy.transactionsave', 'uses' => 'TenancyController@transactionsave'));
 Route::post('tenancy/adddocument', array('as' => 'tenancy.adddocument', 'uses' => 'TenancyController@adddocument'));
 Route::get('tenancy/alert', array('as' => 'tenancy.alert', 'uses' => 'TenancyController@mail_alert'));
+Route::post('tenancy/addvendor', array('as' => 'tenancy.addvendor', 'uses' => 'TenancyController@addvendor'));
 
 Route::get('admin/dashboard', array('as' => 'admin.dashboard', 'uses' => 'AdminsController@dashboard'));
 Route::get('admin/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AttributesController@relation'));

@@ -43,3 +43,9 @@ ALTER TABLE `pr_location_transports` ADD `type` SMALLINT(1) NOT NULL DEFAULT '1'
 ALTER TABLE `pr_properties` ADD `is_tenancy` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '0->No Tenancy,1->Tenancy' AFTER `last_active`;
 
 CREATE TRIGGER `trg_ai_tenancy` AFTER INSERT ON `ll_tenancy` FOR EACH ROW BEGIN UPDATE `pr_properties` SET `is_tenancy` = 1 WHERE `property_id` = NEW.property_id; END
+
+
+-- DATE 23-02-15
+----------------------------------------
+
+ALTER TABLE `ll_vendors` ADD `vendor_email` VARCHAR(100) NOT NULL AFTER `vendor_name`;

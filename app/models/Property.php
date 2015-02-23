@@ -114,10 +114,11 @@ class Property extends Eloquent {
 		$property_sql = "";
 		if($user_id != null){
 			$property_sql .= " AND `pr_properties`.`user_id` = ".$user_id;
+			if($user_id!=Auth::User()->user_id){
+				$property_sql .= "  AND  `pr_properties`.`is_tenancy` = 0";
+			}
 		}
-		if($user_id!=Auth::User()->user_id){
-			$property_sql .= "  AND  `pr_properties`.`is_tenancy` = 0";
-		}
+		
 		if($property_id != null){
 			$property_sql .= " AND `pr_properties`.`property_id` = ".$property_id;
 		}
