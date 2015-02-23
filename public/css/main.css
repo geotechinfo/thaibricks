@@ -2644,6 +2644,10 @@ optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-si
 .navbar-inverse .social-network-menu li:hover a.welcomeuser, .navbar-inverse .social-network-menu > li:hover > a.welcomeuser {
 	background: #FFF;border-top-left-radius: 2px;border-top-right-radius: 2px;color:#000;
 }
+.vTranHeader {background: #000;color:#FFF;}
+.vendorTrans>div {padding: 2px 5px;}
+.vTransRow {background: #FAFAFA;color:#222;}
+.vTransRow:nth-child(even) {background: #F5F5F5;color:#222;}
 
 .addSpImageHolder {padding:12px 25px 0;position:relative;}
 .addSpImageHolder .well {position:relative;}

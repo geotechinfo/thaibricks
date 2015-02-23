@@ -197,10 +197,8 @@ class TenancyController extends Controller {
         if($transaction->save()){
 			return Redirect::route('tenancy.tenancies')->with('success', 'Transaction successfully added.');
 		}
-
+	}
 	public function adddocument(){
-
-
 		//dd($_FILES);die;
 		$document = new Document;
 		
@@ -217,8 +215,6 @@ class TenancyController extends Controller {
 				//Session::flash('danger', "This Document Already Added.");
 				return Redirect::route('tenancy.tenancies')->with('info','This Document Already Added.');		
 			}
-			
-
 		}else{
 			if (Input::hasFile('upfile'))
 			{
@@ -246,13 +242,8 @@ class TenancyController extends Controller {
 				return Redirect::route('tenancy.tenancies')->with('info','Please Select Document');		
 			}
 		}
-			
-		
-		
 	}
-
 	public function mail_alert(){
-
 		$sql_alert = "SELECT 
 						d.*,
 						dh.*,
