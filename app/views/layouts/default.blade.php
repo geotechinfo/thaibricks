@@ -115,14 +115,14 @@ foreach ($dataset['locations'] as $k=>$v){
                   </a>
                   <ul class="dropdown-menu" role="menu">
                       <li><a href="" data-toggle="modal" data-target="#addPrperty"><i class="fa fa-plus"></i> Add Property</a></li>
-                      <li><a href="{{URL::to('/property/mylist/me')}}"><i class="fa fa-dashboard"></i> My Properties</a></li>
+                      <li><a href="{{URL::to('/property/mylist/me')}}"><i class="fa fa-list"></i> My Properties</a></li>
                       <li class="divider"></li>
                       <li><a href="{{URL::to('/tenancy/create')}}"><i class="fa fa-plus"></i> Add Tenancy</a></li>
                       <li><a href="{{URL::to('/tenancy/transaction')}}/0"><i class="fa fa-plus"></i> Add Transactions</a></li>
-                      <li><a href="{{URL::to('/tenancy/tenancies')}}"><i class="fa fa-plus"></i> View Tenancies</a></li>
+                      <li><a href="{{URL::to('/tenancy/tenancies')}}"><i class="fa fa-list"></i> View Tenancies</a></li>
                       <li class="divider"></li>
-                      <li><a href="{{URL::to('/profile')}}"><i class="fa fa-eye"></i> Profile Manage</a></li>
-                      <li><a href="{{URL::to('/logout')}}"><i class="fa fa-eye"></i> Logout</a></li>
+                      <li><a href="{{URL::to('/profile')}}"><i class="fa fa-user"></i> Profile Manage</a></li>
+                      <li><a href="{{URL::to('/logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
                   </ul>
               </li>
               @else

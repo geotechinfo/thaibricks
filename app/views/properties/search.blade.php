@@ -38,11 +38,11 @@ foreach ($dataset['locations'] as $k=>$v){
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#bsearch" aria-controls="bsearch" role="tab" data-toggle="tab">Basic
             search</a></li>
-        <li role="presentation"><a href="#bts" aria-controls="bts" role="tab" data-toggle="tab">BTS
+        <!--<li role="presentation"><a href="#bts" aria-controls="bts" role="tab" data-toggle="tab">BTS
             / MRT</a></li>
         <li role="presentation"><a href="#gmap" aria-controls="gmap" role="tab" data-toggle="tab">Google
             Map</a></li>
-        <li role="presentation"><a href="#school" aria-controls="school" role="tab" data-toggle="tab">Schools</a></li>
+        <li role="presentation"><a href="#school" aria-controls="school" role="tab" data-toggle="tab">Schools</a></li>-->
       </ul>
     </div>
     <div class="tab-content searchparam">

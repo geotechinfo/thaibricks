@@ -23,7 +23,7 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
 
 ?>          {{ Form::open(array('class' => 'center', 'id' => 'search', 'route' => array('property.search'), 'method' => 'get')) }}
             <fieldset class="search-form">
-              <div class="col-md-4 col-sm-6">
+              <div class="col-md-<?php echo (Route::currentRouteAction() == "PagesController@index") ? "4" : "5" ?> col-sm-6">
                 <div class="form-group margin-top propertytype">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
@@ -59,7 +59,7 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
                 </div>
                 
               </div>
-              <div class="col-md-4 col-sm-6">
+              <div class="col-md-<?php echo (Route::currentRouteAction() == "PagesController@index") ? "4" : "5" ?> col-sm-6">
                 <div class="form-group margin-top">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
@@ -110,8 +110,9 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
                 </div>
                 
               </div>
-              <div class="col-md-4 col-sm-12 search-map-btn">
+              <div class="col-md-<?php echo (Route::currentRouteAction() == "PagesController@index") ? "4" : "2" ?> col-sm-12 search-map-btn">
                 <div class="col-md-5 search-btn-wrap"> <a href="javascript:void(0);" onclick='document.forms["search"].submit();' class="btn btn-primary btn-lg search-button orange margin-top"> <span class="fa fa-search block"></span> <span>Search</span> </a> </div>
+                @if(Route::currentRouteAction() == "PagesController@index")
                 <div class="col-md-7 searchby-wrap">
                   <div class="mtr margin-top srchByLocation">
                     <!-- <a href=""><img src="images/searchwrapbuttons/searchbymtr.png" style="width:100%; height:auto; "></a> -->
@@ -132,6 +133,8 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
                     </a>
                   </div>
                 </div>
+                @endif
+                
               </div>
             </fieldset>
           {{ Form::close() }}

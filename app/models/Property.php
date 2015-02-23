@@ -223,7 +223,12 @@ class Property extends Eloquent {
 				WHERE
 				`pr_media`.`property_id`=".$property->property_id."
 			");
-			
+			if(count($media)==0){
+				$default=new stdClass();
+				$default->media_data='no_image.png';
+				$media[0] = $default;	
+			}
+
 			$returns[$key] = $property;
 			$returns[$key]->media = $media;
 		}

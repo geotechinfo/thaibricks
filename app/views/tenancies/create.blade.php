@@ -57,7 +57,9 @@
 												$tenantable_properties = array();
 												$tenantable_properties[""] = "Select your property for rent/lease.";
 												foreach($dataset["properties"] as $property){
-													$tenantable_properties[$property->property_id] = $property->title;
+													if(in_array($property->deal_id, array(2))){
+														$tenantable_properties[$property->property_id] = $property->title;
+													}
 												}
 											  ?>
                                               {{Form::select('property_id', $tenantable_properties, $dataset["tenancy"]->property_id, array('class' => 'form-control', 'id'=>""))}}
