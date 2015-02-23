@@ -101,7 +101,7 @@ class Property extends Eloquent {
 		DB::statement("DELETE FROM `pr_property_transport` WHERE `property_id`=".$property_id);
 	}
 	public function insert_property_transport($arr=array()){
-		if(!empty($arr)){
+		if(count($arr)){
 			$str = '';
 			foreach ($arr as $key => $value) {
 				$str = $str."`$key`='$value',";
@@ -128,10 +128,10 @@ class Property extends Eloquent {
 		if($sublocation_id != null){
 			$property_sql .= " AND `pr_properties`.`location_sub` = '".$sublocation_id."'";
 		}
-		if(!empty($types)){
+		if(count($types)){
 			$property_sql .= " AND 	`pr_properties`.`type_id` IN (".implode(',',$types).")";
 		}
-		if(!empty($price_range)){
+		if(count($price_range)){
 			if(count($price_range)==1){
 				$property_sql .= " AND 	`pr_properties`.`price` < ".$price_range[0];
 			}
@@ -139,7 +139,7 @@ class Property extends Eloquent {
 				$property_sql .= " AND 	`pr_properties`.`price` BETWEEN ".$price_range[0]." AND ".$price_range[1];
 			}			
 		}
-		if(!empty($bedroom)){
+		if(count($bedroom)){
 			$property_sql .= " AND 	`pr_properties`.`property_id` IN (SELECT `property_id` FROM `pr_values` WHERE `attribute_id` =1 AND `attribute_value` IN(".implode(',',$bedroom)."))";
 		}
 		$sql = "

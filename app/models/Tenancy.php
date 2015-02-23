@@ -61,7 +61,8 @@ class Tenancy extends Eloquent {
 						FROM `ll_document_tenancy`
 						INNER JOIN `ll_documents` ON `ll_documents`.`document_id` = `ll_document_tenancy`.`document_id` 
 						INNER JOIN `ll_document_heads` ON `ll_document_heads`.`document_head_id` = `ll_documents`.`document_head_id` 
-						WHERE `ll_document_tenancy`.`tenancy_id` = ".$tenancy->tenancy_id;			
+						WHERE `ll_document_tenancy`.`tenancy_id` = ".$tenancy->tenancy_id."
+						ORDER BY `ll_document_tenancy`.`document_tenancy_id` DESC";			
 			//$tenant->documents = self::find($tenant->tenancy_id)->documents;
 			$tenancy->documents = DB::select($sql_doc);
 			
@@ -72,7 +73,8 @@ class Tenancy extends Eloquent {
 						FROM `ll_transactions`
 						INNER JOIN `ll_transaction_heads` ON `ll_transaction_heads`.`transaction_head_id` = `ll_transactions`.`transaction_head_id`
 						LEFT JOIN `ll_vendors` ON `ll_vendors`.`vendor_id` = `ll_transactions`.`vendor_id` 
-						WHERE `ll_transactions`.`tenancy_id` = ".$tenancy->tenancy_id;
+						WHERE `ll_transactions`.`tenancy_id` = ".$tenancy->tenancy_id."
+						ORDER BY `ll_transactions`.`transaction_date` DESC";
 			$tenancy->transactions = DB::select($sql_doc);
 			
 			$returns[$key] = $tenancy;

@@ -101,7 +101,7 @@
                           </div>
                         </div>-->
                         
-                        @if(count($tenancy->documents)>0)
+                        @if(count($tenancy->transactions)>0)
                         <h3>Transactions</h3>
                         <div class="vendorTrans">
                           <div class="vTranHeader bold">
@@ -133,7 +133,7 @@
                                       {{$v->transaction_title}}
                                     </div>
                                     <div class="col-sm-3">
-                                      {{$v->vendor_name}}
+                                      <?php echo ($v->vendor_name != "") ? $v->vendor_name : "N/A"; ?>
                                     </div>
                                     <div class="col-sm-2">
                                       {{{ CommonHelper::dateToUx($v->transaction_date) }}}
@@ -275,9 +275,9 @@
                           <a href="javascript:;" class="pull-right btn btn-default btn-xs cls_check" data-toggle="tooltip" title="This File Already Added" style="display:none">
                             <span class="fa fa-check"></span>
                           </a>
-                          <a href="{{{ URL::to('download').'/documents/'.$v->document_file }}}" class="pull-right btn btn-default btn-xs" data-toggle="tooltip" title="Download This File">
+                          <!--<a href="{{{ URL::to('download').'/documents/'.$v->document_file }}}" class="pull-right btn btn-default btn-xs" data-toggle="tooltip" title="Download This File">
                             <span class="fa fa-download"></span> Download
-                          </a>
+                          </a>-->
                         </div>
                         <span class="small">Valid From : {{{ CommonHelper::dateToUx($v->documentation_date) }}} </span>
                         @if(CommonHelper::dateToUx($v->expiry_date)!='')

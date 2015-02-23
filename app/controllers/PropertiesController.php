@@ -106,19 +106,22 @@ class PropertiesController extends Controller {
 					$properties->insert_value($property->property_id, $key, $value);
 				}
 			}
-
+			//pr(Input::get()["transport_id"]);
+			//pr(Input::get()["transport_dist"],1);
 			if(Input::get()["transport_id"]){
 				foreach(Input::get()["transport_id"] as $key=>$value){
 					$distanc = Input::get()["transport_dist"][$key];
-					if($value!="" && !empty($distanc)){
-						$ins_prop_trns['property_id'] = $id;
+					if($value!="" || $value!=0){
+						$ins_prop_trns = array();
+						$ins_prop_trns['property_id'] = $property->property_id;
 						$ins_prop_trns['transport_id'] = $value;
-						$ins_prop_trns['distance'] = $distanc;;
+						$ins_prop_trns['distance'] = $distanc;
+						//pr($ins_prop_trns);
 						$properties->insert_property_transport($ins_prop_trns);
 					}
 				}
 			}
-			
+			//die();
 			$image_titles = Input::get('image_titles');
 			$image_files = Input::file('image_files');
 			if(count($image_files)>0){
@@ -319,7 +322,7 @@ class PropertiesController extends Controller {
 		$properties = new Property();		
 		$dataset["properties"] = $properties->get_properties($id, null);
 		
-		if(empty($dataset["properties"])){
+		if(count($dataset["properties"])==0){
 			Session::flash('info', "You don't have any properties yet!");
 		}
 		
@@ -332,6 +335,8 @@ class PropertiesController extends Controller {
 	
 	public function search(){
 
+		$location_id = null;
+		$sublocation_id = null;
 
 		if(isset($_GET["location"]) && $_GET["location"] != ""){
 			$location_id = $_GET["location"];
@@ -345,15 +350,15 @@ class PropertiesController extends Controller {
 			$sublocation_id = null;
 		}
 		$bedroom = array();
-		if(!empty($_GET['bedroom'])){
+		if(isset($_GET['bedroom'])){
 			$bedroom = $_GET['bedroom'];
 		}
 		$types = array();
-		if(!empty($_GET['types'])){
+		if(isset($_GET['types'])){
 			$types = $_GET['types'];
 		}
 		$price_range = array();
-		if(!empty($_GET['price_range'])){
+		if(isset($_GET['price_range'])){
 			$price_range = explode(',', $_GET['price_range']);
 		}
 		$properties = new Property();
@@ -363,7 +368,7 @@ class PropertiesController extends Controller {
 		
 		$dataset["properties"] = $properties->get_properties(null, null, $location_id, $sublocation_id,$bedroom,$types,$price_range);
 		
-		if(empty($dataset["properties"])){
+		if(count($dataset["properties"])==0){
 			Session::flash('info', "No properties found for above search criteria!");
 		}
 		//pr($dataset["properties"]);
@@ -374,7 +379,7 @@ class PropertiesController extends Controller {
 		
 		$dataset['locations']=$location->get_location_with_sub();
 		$dataset["types"] = $properties->getlist_types();
-		$dataset["properties"] = $properties->get_properties(null, null);
+		//$dataset["properties"] = $properties->get_properties(null, null);
 		$price['min'] = DB::table('pr_properties')->min('price');
 		$price['max'] = DB::table('pr_properties')->max('price');
 		$dataset['price'] = $price;

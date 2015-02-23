@@ -96,7 +96,7 @@
                                           <div class="form-group">
                                               <label class="control-label" for="propertyname">Vendor Involvement</label>
                                               <div class="vendorIn">
-                                                <input type="checkbox" id="vandor" name="vendor_id"> <label for="vandor">Vendor Involved</label>
+                                                <input type="checkbox" id="vandor" name="vendor_id" value="0"> <label for="vandor">Vendor Involved</label>
                                               </div>
                                           </div>
                                       </div>
@@ -110,7 +110,7 @@
                                                                 <div class="btn-group mutiselectbtn">
                                                                     <div class="btn-group selectSropGroup">
     
-                                                                        <button class="btn dropdown-toggle selectDropper" name="recordinput" data-toggle="dropdown">
+                                                                        <button id="vendor_dd" class="btn dropdown-toggle selectDropper" name="recordinput" data-toggle="dropdown">
                                                                         Select Vendor
                                                                         <!-- <span class="caretHolder"><span class="caret"></span></span> -->
                                                                         </button>
@@ -244,6 +244,8 @@
           })
           .append($('<a/>').attr({'href':'javascript:;'}).text(o.vendor_name));
           $('#ul_vendor .adVendorholder').before(li);
+          $('#vandor').val(o.vendor_id);
+          $('#vendor_dd').html(o.vendor_name+'<span class="caretHolder"><span class="caret"></span></span>')
           $('#addVendorModal').modal('toggle');
          } 
       )

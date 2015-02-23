@@ -147,7 +147,7 @@ class TenancyController extends Controller {
 
 		$tenancies = new Tenancy();		
 		$dataset["tenancies"] = $tenancies->get_tenancies($id);
-		if(empty($dataset["tenancies"])){
+		if(count($dataset["tenancies"]) == 0){
 			Session::flash('info', "You don't have any tenancies yet!");
 		}
 		//echo "<pre>";print_r($dataset["tenancies"]);die;
@@ -205,9 +205,9 @@ class TenancyController extends Controller {
         }
 		
 		$transaction = new Transaction();
-		$transaction->tenancy_id = $id;
+		$transaction->tenancy_id = Input::get('tenancy_name');
 		$transaction->transaction_head_id = Input::get('transaction_head');
-		$transaction->vendor_id = Input::get('vendor_id');
+		$transaction->vendor_id = Input::get('vendor_id',0);
 		$transaction->transaction_date = CommonHelper::dateToDb(Input::get('transaction_date'));
 		$transaction->amount = Input::get('transaction_amount');
         if($transaction->save()){
@@ -218,7 +218,7 @@ class TenancyController extends Controller {
 		//dd($_FILES);die;
 		$document = new Document;
 		
-		if(!empty(Input::get('document_id'))){
+		if(Input::get('document_id')){
 			$insert_document_tenancy = array();
 			
 			$insert_document_tenancy['user_id']=Auth::User()->user_id;
@@ -243,7 +243,7 @@ class TenancyController extends Controller {
 			    $insert_document['document_file']=$newfile;
 			    $insert_document['documentation_date']=CommonHelper::dateToDb(Input::get('documentation_date'));
 
-				if(!empty(Input::get('expiry_date'))){
+				if(Input::get('expiry_date')){
 					$insert_document['expiry_date'] = CommonHelper::dateToDb(Input::get('expiry_date'));
 				}
 				$lastdocumentid = DB::table('ll_documents')->insertGetId($insert_document);

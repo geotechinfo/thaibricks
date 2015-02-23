@@ -60,7 +60,7 @@ foreach ($dataset['locations'] as $k=>$v){
 {{ HTML::script('js/moment.js') }}
 {{ HTML::script('js/date.js') }}
     
-<link rel="shortcut icon" href="images/ico/favicon.ico">
+<link rel="shortcut icon" href="{{URL::to('/')}}/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
@@ -314,7 +314,7 @@ foreach ($dataset['locations'] as $k=>$v){
       </div>
     </div>
   </div>
-  <div class="progress" style="display:none;position:fixed;bottom:10px;right:10px;width:200px;height:3px;">
+  <div class="progress" style="display:none; position:fixed; z-index:9999999; bottom:10px; right:10px; width:250px; height:12px;">
     <div class="progress-bar progress-bar-success" style="width:0%;"></div>
   </div>
 </footer>
@@ -521,7 +521,6 @@ $(document).ready(function(){
               col.append(html);
               $(".cls_transport").append(col);
             }else{
-              alert('no trnsport');
               $('#transport_system').hide();
             }
               

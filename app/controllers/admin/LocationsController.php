@@ -342,20 +342,29 @@ class LocationsController extends Controller {
 		$transports  = Transport::where(array('type'=>$type))->get();
 		$builder = array();
 		$counter_group = 0;
-		foreach($transports as $k=> $group){
+		//pr($transports,1);
+		$k = 0;
+		foreach($transports as  $group){
+
 			if($group->parent_id == 0){
 				$builder[$k]["text"] = $group->transport_name."[".$group->location->location_name."]";
 				$builder[$k]["transport_name"] = $group->transport_name;
 				$builder[$k]["transport_id"] = $group->transport_id;
-				foreach($transports as $ck=> $child){
+				//$builder[$k]["nodes"] = array();
+				$ck =0;
+				foreach($transports as $child){
 					if($group->transport_id == $child->parent_id){
 						$builder[$k]["nodes"][$ck]["text"] = $child->transport_name;
 						$builder[$k]["nodes"][$ck]["transport_id"] = $child->transport_id;
 						$builder[$k]["nodes"][$ck]["transport_name"] = $child->transport_name;
+						$ck++;
 					}
 				}
+				$k++;
 			}
+			
 		}
+		//pr($builder,1);
 		echo json_encode($builder, true);exit;
 
 	}

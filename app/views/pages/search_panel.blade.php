@@ -19,7 +19,7 @@ foreach ($dataset['locations'] as $k=>$v){
 
 $filters = Input::all();
 //pr($filters);
-$price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dataset['price']['max']:$filters['price_range']);
+$price_range = (!isset($filters['price_range'])?$dataset['price']['min'].",".$dataset['price']['max']:$filters['price_range']);
 
 ?>          {{ Form::open(array('class' => 'center', 'id' => 'search', 'route' => array('property.search'), 'method' => 'get')) }}
             <fieldset class="search-form">
@@ -39,7 +39,7 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
                               @foreach($value as $ck=> $child)
                               <div class="checkoptions">
                                 <label class="checkbox">
-                                  <input type="checkbox" <?php echo (!empty($filters['types']) && in_array($ck, $filters['types'])?'checked="checked"':"")?> name="types[]"  value="<?php echo $ck; ?>" >
+                                  <input type="checkbox" <?php echo (isset($filters['types']) && in_array($ck, $filters['types'])?'checked="checked"':"")?> name="types[]"  value="<?php echo $ck; ?>" >
                                   {{{ $child }}}
                                 </label>
                               </div>
@@ -68,19 +68,19 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
                         <div class="col-md-12">
                           <div class="checkoptions">
                             <label class="checkbox">
-                              <input type="checkbox" name="bedroom[]" <?php echo (!empty($filters['bedroom']) && in_array(1, $filters['bedroom'])?'checked="checked"':"")?> value="1" >
+                              <input type="checkbox" name="bedroom[]" <?php echo (isset($filters['bedroom']) && in_array(1, $filters['bedroom'])?'checked="checked"':"")?> value="1" >
                               1 BHK
                               </label>
                           </div>
                           <div class="checkoptions">
                             <label class="checkbox">
-                              <input type="checkbox" name="bedroom[]" <?php echo (!empty($filters['bedroom']) && in_array(2, $filters['bedroom'])?'checked="checked"':"")?> value="2" >
+                              <input type="checkbox" name="bedroom[]" <?php echo (isset($filters['bedroom']) && in_array(2, $filters['bedroom'])?'checked="checked"':"")?> value="2" >
                               2 BHK
                             </label>
                           </div>
                           <div class="checkoptions">
                             <label class="checkbox">
-                              <input type="checkbox" name="bedroom[]" <?php echo (!empty($filters['bedroom']) && in_array(3, $filters['bedroom'])?'checked="checked"':"")?> value="3" >
+                              <input type="checkbox" name="bedroom[]" <?php echo (isset($filters['bedroom']) && in_array(3, $filters['bedroom'])?'checked="checked"':"")?> value="3" >
                               3 BHK
                               </label>
                           </div>
@@ -117,13 +117,13 @@ $price_range = (empty($filters['price_range'])?$dataset['price']['min'].",".$dat
                   <div class="mtr margin-top srchByLocation">
                     <!-- <a href=""><img src="images/searchwrapbuttons/searchbymtr.png" style="width:100%; height:auto; "></a> -->
                     <a data-original-title="Search near BTS" href="javascvript:;" data-toggle="tooltip" data-placement="top" title="">
-                      {{ HTML::image('images/nearLocation/btsLogo.png', $alt="BTS", $attributes = array('style'=>"width:98%; height:auto; ")) }}
+                      {{ HTML::image('images/nearlocation/btsLogo.png', $alt="BTS", $attributes = array('style'=>"width:98%; height:auto; ")) }}
                     </a>
                     <a data-original-title="Search near MRT" href="javascvript:;" data-toggle="tooltip" data-placement="top" title="">
-                      {{ HTML::image('images/nearLocation/mrLogo.png', $alt="MRT", $attributes = array()) }}
+                      {{ HTML::image('images/nearlocation/mrLogo.png', $alt="MRT", $attributes = array()) }}
                     </a>
                     <a data-original-title="Airport Link" href="javascvript:;" data-toggle="tooltip" data-placement="top" title="">
-                      {{ HTML::image('images/nearLocation/airportLogo.png', $alt="AirportLink", $attributes = array()) }}
+                      {{ HTML::image('images/nearlocation/airportLogo.png', $alt="AirportLink", $attributes = array()) }}
                     </a>                   
                    </div>
                   <div class="google">

@@ -233,10 +233,11 @@ foreach ($dataset['locations'] as $k=>$v){
     <div class="ad-wrap">{{ HTML::image('images/demoimages/ad7.jpg', '', array('class' => '')) }}</div>
   </aside>
   <div class="col-sm-9 col-sm-pull-3 propertylistwrap">
-  	@if(Session::get('info') == true)
+  	@if(Session::get('info'))
     <div class="margin-top-10 message">
     <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
     </div>
+    {{{ Session::forget('info') }}}
     @endif
   
   

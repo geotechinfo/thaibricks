@@ -241,7 +241,7 @@ div.arrow_fix:before{height:35px !important;}
                                     <?php 
                                       /*$km='';$slct = '';
                                       foreach($v->Child as $ck=>$cv){
-                                      $km = (!empty($dataset["property"]->selected_transports[$cv->transport_id])?$dataset["property"]->selected_transports[$cv->transport_id]:'');
+                                      $km = (isset($dataset["property"]->selected_transports[$cv->transport_id])?$dataset["property"]->selected_transports[$cv->transport_id]:'');
                                       $slct =  (array_key_exists($cv->transport_id, $dataset["property"]->selected_transports)?'selected':'');*/
                                     ?>
                                     <option <?php //echo $slct;?> value="<?php //echo $cv->transport_id?>"><?php  //echo$cv->transport_name?></option>
@@ -302,7 +302,8 @@ div.arrow_fix:before{height:35px !important;}
                                   	<?php $placeholder = "Enter ".$attribute["attribute_name"]; ?>
                                   	{{Form::text('attributes['.$attribute["attribute_id"].']', $attribute_value, array('class' => 'form-control', 'placeholder' => $placeholder))}}
                                   @elseif($attribute["attribute_type"] == "check")
-                                  	{{Form::checkbox('attributes['.$attribute["attribute_id"].']', "Yes", null, array('class' => 'form-control checkbox_radio'))}}
+                                  	<?php $ischeck = ($attribute_value == "Yes") ? true : false; ?>
+                                  	{{Form::checkbox('attributes['.$attribute["attribute_id"].']', "Yes", $ischeck, array('class' => 'form-control checkbox_radio'))}}
                                   @endif
                             </div>
                           </div>

@@ -162,7 +162,7 @@
          <!--<div class="search-btn-wrap clearfix"> <a href="" class="btn btn-primary btn-lg search-button orange margin-top details-search-button"> <span class="fa fa-search"></span> <span>Basic search</span> </a> </div>
          <div class="search-btn-wrap clearfix"> <a href="" class="btn btn-primary btn-lg search-button orange margin-top details-search-button"> <span class="fa fa-search"></span> <span>Search by Map</span> </a> </div>
          <div class="search-btn-wrap clearfix"> <a href="" class="btn btn-primary btn-lg search-button orange margin-top details-search-button"> <span class="fa fa-search"></span> <span>BTS / MRT</span> </a> </div>-->
-         <div class="well featuredagentbox clearfix">
+         <!--<div class="well featuredagentbox clearfix">
          	<h2 class="text-left">Featured Agents</h2>
             <div class="clearfix"> 
               <a class="selected pull-left"> <img class="img-responsive" src="{{{ asset('') }}}/images/agentprofile/agentprofilethumb.png"/> </a> 
@@ -172,7 +172,7 @@
                 </div>
               </div>
             <p class="text-left">If you are looking for place to rent in sukhumvit area, I am the right agent to get in touch with. I am available during 9am to 4pm Mon- Sat.</p>
-         </div>
+         </div>-->
          <div class="ad-wrap">{{ HTML::image('images/demoimages/ad8.jpg', '', array('class' => '')) }}</div>
          <div class="ad-wrap">{{ HTML::image('images/demoimages/ad1.jpg', '', array('class' => '')) }}</div>
          <div class="ad-wrap">{{ HTML::image('images/demoimages/ad6.jpg', '', array('class' => '')) }}</div>
@@ -250,6 +250,11 @@
   <!--/Main Theme & Search-->
   
   
+	<style type="text/css">
+    .propetymap-desc .ad-wrap:before{
+    	display:none;
+    }
+    </style>
     <div class="clearfix propetymap-desc">
       <div class="col-md-5">
       <h5 class="uppercase">Property Image</h5>
@@ -257,7 +262,7 @@
       </div>
       <div class="col-md-7 propertylist-body">
         <h5 class="uppercase">{{{ $property->first_name }}} {{{ $property->last_name }}}</h5>
-        <p class="text-bold">{{{ $property->description }}}</p>
+        <p class="">{{{ $property->description }}}</p>
          
          <div>
               
@@ -339,6 +344,31 @@
         <div class="ad-wrap">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => '')) }}</div>
     </div>
     </div>-->
+    
+    <div class="clearfix propety-feature">
+        <div class="col-md-12">
+            <h5 class="uppercase">Transports and Nearby</h5>
+        </div>
+        <div class="col-md-12">
+            <div class="nearLocation">
+                <?php foreach($property->transports as $transports){ ?>
+                    <?php foreach($transports as $transport){ ?>
+                        <?php if(is_array($transport)){ ?>
+                        <?php foreach($transport as $location){ ?>
+                            <?php if(array_key_exists($location->transport_id, $property->selected_transports)){ ?>
+                              <div class="text-center">
+                                <div class="location" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
+                                <p>Near to <?php echo $location->transport_name; ?></p>
+                              </div>
+                            <?php } ?>
+                        <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    
     
     <div class="relatedproperty">
     <div class="col-md-12">
