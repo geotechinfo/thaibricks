@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `ll_document_tenancy` (
   `document_id` int(11) NOT NULL
 )
 
-ALTER TABLE `pr_location_transports` CHANGE `type` `type` SMALLINT(1) NOT NULL DEFAULT '1' COMMENT '1->Transport, 2->Near By';
+ALTER TABLE `pr_location_transports` ADD `type` SMALLINT(1) NOT NULL DEFAULT '1' COMMENT '1->Transport, 2->Near By';
 
 
 -- DATE 20-02-15

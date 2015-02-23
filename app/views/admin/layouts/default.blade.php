@@ -129,7 +129,7 @@
                     <div><a href="{{URL::to('/admin/location/transport')}}"><span class="fa fa-angle-right"></span>Manage Transport</a></div>
                   </li>
                   <li>
-                    <div><a href="{{URL::to('/admin/location/nearby')}}"><span class="fa fa-angle-right"></span>Manage NearBy</a></div>
+                    <div><a href="{{URL::to('/admin/location/nearby')}}"><span class="fa fa-angle-right"></span>Manage Nearby</a></div>
                   </li>
                   <!--<li>
                     <div><a href="javascript:void(0)"><span class="fa fa-angle-right"></span>Registration Details</a></div>

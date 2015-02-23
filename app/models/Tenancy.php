@@ -54,19 +54,28 @@ class Tenancy extends Eloquent {
 
 		$returns = array();
 
-		foreach($tenancies as $key=>$tenant){
+		foreach($tenancies as $key=>$tenancy){
 			$sql_doc = "SELECT 
 							`ll_documents`.*,
 							`ll_document_heads`.`document_title`
 						FROM `ll_document_tenancy`
 						INNER JOIN `ll_documents` ON `ll_documents`.`document_id` = `ll_document_tenancy`.`document_id` 
 						INNER JOIN `ll_document_heads` ON `ll_document_heads`.`document_head_id` = `ll_documents`.`document_head_id` 
-						WHERE `ll_document_tenancy`.`tenancy_id` = ".$tenant->tenancy_id;
-			
+						WHERE `ll_document_tenancy`.`tenancy_id` = ".$tenancy->tenancy_id;			
 			//$tenant->documents = self::find($tenant->tenancy_id)->documents;
-			$tenant->documents = DB::select($sql_doc);
-			$returns[$key] = $tenant;
+			$tenancy->documents = DB::select($sql_doc);
 			
+			$sql_doc = "SELECT 
+							`ll_transactions`.*,
+							`ll_transaction_heads`.*,
+							`ll_vendors`.*
+						FROM `ll_transactions`
+						INNER JOIN `ll_transaction_heads` ON `ll_transaction_heads`.`transaction_head_id` = `ll_transactions`.`transaction_head_id`
+						LEFT JOIN `ll_vendors` ON `ll_vendors`.`vendor_id` = `ll_transactions`.`vendor_id` 
+						WHERE `ll_transactions`.`tenancy_id` = ".$tenancy->tenancy_id;
+			$tenancy->transactions = DB::select($sql_doc);
+			
+			$returns[$key] = $tenancy;
 		}
 
 		return $returns;

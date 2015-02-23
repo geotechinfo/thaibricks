@@ -190,13 +190,13 @@ foreach ($dataset['locations'] as $k=>$v){
         </div>
       </div>
       
-      <div class="form-group margin-top quicklocationsearch">
+      <!--<div class="form-group margin-top quicklocationsearch">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
                     	{{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"city"))}}
                     </div>
                   </div>
-                </div>
+                </div>-->
     </div>
     
   </section>

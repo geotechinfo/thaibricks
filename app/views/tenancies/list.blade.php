@@ -76,8 +76,8 @@
                         </div>
                         @endif
 
-                         @if(count($tenancy->documents)>0)
-                         @foreach($tenancy->documents as $k=>$v)
+                        @if(count($tenancy->documents)>0)
+                        @foreach($tenancy->documents as $k=>$v)
                         <div class="doc">
                           <div class="row">
                             <div class="col-sm-10">
@@ -100,6 +100,100 @@
                             <div class="col-sm-2"><a href="javascript:;" class="btn btn-default btn-block btn-xs">Download</a></div>
                           </div>
                         </div>-->
+                        
+                        @if(count($tenancy->documents)>0)
+                        <h3>Transactions</h3>
+                        <div class="vendorTrans">
+                          <div class="vTranHeader bold">
+                                    <div class="row">
+                                      <div class="col-sm-2">
+                                        Type
+                                      </div>
+                                      <div class="col-sm-3">
+                                        Title
+                                      </div>
+                                      <div class="col-sm-3">
+                                        Vendor Involved
+                                      </div>
+                                      <div class="col-sm-2">
+                                        Date
+                                      </div>
+                                      <div class="col-sm-2">
+                                        Amount
+                                      </div>
+                                    </div>
+                          </div>
+                         @foreach($tenancy->transactions as $k=>$v)
+                          <div class="vTransRow">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                      {{$v->transaction_type}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                      {{$v->transaction_title}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                      {{$v->vendor_name}}
+                                    </div>
+                                    <div class="col-sm-2">
+                                      {{{ CommonHelper::dateToUx($v->transaction_date) }}}
+                                    </div>
+                                    <div class="col-sm-2">
+                                      {{$v->amount}}
+                                    </div>
+                                </div>
+                          </div>
+                          @endforeach
+                          <!--<div class="vTransRow">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                      John Doe
+                                    </div>
+                                    <div class="col-sm-3">
+                                      Multibuilders
+                                    </div>
+                                    <div class="col-sm-3">
+                                      June 4, 2014
+                                    </div>
+                                    <div class="col-sm-3">
+                                      $1234
+                                    </div>
+                                </div>
+                          </div>
+                          <div class="vTransRow">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                      John Doe
+                                    </div>
+                                    <div class="col-sm-3">
+                                      Multibuilders
+                                    </div>
+                                    <div class="col-sm-3">
+                                      June 4, 2014
+                                    </div>
+                                    <div class="col-sm-3">
+                                      $1234
+                                    </div>
+                                </div>
+                          </div>
+                          <div class="vTransRow">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                      John Doe
+                                    </div>
+                                    <div class="col-sm-3">
+                                      Multibuilders
+                                    </div>
+                                    <div class="col-sm-3">
+                                      June 4, 2014
+                                    </div>
+                                    <div class="col-sm-3">
+                                      $1234
+                                    </div>
+                                </div>
+                          </div>-->
+                        </div>
+                        @endif
                   </div>
             </div>
 			@endforeach
