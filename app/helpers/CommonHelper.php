@@ -2,7 +2,12 @@
 class CommonHelper{
 	static function dateToUx($date){
 		list($year, $month, $day) = explode("-", $date);
-		return $day."/".$month."/".$year;
+		if($year!=0 || $month!=0 || $day!=0)
+		{
+			return $day."/".$month."/".$year;
+		}else{
+			return '';
+		}
 	}
 	static function dateToDb($date){
 		list($day, $month, $year) = explode("/", $date);

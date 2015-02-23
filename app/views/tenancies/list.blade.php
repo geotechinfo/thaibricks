@@ -48,6 +48,7 @@
                     <div class="col-sm-2">{{{ substr($tenancy->tenant_email, 0, 15) }}}...</div>
                     <div class="col-sm-2">{{{ $tenancy->tenant_phone }}}</div>
                     <div class="col-sm-3">
+                      <a href="javascript:;" data-id="{{ $tenancy->tenancy_id }}" title="Upload Others Document" data-toggle="modal" data-target="#upload" class="btn btn-default viewAddDocumentForm" style="padding:0px 6px;"><span class="fa fa-upload"></span></a>
                     	<a href="{{URL::to('/tenancy/transaction')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-btc"></span></a>
                         <a href="{{URL::to('/tenancy/edit')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-edit"></span></a>
                     	<a href="javascript:;" class="btn btn-block orange viewTenantbtn" style="width:60px; display:inline-block;">View</a>
@@ -70,9 +71,26 @@
                             <div class="col-sm-10">
                                 <p class="bold">Agreement Document <span>(<span class="bold">Valid From</span> {{{ CommonHelper::dateToUx($tenancy->start_date) }}} <span class="bold">To</span> {{{ CommonHelper::dateToUx($tenancy->end_date) }}})</span></p>
                             </div>
-                            <div class="col-sm-2"><a href="{{{ asset('files/agreements')."/".$tenancy->agreement_file }}}" class="btn btn-default btn-block btn-xs" target="_blank">Download</a></div>
+                            <div class="col-sm-2"><a href="{{{ URL::to('download').'/agreements/'.$tenancy->agreement_file }}}" class="btn btn-default btn-block btn-xs" target="_blank">Download</a></div>
                           </div>
                         </div>
+                        @endif
+
+                         @if(count($tenancy->documents)>0)
+                         @foreach($tenancy->documents as $k=>$v)
+                        <div class="doc">
+                          <div class="row">
+                            <div class="col-sm-10">
+                                <p class="bold">{{$v->document_title}} <span><span class="bold">Valid From</span> {{{ CommonHelper::dateToUx($v->documentation_date) }}} 
+                                @if(CommonHelper::dateToUx($v->expiry_date)!='')
+                                <span class="bold">To</span> {{{ CommonHelper::dateToUx($v->expiry_date) }}}</span>
+                                @endif
+                                </p>
+                            </div>
+                            <div class="col-sm-2"><a href="{{{URL::to('download').'/documents/'.$v->document_file }}}" class="btn btn-default btn-block btn-xs" target="_blank">Download</a></div>
+                          </div>
+                        </div>
+                        @endforeach
                         @endif
                         <!--<div class="doc">
                           <div class="row">
@@ -140,5 +158,123 @@
   </div>
 </section>
 <!--prefooter-->
+<div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      {{ Form::open(array('id'=>'frm_doc','class' => '', 'route' => array('tenancy.adddocument'), 'files' => true, 'method' => 'post')) }} 
+        
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Or Upload Additional Document</h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" value="0" name="tenancy_id">
+        <input type="hidden" value="0" name="document_id" value="0">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="row" id="doc_list" style="max-height:236px;overflow:auto;cursor:pointer">
+                @foreach($dataset['documents'] as $k=>$v)
+                    <div class="col-sm-12 cls_selectable" data-id="{{ $v->document_id }}" data-tid="{{ $v->tenancy_id }}">
+                      <div class="alert alert-info" style="padding:2px 5px;margin-bottom:10px;border-radius:2px;">
+                        <div class="bold clearfix">
+                          <label class="pull-left">{{$v->document_title}}</label>
+                          <a href="javascript:;" class="pull-right btn btn-default btn-xs cls_check" data-toggle="tooltip" title="This File Already Added" style="display:none">
+                            <span class="fa fa-check"></span>
+                          </a>
+                          <a href="{{{ URL::to('download').'/documents/'.$v->document_file }}}" class="pull-right btn btn-default btn-xs" data-toggle="tooltip" title="Download This File">
+                            <span class="fa fa-download"></span> Download
+                          </a>
+                        </div>
+                        <span class="small">Valid From : {{{ CommonHelper::dateToUx($v->documentation_date) }}} </span>
+                        @if(CommonHelper::dateToUx($v->expiry_date)!='')
+                        <span class="small">to {{{ CommonHelper::dateToUx($v->expiry_date) }}}</span>
+                        @endif
+                      </div>
+                    </div>                
+                @endforeach
+              </div>
+            </div>
+    
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="row" id="doc_form_fields">
+                  
+                  <div class="col-sm-12">
+                    <label>Select Document Head</label>
+                    {{Form::select('document_head_id', $dataset['document_head'], '', array('class' => 'form-control', 'id'=>"location"))}}        
+                  </div>
+                  <div class="col-sm-12">
+                    <label>Select File</label>
+                    <div class="fileHolder">
+                      <div class="row noMargin">
+                        <div class="col-sm-12 noPadding">
+                          <div class="fileBack">
+                            {{ Form::file('upfile', array('class' => 'upFile')) }}
+                            <span><i class="fa fa-upload"></i> Upload Document</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
+                  </div>
+                  <div class="col-sm-12">
+                    <label>Documentation Date</label>
+                    <div class="input-group date datetimepicker1">
+                      {{ Form::text('documentation_date','',array('class'=>'form-control','autocomplete'=>'off'))}}
+                      <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-sm-12">
+                    <label>Expiry Date</label>
+                    <div class="input-group date datetimepicker1">
+                      {{ Form::text('expiry_date','',array('class'=>'form-control','autocomplete'=>'off'))}}
+                      <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+               
+              </div>
+            </div>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary orange modalBtn">Save changes</button>
+      </div>
+      {{ Form::close() }} 
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.viewAddDocumentForm').click(function(){
+      $('input[name="tenancy_id"]').val($(this).data('id'));
+      $('.cls_check').hide();
+      $('.cls_selectable[data-tid="'+$(this).data('id')+'"]').find('.cls_check').show();
+    });
+
+    $('.cls_selectable').click(function(){
+      $('.cls_selectable .alert-success').removeClass('alert-success').addClass('alert-info');
+      $(this).find('.alert').removeClass('alert-info').addClass('alert-success');
+      $('[name="document_head_id"],[name="upfile"],[name="documentation_date"],[name="expiry_date"]').prop('disabled',true);
+      $('[name="document_id"]').val($(this).data('id'));
+
+    })
+    $('#doc_form_fields').click(function(){
+      $('.cls_selectable .alert-success').removeClass('alert-success').addClass('alert-info');
+     // $(this).find('.alert').removeClass('alert-info').addClass('alert-success');
+      $('[name="document_head_id"],[name="upfile"],[name="documentation_date"],[name="expiry_date"]').prop('disabled',false);
+    })
+  });
+</script>
+<style type="text/css">
+  #doc_form_fields > div > label {margin-top:5px;margin-bottom: 0;}
+</style>
 @stop

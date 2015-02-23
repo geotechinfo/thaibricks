@@ -37,8 +37,11 @@ Route::post('/profile/changebannerimage', array('before' => 'auth', 'as' => 'pro
 Route::get('/logout', array('as' => 'logout', 'uses' => 'UsersController@logout'));
 Route::get('/locationlist/{id}', array('as' => 'locationlist', 'uses' => 'PagesController@getlocation'));
 Route::get('/wi', function(){
-    dd(new WideImage);
+    //dd(new WideImage);
 });
+Route::get('/download/{type}/{file}', array('before' => 'auth','as' => 'download', 'uses' => 'DownloadController@get'));
+
+
 Route::get('property/create', array('as' => 'property.create', 'uses' => 'PropertiesController@create'));
 Route::post('property/store', array('as' => 'property.store', 'uses' => 'PropertiesController@store'));
 Route::get('property/mylist/{id}', array('as' => 'property.mylist', 'uses' => 'PropertiesController@mylist'));
@@ -46,6 +49,7 @@ Route::get('property/show/{id}', array('as' => 'property.show', 'uses' => 'Prope
 Route::get('property/edit/{id}', array('as' => 'property.edit', 'uses' => 'PropertiesController@edit'));
 Route::post('property/update/{id}', array('as' => 'property.update', 'uses' => 'PropertiesController@update'));
 Route::get('property/search', array('as' => 'property.search', 'uses' => 'PropertiesController@search'));
+Route::post('property/extend', array('before' => 'auth','as' => 'property.extend', 'uses' => 'PropertiesController@date_extend'));
 
 Route::get('tenancy/create', array('as' => 'tenancy.create', 'uses' => 'TenancyController@create'));
 Route::post('tenancy/store', array('as' => 'tenancy.store', 'uses' => 'TenancyController@store'));
@@ -54,6 +58,8 @@ Route::get('tenancy/edit/{id}', array('as' => 'tenancy.edit', 'uses' => 'Tenancy
 Route::post('tenancy/update/{id}', array('as' => 'tenancy.update', 'uses' => 'TenancyController@update'));
 Route::get('tenancy/transaction/{id}', array('as' => 'tenancy.transaction', 'uses' => 'TenancyController@transaction'));
 Route::post('tenancy/transactionsave/{id}', array('as' => 'tenancy.transactionsave', 'uses' => 'TenancyController@transactionsave'));
+Route::post('tenancy/adddocument', array('as' => 'tenancy.adddocument', 'uses' => 'TenancyController@adddocument'));
+Route::get('tenancy/alert', array('as' => 'tenancy.alert', 'uses' => 'TenancyController@mail_alert'));
 
 Route::get('admin/dashboard', array('as' => 'admin.dashboard', 'uses' => 'AdminsController@dashboard'));
 Route::get('admin/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AttributesController@relation'));
@@ -64,3 +70,8 @@ Route::post('admin/location/addsublocation', array('as' => 'location.addsublocat
 Route::get('admin/location/transport', array('as' => 'location.transport', 'uses' => 'LocationsController@transport'));
 Route::post('admin/location/addgroup', array('as' => 'location.addgroup', 'uses' => 'LocationsController@addgroup'));
 Route::post('admin/location/addtransport', array('as' => 'location.addtransport', 'uses' => 'LocationsController@addtransport'));
+Route::get('admin/location/nearby', array('as' => 'location.nearby', 'uses' => 'LocationsController@nearby'));
+Route::post('admin/location/addnearbygroup', array('as' => 'location.addnearbygroup', 'uses' => 'LocationsController@addnearbygroup'));
+Route::post('admin/location/addnearby', array('as' => 'location.addnearby', 'uses' => 'LocationsController@addnearby'));
+Route::post('admin/location/update_transport', array('as' => 'location.update_transport', 'uses' => 'LocationsController@update_transport'));
+Route::get('admin/get_transport_tree/{type}', array('as' => 'location.get_transport_tree', 'uses' => 'LocationsController@get_transport_tree'));

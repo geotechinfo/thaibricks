@@ -110,10 +110,13 @@ class Property extends Eloquent {
 			DB::statement("INSERT INTO `pr_property_transport` SET $str");
 		}
 	}
-	public function get_properties($user_id=null, $property_id=null, $location_id=null, $sublocation_id=null){
+	public function get_properties($user_id=null, $property_id=null, $location_id=null, $sublocation_id=null,$bedroom=array(),$types=array(),$price_range=array()){
 		$property_sql = "";
 		if($user_id != null){
 			$property_sql .= " AND `pr_properties`.`user_id` = ".$user_id;
+		}
+		if($user_id!=Auth::User()->user_id){
+			$property_sql .= "  AND  `pr_properties`.`is_tenancy` = 0";
 		}
 		if($property_id != null){
 			$property_sql .= " AND `pr_properties`.`property_id` = ".$property_id;
@@ -124,8 +127,21 @@ class Property extends Eloquent {
 		if($sublocation_id != null){
 			$property_sql .= " AND `pr_properties`.`location_sub` = '".$sublocation_id."'";
 		}
-	
-		$properties = DB::select("
+		if(!empty($types)){
+			$property_sql .= " AND 	`pr_properties`.`type_id` IN (".implode(',',$types).")";
+		}
+		if(!empty($price_range)){
+			if(count($price_range)==1){
+				$property_sql .= " AND 	`pr_properties`.`price` < ".$price_range[0];
+			}
+			if(count($price_range)==2){
+				$property_sql .= " AND 	`pr_properties`.`price` BETWEEN ".$price_range[0]." AND ".$price_range[1];
+			}			
+		}
+		if(!empty($bedroom)){
+			$property_sql .= " AND 	`pr_properties`.`property_id` IN (SELECT `property_id` FROM `pr_values` WHERE `attribute_id` =1 AND `attribute_value` IN(".implode(',',$bedroom)."))";
+		}
+		$sql = "
 			SELECT
 			`pr_properties`.*,
 			`location`.`location_name` AS `location_name`,
@@ -151,7 +167,9 @@ class Property extends Eloquent {
 			".$property_sql."
 			ORDER BY
 			`pr_properties`.`property_id` DESC
-		");
+		";
+		//echo $sql;
+		$properties = DB::select($sql);
 
 		$returns = array();
 		foreach($properties as $key=>$property){

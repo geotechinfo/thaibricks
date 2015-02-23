@@ -483,39 +483,83 @@ $(document).ready(function(){
 		
 		if(locationJson[location] != undefined){
 			if(locationJson[location].Transport){
-				var row = $('<div/>').addClass('row');
+				 $(".cls_transport,.cls_nearby").empty()
 				$.each(locationJson[location].Transport, function(i, obj){
-				  var slct = $('<select/>').addClass('form-control cls_transport_select ucontactright').attr({'name':'transport_id[]'});
-				  slct.append($("<option />").val('').text('Select Transport'));
 				  
-				  var kilometer = null;
-				  $.each(obj.Child,function(i1,obj1){
-				  	if(selected_transports[obj1.transport_id] != undefined){
-						slct.append($("<option />").attr("selected", "selected").val(obj1.transport_id).text(obj1.transport_name));
-						kilometer = selected_transports[obj1.transport_id];
-					}else{
-						slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
-					}
-				  });
-				  var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
-				  var rw = $('<div/>').addClass('').append(slct).append(inpt);
-			
-			
-				  var col = $('<div/>').addClass('col-sm-6');
-				  var html = $('<div/>').addClass('form-group');
-				  var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
-				  var cn = $('<div/>').addClass('').append(rw);
-				  html.append(lb).append(cn)
-				  col.append(html);
-				  row.append(col);
+          if(obj.type=='1'){
+            var slct = $('<select/>')
+            .addClass('form-control cls_transport_select ucontactright')
+            .attr({'name':'transport_id[]'})
+            .append($("<option />")
+            .val('')
+            .text('Select Transport')
+            );
+            
+            var kilometer = null;
+            $.each(obj.Child,function(i1,obj1){
+              if(selected_transports[obj1.transport_id] != undefined){
+              slct.append($("<option />").attr("selected", "selected").val(obj1.transport_id).text(obj1.transport_name));
+              kilometer = selected_transports[obj1.transport_id];
+            }else{
+              slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
+            }
+            });
+            var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
+            var rw = $('<div/>').addClass('').append(slct).append(inpt);
+        
+        
+            var col = $('<div/>').addClass('col-sm-6');
+            var html = $('<div/>').addClass('form-group');
+            var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
+            var cn = $('<div/>').addClass('').append(rw);
+            html.append(lb).append(cn)
+            col.append(html);
+            $(".cls_transport").append(col);  
+
+          }
+          if(obj.type=='2'){
+             
+            if(obj.Child.length){
+            var kilometer = null;
+            var col = $('<div/>').addClass('col-sm-12');
+            var html = $('<div/>').addClass('form-group row');
+            var lb = $('<label/>').addClass('control-label col-sm-12').text(obj.transport_name);
+            html.append(lb);
+            //console.log(obj.Child)
+            $.each(obj.Child,function(i1,obj1){
+              var cn = $('<div/>').addClass('col-sm-6').css('margin-bottom','20px');
+                var inpt_text = $('<input/>')
+                .addClass('form-control ucontactright')
+                .attr({'readonly':'readonly','type':'text'})
+                .val(obj1.transport_name);
+                
+                var inpu_hdn = $('<input/>')
+                .attr({'type':'hidden','name':'transport_id[]'})            
+                .val(obj1.transport_id);
+
+                var kilometer = selected_transports[obj1.transport_id];
+
+                var inpt_dst = $('<input/>')
+                .addClass('form-control locationcode cls_transport_distance')
+                .attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
+                
+                cn.append(inpt_text).append(inpu_hdn).append(inpt_dst);
+                html.append(cn);
+            });
+            
+        
+            
+            col.append(html);
+            $(".cls_nearby").append(col);
+          }
+				  }      
+          
 				});
 			}
 		}
-
-		if(row){
-			$(".cls_transport").append(row);
-			$("#transport_system").show();
-		}
+    //console.log(obj);
+    $("#transport_system,#nearby_system").show();
+		
 	}
 	$("#location").change( function(){
 		chnage_rule();

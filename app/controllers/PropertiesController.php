@@ -109,10 +109,11 @@ class PropertiesController extends Controller {
 
 			if(Input::get()["transport_id"]){
 				foreach(Input::get()["transport_id"] as $key=>$value){
-					if($value!=""){
+					$distanc = Input::get()["transport_dist"][$key];
+					if($value!="" && !empty($distanc)){
 						$ins_prop_trns['property_id'] = $id;
 						$ins_prop_trns['transport_id'] = $value;
-						$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+						$ins_prop_trns['distance'] = $distanc;;
 						$properties->insert_property_transport($ins_prop_trns);
 					}
 				}
@@ -246,10 +247,11 @@ class PropertiesController extends Controller {
 			$properties->delete_property_transport($id);
 			if(Input::get()["transport_id"]){
 				foreach(Input::get()["transport_id"] as $key=>$value){
-					if($value!=""){
+					$distanc = Input::get()["transport_dist"][$key];
+					if($value!="" && !empty($distanc)){
 						$ins_prop_trns['property_id'] = $id;
 						$ins_prop_trns['transport_id'] = $value;
-						$ins_prop_trns['distance'] = Input::get()["transport_dist"][$key];
+						$ins_prop_trns['distance'] = $distanc;
 						$properties->insert_property_transport($ins_prop_trns);
 					}
 				}
@@ -327,6 +329,8 @@ class PropertiesController extends Controller {
 	}
 	
 	public function search(){
+
+
 		if(isset($_GET["location"]) && $_GET["location"] != ""){
 			$location_id = $_GET["location"];
 		}else{
@@ -338,18 +342,52 @@ class PropertiesController extends Controller {
 		}else{
 			$sublocation_id = null;
 		}
-	
+		$bedroom = array();
+		if(!empty($_GET['bedroom'])){
+			$bedroom = $_GET['bedroom'];
+		}
+		$types = array();
+		if(!empty($_GET['types'])){
+			$types = $_GET['types'];
+		}
+		$price_range = array();
+		if(!empty($_GET['price_range'])){
+			$price_range = explode(',', $_GET['price_range']);
+		}
 		$properties = new Property();
 		
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();
 		
-		$dataset["properties"] = $properties->get_properties(null, null, $location_id, $sublocation_id);
+		$dataset["properties"] = $properties->get_properties(null, null, $location_id, $sublocation_id,$bedroom,$types,$price_range);
 		
 		if(empty($dataset["properties"])){
 			Session::flash('info', "No properties found for above search criteria!");
 		}
+		//pr($dataset["properties"]);
+		//pr($_GET,1);
+		
+		$properties = new Property();
+		$location = new Location;
+		
+		$dataset['locations']=$location->get_location_with_sub();
+		$dataset["types"] = $properties->getlist_types();
+		$dataset["properties"] = $properties->get_properties(null, null);
+		$price['min'] = DB::table('pr_properties')->min('price');
+		$price['max'] = DB::table('pr_properties')->max('price');
+		$dataset['price'] = $price;
+		$dataset['search_panel'] = View::make('pages.search_panel',array("dataset"=>$dataset));
+
+		
 		return View::make('properties.search', array("dataset"=>$dataset));
+	}
+
+	function date_extend(){
+		$properties = new Property();
+		$row = $properties::find($_POST['property_id']);
+		$row->last_active = strtotime("now");
+		$row->save();
+		echo json_encode($row);exit;
 	}
 
 }

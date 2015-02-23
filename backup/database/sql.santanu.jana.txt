@@ -1,0 +1,45 @@
+-- DATE-05/02/15
+-- -----------------------------------
+
+ALTER TABLE `ac_users` CHANGE `location` `location` INT(11) NOT NULL;
+ALTER TABLE `pr_properties` CHANGE `location` `location` INT(11) NOT NULL;
+ALTER TABLE `pr_properties` CHANGE `location_sub` `location_sub` INT(11) NOT NULL;
+
+
+-- DATE-06/02/15
+-- -----------------------------------
+CREATE TABLE IF NOT EXISTS `pr_property_transport` (
+`property_transport_id` int(11) NOT NULL,
+  `property_id` int(11) NOT NULL,
+  `transport_id` int(11) NOT NULL,
+  `distance` double(10,3) NOT NULL
+)
+
+ALTER TABLE `ac_users` ADD `profile_image` VARCHAR(255) NOT NULL AFTER `remember_token`, ADD `banner_image` VARCHAR(255) NOT NULL AFTER `profile_image`;
+
+
+
+-- DATE-18/02/15
+-- ------------------------------------
+ALTER TABLE `ll_documents` ADD `user_id` INT(11) NOT NULL AFTER `document_id`;
+
+
+-- DATE 19-02-15
+---------------------------------------
+ALTER TABLE `ll_documents` DROP `tenancy_id`;
+
+CREATE TABLE IF NOT EXISTS `ll_document_tenancy` (
+`document_tenancy_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `tenancy_id` int(11) NOT NULL,
+  `document_id` int(11) NOT NULL
+)
+
+ALTER TABLE `pr_location_transports` CHANGE `type` `type` SMALLINT(1) NOT NULL DEFAULT '1' COMMENT '1->Transport, 2->Near By';
+
+
+-- DATE 20-02-15
+----------------------------------------
+ALTER TABLE `pr_properties` ADD `is_tenancy` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '0->No Tenancy,1->Tenancy' AFTER `last_active`;
+
+CREATE TRIGGER `trg_ai_tenancy` AFTER INSERT ON `ll_tenancy` FOR EACH ROW BEGIN UPDATE `pr_properties` SET `is_tenancy` = 1 WHERE `property_id` = NEW.property_id; END
