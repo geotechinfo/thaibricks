@@ -96,7 +96,7 @@
                                           <div class="form-group">
                                               <label class="control-label" for="propertyname">Vendor Involvement</label>
                                               <div class="vendorIn">
-                                                <input type="checkbox" id="vandor"> <label for="vandor">Vendor Involved</label>
+                                                <input type="checkbox" id="vandor" name="vendor_id"> <label for="vandor">Vendor Involved</label>
                                               </div>
                                           </div>
                                       </div>
@@ -114,13 +114,11 @@
                                                                         Select Vendor
                                                                         <!-- <span class="caretHolder"><span class="caret"></span></span> -->
                                                                         </button>
-                                                                        <ul class="dropdown-menu selectDrop">
-                                                                              <li><a href="javascript:;">Vendor 1</a></li>
-                                                                              <li><a href="javascript:;">Vendor 2</a></li>
-                                                                              <li><a href="javascript:;">Vendor 3</a></li>
-                                                                              <li><a href="javascript:;">Vendor 4</a></li>
-                                                                              <li><a href="javascript:;">Vendor 5</a></li>
-    
+                                                                        <ul class="dropdown-menu selectDrop" id="ul_vendor">
+                                                                              @foreach($dataset['vendors'] as $k=>$v)
+                                                                              <li data-vendor_id = "{{ $v->vendor_id }}"><a href="javascript:;">{{$v->vendor_name}}</a></li>
+                                                                              @endforeach
+                                                                              
                                                                               <li class="adVendorholder"><button class="btn" data-toggle="modal" data-target="#addVendorModal">Add New Vendor</button></li>
                                                                         </ul>
                                                                                                                                             
@@ -166,6 +164,9 @@
 <div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+    {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('tenancy.addvendor'), 'files' => true, 'method' => 'post')) }} 
+    <input type="hidden" name="vendor_id" id="vendor_id" value="0">  
+    <input type="hidden" name="user_id" id="user_id" value="0">  
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Add Vendor</h4>
@@ -176,33 +177,34 @@
                               <div class="col-sm-12">
                                   <div class="form-group">
                                       <label class="control-label" for="propertyname">Vendor Name</label>
-                                      <input type="text" class="form-control" placeholder="Enter Vendor Name" />
+                                      <input type="text" class="form-control" name="vendor_name" placeholder="Enter Vendor Name" />
                                   </div>
                               </div>
                               <div class="col-sm-12">
                                   <div class="form-group">
                                       <label class="control-label" for="propertyname">Vendor Contact Number</label>
-                                      <input type="text" class="form-control" placeholder="Enter Vendor Contact Number" />
+                                      <input type="text" class="form-control" name="vendor_phone" placeholder="Enter Vendor Contact Number" />
                                   </div>
                               </div>
                               <div class="col-sm-12">
                                   <div class="form-group">
                                       <label class="control-label" for="propertyname">Vendor Email</label>
-                                      <input type="text" class="form-control" placeholder="Enter Vendor Email" />
+                                      <input type="text" class="form-control" name="vendor_email" placeholder="Enter Vendor Email" />
                                   </div>
                               </div>
                               <div class="col-sm-12">
                                   <div class="form-group">
                                       <label class="control-label" for="propertyname">Vendor Address</label>
-                                      <textarea class="form-control" placeholder="Enter Vendor Address"></textarea>
+                                      <textarea class="form-control" name="vendor_address" placeholder="Enter Vendor Address"></textarea>
                                   </div>
                               </div>
                       </div>
               </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default orange">Add Vendor</button>
+        <button type="button" id="add_vendor_frm" class="btn btn-default orange">Add Vendor</button>
       </div>
+       {{ Form::close() }}
     </div>
   </div>
 </div>
@@ -225,5 +227,32 @@
   </div>
 </section>
 <!--prefooter-->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#add_vendor_frm').click(function(){
+      var ths = $(this);
+      
+      $.post(
+         ths.closest('form').attr('action'),
+         ths.closest('form').serialize(),
+         function(m){
+          var o = $.parseJSON(m);
+          var li = $('<li/>')
+          .addClass('cls_li_vendor')
+          .attr({
+            'data-vendor_id':o.vendor_id
+          })
+          .append($('<a/>').attr({'href':'javascript:;'}).text(o.vendor_name));
+          $('#ul_vendor .adVendorholder').before(li);
+          $('#addVendorModal').modal('toggle');
+         } 
+      )
+    });
 
+    $(document).on('click','#ul_vendor li',function(){
+      //alert($(this).data('vendor_id'))
+      $('#vandor').val($(this).data('vendor_id'));
+    });
+  });
+</script>
 @stop

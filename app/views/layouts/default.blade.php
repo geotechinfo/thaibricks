@@ -65,7 +65,10 @@ foreach ($dataset['locations'] as $k=>$v){
 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
 <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
-
+<style type="text/css">
+  .transport_checkbox{float: left;top: 7px;left: 20px;position: absolute;}
+  .nearbygroup{height: 250px;overflow: auto;}
+</style>
 
 
 </head>
@@ -483,7 +486,7 @@ $(document).ready(function(){
 		
 		if(locationJson[location] != undefined){
 			if(locationJson[location].Transport){
-				 $(".cls_transport,.cls_nearby").empty()
+				 $(".cls_transport,.cls_nearby").empty();
 				$.each(locationJson[location].Transport, function(i, obj){
 				  
           if(obj.type=='1'){
@@ -496,70 +499,93 @@ $(document).ready(function(){
             );
             
             var kilometer = null;
-            $.each(obj.Child,function(i1,obj1){
-              if(selected_transports[obj1.transport_id] != undefined){
-              slct.append($("<option />").attr("selected", "selected").val(obj1.transport_id).text(obj1.transport_name));
-              kilometer = selected_transports[obj1.transport_id];
+            
+            if(obj.Child.length){
+              $.each(obj.Child,function(i1,obj1){
+                if(selected_transports[obj1.transport_id] != undefined){
+                slct.append($("<option />").attr("selected", "selected").val(obj1.transport_id).text(obj1.transport_name));
+                kilometer = selected_transports[obj1.transport_id];
+              }else{
+                slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
+              }
+              });
+              var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
+              var rw = $('<div/>').addClass('').append(slct).append(inpt);
+          
+          
+              var col = $('<div/>').addClass('col-sm-6 transportgroup');
+              var html = $('<div/>').addClass('form-group');
+              var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
+              var cn = $('<div/>').addClass('').append(rw);
+              html.append(lb).append(cn)
+              col.append(html);
+              $(".cls_transport").append(col);
             }else{
-              slct.append($("<option />").val(obj1.transport_id).text(obj1.transport_name));
+              alert('no trnsport');
+              $('#transport_system').hide();
             }
-            });
-            var inpt = $('<input/>').addClass('form-control locationcode cls_transport_distance').attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
-            var rw = $('<div/>').addClass('').append(slct).append(inpt);
-        
-        
-            var col = $('<div/>').addClass('col-sm-6');
-            var html = $('<div/>').addClass('form-group');
-            var lb = $('<label/>').addClass('control-label').text(obj.transport_name);
-            var cn = $('<div/>').addClass('').append(rw);
-            html.append(lb).append(cn)
-            col.append(html);
-            $(".cls_transport").append(col);  
+              
 
           }
           if(obj.type=='2'){
              
             if(obj.Child.length){
             var kilometer = null;
-            var col = $('<div/>').addClass('col-sm-12');
+            var col = $('<div/>').addClass('col-sm-6 nearbygroup');
             var html = $('<div/>').addClass('form-group row');
             var lb = $('<label/>').addClass('control-label col-sm-12').text(obj.transport_name);
             html.append(lb);
             //console.log(obj.Child)
+
             $.each(obj.Child,function(i1,obj1){
-              var cn = $('<div/>').addClass('col-sm-6').css('margin-bottom','20px');
+              var cn = $('<div/>').addClass('col-sm-12').css('margin-bottom','5px');
+              var kilometer = selected_transports[obj1.transport_id];
+  
+              //alert(kilometer)
                 var inpt_text = $('<input/>')
                 .addClass('form-control ucontactright')
                 .attr({'readonly':'readonly','type':'text'})
+                .css({'padding-left':'25px'})
                 .val(obj1.transport_name);
                 
                 var inpu_hdn = $('<input/>')
-                .attr({'type':'hidden','name':'transport_id[]'})            
+                .attr({'type':'checkbox','name':'transport_id[]'})
+                .prop('checked',(kilometer==undefined?false:true))
+                .addClass('transport_checkbox')           
                 .val(obj1.transport_id);
 
-                var kilometer = selected_transports[obj1.transport_id];
-
+                
                 var inpt_dst = $('<input/>')
                 .addClass('form-control locationcode cls_transport_distance')
                 .attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer});
                 
-                cn.append(inpt_text).append(inpu_hdn).append(inpt_dst);
+                cn.append(inpu_hdn).append(inpt_text).append(inpt_dst);
                 html.append(cn);
             });
-            
-        
             
             col.append(html);
             $(".cls_nearby").append(col);
           }
-				  }      
-          
+
+
+				}      
+
 				});
 			}
 		}
     //console.log(obj);
-    $("#transport_system,#nearby_system").show();
+    //$("#transport_system,#nearby_system").show();
 		
+    if($('.nearbygroup').length==0){
+        $('#nearby_system').hide();
+    }else{
+      $('#nearby_system').show();
+    }
+    if($('.transportgroup').length==0){
+      $("#transport_system").hide();
+    }else{
+      $("#transport_system").show();
+    }
 	}
 	$("#location").change( function(){
 		chnage_rule();

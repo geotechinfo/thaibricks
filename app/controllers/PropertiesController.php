@@ -178,6 +178,8 @@ class PropertiesController extends Controller {
 				
 		$properties = new Property();
 		$property = $properties->get_properties(null, $id);
+
+		//pr($property,1);
 		$property = $property[0];
 
 		$dataset["property"] = $property;
@@ -248,12 +250,12 @@ class PropertiesController extends Controller {
 			if(Input::get()["transport_id"]){
 				foreach(Input::get()["transport_id"] as $key=>$value){
 					$distanc = Input::get()["transport_dist"][$key];
-					if($value!="" && !empty($distanc)){
+					//if($value!=""){
 						$ins_prop_trns['property_id'] = $id;
 						$ins_prop_trns['transport_id'] = $value;
 						$ins_prop_trns['distance'] = $distanc;
 						$properties->insert_property_transport($ins_prop_trns);
-					}
+					//}
 				}
 			}
 			

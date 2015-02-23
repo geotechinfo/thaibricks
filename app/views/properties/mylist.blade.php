@@ -401,6 +401,7 @@
           ths.button('reset');
           ths.closest('.cls_extend').find('.cls_extend_text').text('You property is active for next 7 days.');
           ths.closest('.cls_extend').find('.cls_extend_btn').hide();
+          ths.closest('.cls_extend').find('.disablePropertyHolder').removeClass('disablePropertyHolder');
         }
       )
     });

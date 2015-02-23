@@ -166,10 +166,26 @@ class TenancyController extends Controller {
 		$dataset["tenancies"] = $tenancies->get_tenancies($user_id);
 		$dataset["tenancy_id"] = $id;
 		
+		$dataset['vendors'] = DB::table('ll_vendors')->where(array('user_id'=>Auth::User()->user_id))->get();
 		$transaction = new Transaction();
 		$dataset["transaction_heads"] = $transaction->getlist_heads();
 		
 		return View::make('tenancies.transaction', array("dataset"=>$dataset));
+	}
+
+	public function addvendor(){
+		$user_id = Auth::user()->user_id;
+	
+		$insert['user_id'] =$user_id;
+		$insert['vendor_name'] =Input::get('vendor_name');
+		$insert['vendor_phone'] =Input::get('vendor_phone');
+		$insert['vendor_email'] =Input::get('vendor_email');
+		$insert['vendor_address'] =Input::get('vendor_address');
+
+		$vendor_id = DB::table('ll_vendors')->insertGetId($insert);
+		
+		$row = Vendor::find($vendor_id);
+		echo json_encode($row);exit;
 	}
 	
 	public function transactionsave($id){
@@ -190,14 +206,14 @@ class TenancyController extends Controller {
 		
 		$transaction = new Transaction();
 		$transaction->tenancy_id = $id;
-		$transaction->transaction_head_id = 1;
-		$transaction->vendor_id = 1;
+		$transaction->transaction_head_id = Input::get('transaction_head');
+		$transaction->vendor_id = Input::get('vendor_id');
 		$transaction->transaction_date = CommonHelper::dateToDb(Input::get('transaction_date'));
 		$transaction->amount = Input::get('transaction_amount');
         if($transaction->save()){
 			return Redirect::route('tenancy.tenancies')->with('success', 'Transaction successfully added.');
 		}
-
+	}
 	public function adddocument(){
 
 
