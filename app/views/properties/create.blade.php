@@ -509,41 +509,60 @@ div.arrow_fix:before{height:35px !important;}
                       </div>-->
                       <p></p>
                         <div class="form-group">
-                        	<label for="propertyname" class="col-md-4 control-label">Add Photos</label>
-                        <div class="col-md-6">
-                          <div class="fileHolder">
-								<?php
-                                $image_types = array("Locality", "Building", "Floor Plan", "Bedroom 1", "Bedroom 2", "Kitchen", "Others");
-                                foreach($image_types as $image_type){
-                                ?>
-                                <div class="row noMargin" id="file_wrap" style="margin-bottom:5px !important;">
-                                  <div class="col-sm-6 noPadding" style="min-height:inherit !important;">
-                                    <input type="text" class='form-control' name="image_titles[]" placeholder="Enter Title" value="<?php echo $image_type; ?>" readonly="readonly" style="color:#333333;"/>
-                                  </div>
-                                  <div class="col-sm-6 noPadding" style="min-height:inherit !important;">
-                                    <div class="fileBack">
-                                      {{ Form::file('image_files[]', array('class' => 'upFile')) }}
-                                      <span><i class="fa fa-plus"></i> Add Image</span>
-                                    </div>
+                        	<div class="clearfix">
+                        		<label for="propertyname" class="col-md-4 control-label">Add Photos</label>
+                            </div>
+                            <div class="addSpImageHolder">
+                                <div class="clearfix well">
+                                    <div class="col-md-6">
+                                  <div class="fileHolder">
+                                        <?php
+                                        $image_types = array("Locality", "Building", "Floor Plan", "Bedroom 1", "Bedroom 2", "Kitchen", "Others");
+                                        foreach($image_types as $image_type){
+                                        ?>
+                                        <div class="row noMargin" id="file_wrap" style="margin-bottom:5px !important;">
+                                          <div class="col-sm-6 noPadding" style="min-height:inherit !important;">
+                                            <input type="text" class='form-control' name="image_titles[]" placeholder="Enter Title" value="<?php echo $image_type; ?>" readonly="readonly" style="color:#333333;"/>
+                                          </div>
+                                          <div class="col-sm-6 noPadding" style="min-height:inherit !important;">
+                                            <div class="fileBack">
+                                              {{ Form::file('image_files[]', array('class' => 'upFile')) }}
+                                              <span><i class="fa fa-plus"></i> Add Image</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <?php } ?>
+                                        <!--<a href="javascript:;" class="adFile" id="file_add"><i class="fa fa-plus"></i> Add More Images</a>-->
                                   </div>
                                 </div>
-                                <?php } ?>
-                                <!--<a href="javascript:;" class="adFile" id="file_add"><i class="fa fa-plus"></i> Add More Images</a>-->
-                          </div>
-                        </div>
+                                </div>
+                            </div>
                         </div>
                       <p></p>
                       	<div class="form-group">
-                        	<?php if($dataset["property"]->media){ ?>
-                            @foreach($dataset["property"]->media as $key=>$media)
-                            <div class="portfolio-item col-md-3">
-                                <a class="item-inner btn-block" href="javascript:void(0);"> <img alt="{{{ $media->media_title }}}" src="{{{ asset('files/properties')."/".$media->media_data }}}">
-                                	{{{ $media->media_title }}}
-                                    <input type="checkbox" name="image_deletes[]" value="<?php echo $media->media_id; ?>" />
-                                </a>
-                            </div>  
-                            @endforeach
-                            <?php } ?>
+                            <div class="addSpImageHolder">
+                                <div class="well">
+                                    <div class="clearfix">
+                                
+                                
+                                    <?php if($dataset["property"]->media){ ?>
+                                    @foreach($dataset["property"]->media as $key=>$media)
+                                    <div class="portfolio-item uploadedImages">
+                                        <a class="item-inner btn-block" href="javascript:void(0);"> <img alt="{{{ $media->media_title }}}" src="{{{ asset('files/properties')."/".$media->media_data }}}">
+                                            <p class="upImageTitle">{{{ $media->media_title }}}</p>
+                                        </a>
+                                        <div class="deleteCheck"><input type="checkbox" name="image_deletes[]" value="<?php echo $media->media_id; ?>" /> Delete</div>
+                                    </div>  
+                                    @endforeach
+                                    <?php } ?>
+                                    
+                                    </div>
+                                    
+                                	<p class="delImgAlert bg-info">The image will be deleted once you click update.</p>
+                                </div>
+                            </div>
+                            
+                            
                         </div>
                       <br />
                     

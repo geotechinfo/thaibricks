@@ -53,6 +53,7 @@ Route::get('tenancy/tenancies', array('as' => 'tenancy.tenancies', 'uses' => 'Te
 Route::get('tenancy/edit/{id}', array('as' => 'tenancy.edit', 'uses' => 'TenancyController@edit'));
 Route::post('tenancy/update/{id}', array('as' => 'tenancy.update', 'uses' => 'TenancyController@update'));
 Route::get('tenancy/transaction/{id}', array('as' => 'tenancy.transaction', 'uses' => 'TenancyController@transaction'));
+Route::post('tenancy/transactionsave/{id}', array('as' => 'tenancy.transactionsave', 'uses' => 'TenancyController@transactionsave'));
 
 Route::get('admin/dashboard', array('as' => 'admin.dashboard', 'uses' => 'AdminsController@dashboard'));
 Route::get('admin/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AttributesController@relation'));

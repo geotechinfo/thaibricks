@@ -9,158 +9,158 @@
   </aside>
   <div class="col-sm-9 col-sm-pull-3 propertylistwrap">
     <h2>Add Transaction</h2>
+    
+    @foreach ($errors->all() as $message)
+    <div class="margin-top-10 message">
+    <p class="btn-danger text-danger padding-5">
+        <span class="fa fa-times-circle"></span>{{{ $message }}}
+        <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
+    </p>
+    </div>
+    <?php break; ?>
+    @endforeach
     <div class="propertylist clearfix new">    	
       <div class="formwrap addTransactionForm">
 
       <!-- Add transaction Form Begins -->
-        <form>
-            <div>
-                <h4>Select Tenancy</h4>
-                <div class="border-bottom"></div>
-                <div class="padding well">
-
-                              <div class="row">
-                                      <div class="col-sm-6">
-                                          <div class="form-group">
-                                              <label class="control-label" for="propertyname">Select Tenancy</label>
-                                                    <div class="arrow">
-                                                        <div class="btn-group mutiselectbtn">
-                                                        	 <?php
-																$current_tenancies = array();
-																$current_tenancies[""] = "Select your tenancy for transaction.";
-																foreach($dataset["tenancies"] as $tenancy){
-																	$current_tenancies[$tenancy->tenancy_id] = $tenancy->title;
-																}
-															  ?>
-															  {{Form::select('tenancy_id', $current_tenancies, $dataset["tenancy_id"], array('class' => 'form-control', 'id'=>""))}}
-                                                        </div>
-                                                    </div>
-                                          </div>
-                                      </div>
-                              </div>
-
-                </div>
-
-
-                <h4>Transaction Type</h4>
-                <div class="border-bottom"></div>
-                <div class="padding well">
-
-                              <div class="row">
-
-
-                                      <div class="col-sm-6">
-                                          <div class="form-group">
-                                              <label class="control-label" for="propertyname">Transaction Type</label>
-                                                    <div class="arrow">
-                                                        <div class="btn-group mutiselectbtn">
-                                                            <select class="form-control" id="vendorTypeSelect">
-                                                                <option selected="true" style="display:none;">Select Transaction Type</option>
-                                                                <optgroup label="Expense">
-                                                                    <option class="vendorShow">Tax</option>
-                                                                    <option class="vendorShow">Repairy</option>
-                                                                    <option class="vendorShow">Painting</option>
-                                                                </optgroup>
-                                                                <optgroup label="Income">                          
-                                                                    <option class="vendorHide">Deposit</option>
-                                                                    <option class="vendorHide">Rent</option>
-                                                                </optgroup>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                          </div>
-                                      </div>
-
-                                      <div class="col-sm-6">
-                                              <div class="form-group">
-                                                      <label for="propertyname" class="control-label">Transaction Date</label>
-                                                      <div class='input-group date datetimepicker10' id=''>
-                                                          <input type='text' class="form-control" placeholder="Agreement ends on" />
-                                                          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                                          </span>
-                                                      </div>
-                                              </div>
-                                      </div>
-                                      <script type="text/javascript">
-                                      $(function(){
-                                        $(function () {
-                                            $('.datetimepicker10').datetimepicker();
-                                        });
-                                      })
-                                      </script>
-
-                                      <div class="vendorToggle">
-                                          <div class="col-sm-6 ">
-                                              <div class="form-group">
-                                                  <label class="control-label" for="propertyname">Vendor Involvement</label>
-                                                  <div class="vendorIn">
-                                                    <input type="checkbox" id="vandor"> <label for="vandor">Vendor Involved</label>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="col-sm-6 vandorName">
-                                              <div class="form-group">
-                                                  <label class="control-label" for="propertyname">Select Vendor</label>
-                                                            
-                                                                <div class="input-prepend input-append">
-
-                                                                <div class="arrow">
-                                                                    <div class="btn-group mutiselectbtn">
-                                                                        <div class="btn-group selectSropGroup">
-
-                                                                            <button class="btn dropdown-toggle selectDropper" name="recordinput" data-toggle="dropdown">
-                                                                            Select Vendor
-                                                                            <!-- <span class="caretHolder"><span class="caret"></span></span> -->
-                                                                            </button>
-                                                                            <ul class="dropdown-menu selectDrop">
-                                                                                  <li><a href="javascript:;">Vendor 1</a></li>
-                                                                                  <li><a href="javascript:;">Vendor 2</a></li>
-                                                                                  <li><a href="javascript:;">Vendor 3</a></li>
-                                                                                  <li><a href="javascript:;">Vendor 4</a></li>
-                                                                                  <li><a href="javascript:;">Vendor 5</a></li>
-
-                                                                                  <li class="adVendorholder"><button class="btn" data-toggle="modal" data-target="#addVendorModal">Add New Vendor</button></li>
-                                                                            </ul>
-                                                                            <script type="text/javascript">
-                                                                                $(function(){
-                                                                                  $(".selectDrop li a").click(function(){
-                                                                                    var selText = $(this).text();
-                                                                                    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caretHolder"><span class="caret"></span></span>');
-                                                                                  });
-                                                                                });
-                                                                            </script>                                                                    
-                                                                        </div>
-                                                                    </div>
-                                                                  </div>
-
-                                                                </div>
-                                              </div>
-                                          </div>
-
-                                      </div >
-                              </div>
-
-                </div>
-
-
-                <h4>Amount of Transaction</h4>
-                <div class="border-bottom"></div>
-                <div class="padding well">
-                  <div class="row">
-                    <div class="col-sm-6">
-                        <label for="netAmount">Net Amount</label>
-                        <input type="text" class="form-control" id="netAmount" />
-                    </div>
-                    <div class="col-sm-6 ntAmtSbmt">
-                      <div class="ntAmtgap"></div>
-                      <a href="javascript:;" class="btn btn-default orange">Submit</a>
-                    </div>
+      {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('tenancy.transactionsave', $dataset["tenancy_id"]), 'files' => true, 'method' => 'post')) }} 
+        <div>
+            <h4>Select Tenancy</h4>
+            <div class="border-bottom"></div>
+            <div class="padding well">
+              <div class="row">
+                  <div class="col-sm-6">
+                      <div class="form-group">
+                          <label class="control-label" for="propertyname">Select Tenancy</label>
+                            <div class="arrow">
+                                <div class="btn-group mutiselectbtn">
+                                     <?php
+                                        $current_tenancies = array();
+                                        $current_tenancies[""] = "Select your tenancy for transaction.";
+                                        foreach($dataset["tenancies"] as $tenancy){
+                                            $current_tenancies[$tenancy->tenancy_id] = $tenancy->title;
+                                        }
+                                      ?>
+                                      {{Form::select('tenancy_name', $current_tenancies, $dataset["tenancy_id"], array('class' => 'form-control', 'id'=>""))}}
+                                </div>
+                            </div>
+                      </div>
                   </div>
-                </div>
-
-
+              </div>
             </div>
-        </form>
+    
+    
+            <h4>Transaction Type</h4>
+            <div class="border-bottom"></div>
+            <div class="padding well">
+    
+                          <div class="row">
+    
+    
+                                  <div class="col-sm-6">
+                                      <div class="form-group">
+                                          <label class="control-label" for="propertyname">Transaction Type</label>
+                                                <div class="arrow">
+                                                    <div class="btn-group mutiselectbtn">
+                                                        {{Form::select('transaction_head', $dataset["transaction_heads"], null, array('class' => 'form-control', id => 'selectTransactionHead'))}}
+                                                        <!--<select class="form-control" id="vendorTypeSelect">
+                                                            <option selected="true" style="display:none;">Select Transaction Type</option>
+                                                            <optgroup label="Money Out">
+                                                                <option class="vendorShow">Tax</option>
+                                                                <option class="vendorShow">Repairy</option>
+                                                                <option class="vendorShow">Painting</option>
+                                                            </optgroup>
+                                                            <optgroup label="Money In">                          
+                                                                <option class="vendorHide">Deposit</option>
+                                                                <option class="vendorHide">Rent</option>
+                                                            </optgroup>
+                                                        </select>-->
+                                                    </div>
+                                                </div>
+                                      </div>
+                                  </div>
+    
+                                  <div class="col-sm-6">
+                                          <div class="form-group">
+                                                  <label for="propertyname" class="control-label">Transaction Date</label>
+                                                  <div class='input-group date datetimepicker1' id=''>
+                                                      {{Form::text('transaction_date', CommonHelper::dateToUx($dataset["transaction"]->transaction_date), array('class' => 'form-control', 'placeholder' => 'Transaction Date'))}}
+                                                      <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                      </span>
+                                                  </div>
+                                          </div>
+                                  </div>
+                                  
+                                  <div class="vendorToggle">
+                                      <div class="col-sm-6 ">
+                                          <div class="form-group">
+                                              <label class="control-label" for="propertyname">Vendor Involvement</label>
+                                              <div class="vendorIn">
+                                                <input type="checkbox" id="vandor"> <label for="vandor">Vendor Involved</label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-sm-6 vandorName">
+                                          <div class="form-group">
+                                              <label class="control-label" for="propertyname">Select Vendor</label>
+                                                        
+                                                            <div class="input-prepend input-append">
+    
+                                                            <div class="arrow">
+                                                                <div class="btn-group mutiselectbtn">
+                                                                    <div class="btn-group selectSropGroup">
+    
+                                                                        <button class="btn dropdown-toggle selectDropper" name="recordinput" data-toggle="dropdown">
+                                                                        Select Vendor
+                                                                        <!-- <span class="caretHolder"><span class="caret"></span></span> -->
+                                                                        </button>
+                                                                        <ul class="dropdown-menu selectDrop">
+                                                                              <li><a href="javascript:;">Vendor 1</a></li>
+                                                                              <li><a href="javascript:;">Vendor 2</a></li>
+                                                                              <li><a href="javascript:;">Vendor 3</a></li>
+                                                                              <li><a href="javascript:;">Vendor 4</a></li>
+                                                                              <li><a href="javascript:;">Vendor 5</a></li>
+    
+                                                                              <li class="adVendorholder"><button class="btn" data-toggle="modal" data-target="#addVendorModal">Add New Vendor</button></li>
+                                                                        </ul>
+                                                                                                                                            
+                                                                    </div>
+                                                                </div>
+                                                              </div>
+    
+                                                            </div>
+                                          </div>
+                                      </div>
+    
+                                  </div >
+                          </div>
+    
+            </div>
+    
+    
+            <h4>Amount of Transaction</h4>
+            <div class="border-bottom"></div>
+            <div class="padding well">
+              <div class="row">
+                <div class="col-sm-6">
+                    <label for="cdaddress" class="control-label">Transaction Amount</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">&#xe3f;</span>
+                        <div class="row no-margin">
+                        <div class="col-xs-12  no-margin">
+                        {{Form::text('transaction_amount', $dataset["transaction"]->transaction_amount, array('class' => 'form-control special_input', 'placeholder' => 'Enter Transaction Amount', 'style'=>'height:36px'))}}
+                        </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="col-sm-6 ntAmtSbmt">
+                  <div class="ntAmtgap"></div>
+                  <input type="submit" value="Submit" class="btn btn-default orange" />
+                </div>
+              </div>
+            </div>
+        </div>
+        {{ Form::close() }}
 
 <!-- Modal -->
 <div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

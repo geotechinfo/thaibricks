@@ -2644,3 +2644,11 @@ optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-si
 .navbar-inverse .social-network-menu li:hover a.welcomeuser, .navbar-inverse .social-network-menu > li:hover > a.welcomeuser {
 	background: #FFF;border-top-left-radius: 2px;border-top-right-radius: 2px;color:#000;
 }
+.addSpImageHolder {padding:12px 25px 0;position:relative;}
+.addSpImageHolder .well {position:relative;}
+.uploadedImages img {display:inline-block;margin:5px;width:auto;height:90px;}
+.uploadedImages {display:inline-block;position:relative}
+.uploadedImages a {margin:0 !important;}
+.upImageTitle {padding-left:6px;}
+.deleteCheck {position: absolute;top: 8px;left: 8px;display: inline-block;padding: 2px 5px;background: rgba(255, 255, 255, 0.9);border-radius: 3px}
+.delImgAlert {position: absolute;width: 100%;padding: 2px 5px;left:0;top:-30px;}

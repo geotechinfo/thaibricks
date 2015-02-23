@@ -118,7 +118,7 @@ foreach ($dataset['locations'] as $k=>$v){
                       <li><a href="{{URL::to('/property/mylist/me')}}"><i class="fa fa-dashboard"></i> My Properties</a></li>
                       <li class="divider"></li>
                       <li><a href="{{URL::to('/tenancy/create')}}"><i class="fa fa-plus"></i> Add Tenancy</a></li>
-                      <li><a href="{{URL::to('/tenancy/transaction')}}"><i class="fa fa-plus"></i> Add Transactions</a></li>
+                      <li><a href="{{URL::to('/tenancy/transaction')}}/0"><i class="fa fa-plus"></i> Add Transactions</a></li>
                       <li><a href="{{URL::to('/tenancy/tenancies')}}"><i class="fa fa-plus"></i> View Tenancies</a></li>
                       <li class="divider"></li>
                       <li><a href="{{URL::to('/profile')}}"><i class="fa fa-eye"></i> Profile Manage</a></li>

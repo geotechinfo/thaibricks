@@ -479,10 +479,51 @@ foreach ($dataset['locations'] as $k=>$v){
             </div>-->
         </div>
         <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
+         <!--<div class="linkgroup">
          	<a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
             <a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
+         </div>-->
+         <div class="row">
+         	<div class="col-sm-12">
+                 <div class="nearLocation">
+					<?php foreach($property->transports as $transports){ ?>
+                        <?php foreach($transports as $transport){ ?>
+                            <?php if(is_array($transport)){ ?>
+                            <?php foreach($transport as $location){ ?>
+                                <?php if(array_key_exists($location->transport_id, $property->selected_transports)){ ?>
+                                  <div class="text-center">
+                                    <div class="location" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
+                                    <p>Near to <?php echo $location->transport_name; ?></p>
+                                  </div>
+                                <?php } ?>
+                            <?php } ?>
+                            <?php } ?>
+                        <?php } ?>
+                    <?php } ?>
+                      <!--<div class="text-center">
+                        <div class="location nearMrt"></div>
+                        <p>Near MRT</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearAirport"></div>
+                        <p>Near Airport</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearHospital"></div>
+                        <p>Hospital (2Km)</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearSchool"></div>
+                        <p>School (1Km)</p>
+                      </div>
+                      <div class="text-center">
+                        <div class="location nearPark"></div>
+                        <p>Park (4Km)</p>
+                      </div>-->
+                 </div>
+            </div>
          </div>
+         
          <div>
               <div class="pull-right">
               	<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>

@@ -173,16 +173,16 @@ $(function(){
 	});
 
 	/* Vendor Toggle */
-	$(document).ready(function(){
+	/*$(document).ready(function(){
 	  $("#vandor").removeAttr('checked');
 	})
 	$(function(){
 		$(".vendorShow").click(function(){
 		  $(".vendorToggle").slideDown();
-		})
+		});
 		$(".vendorHide").click(function(){
 		  $(".vendorToggle").slideUp();
-		})
+		});
 
 		$('#vandor').click(function(){
 		    if (this.checked) {
@@ -191,12 +191,37 @@ $(function(){
 		        $('.vandorName').fadeOut();          
 		    }
 		});
-	});
+	});*/
 	
 	/* Tenancy dropview */
 	$(".viewTenantbtn").click(function(){
 		//$(".tenDetails").not(this).slideUp();
 		$(this).closest(".tenantRow").siblings(".tenantRow").find(".tenDetails").slideUp();
 		$(this).closest(".tenantRow").find(".tenDetails").slideToggle();
+	});
+});
+
+<!-- For tenancy transaction add -->
+$(function(){
+	$("#selectTransactionHead").change(function(){
+		var label = $("#selectTransactionHead option:selected").parent().attr('label');
+		if(label == "Cash Out"){
+			$(".vendorToggle").slideDown();
+		}else{
+			$(".vendorToggle").slideUp();
+		}
+	});
+	
+	$('#vandor').click(function(){
+		if (this.checked) {
+			$('.vandorName').fadeIn();
+		} else {
+			$('.vandorName').fadeOut();          
+		}
+	});
+	
+	$(".selectDrop li a").click(function(){
+		var selText = $(this).text();
+		$(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caretHolder"><span class="caret"></span></span>');
 	});
 });

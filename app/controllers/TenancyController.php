@@ -155,12 +155,42 @@ class TenancyController extends Controller {
 	}
 	
 	public function transaction($id){
-		$id = Auth::user()->user_id;
+		$user_id = Auth::user()->user_id;
 	
 		$tenancies = new Tenancy();
-		$dataset["tenancies"] = $tenancies->get_tenancies($id);
+		$dataset["tenancies"] = $tenancies->get_tenancies($user_id);
 		$dataset["tenancy_id"] = $id;
 		
+		$transaction = new Transaction();
+		$dataset["transaction_heads"] = $transaction->getlist_heads();
+		
 		return View::make('tenancies.transaction', array("dataset"=>$dataset));
+	}
+	
+	public function transactionsave($id){
+		$validators = array(
+			'tenancy_name' => 'required',
+			'transaction_head' => 'required',
+			'transaction_date' => 'required',
+			'transaction_amount' => 'required'
+		);
+		$validator = Validator::make(
+            Input::all(),
+            $validators
+        );
+
+		if($validator->fails()){
+            return Redirect::route('tenancy.transaction', array($id))->withErrors($validator)->withInput();
+        }
+		
+		$transaction = new Transaction();
+		$transaction->tenancy_id = $id;
+		$transaction->transaction_head_id = 1;
+		$transaction->vendor_id = 1;
+		$transaction->transaction_date = CommonHelper::dateToDb(Input::get('transaction_date'));
+		$transaction->amount = Input::get('transaction_amount');
+        if($transaction->save()){
+			return Redirect::route('tenancy.tenancies')->with('success', 'Transaction successfully added.');
+		}
 	}
 }
