@@ -29,9 +29,11 @@ jQuery(function($) {
 	//goto top
 	$('.gototop').click(function(event) {
 		event.preventDefault();
+		var time = ($(window).scrollTop())*.75;
+		//alert($(window).scrollTop()/10);
 		$('html, body').animate({
 			scrollTop: $("body").offset().top
-		}, 500);
+		}, time,'easeInOutQuint');
 	});	
 
 	//Pretty Photo
@@ -67,7 +69,8 @@ jQuery(function($) {
 	
 	//tooltip	
 	$(function() {
-		$("#price_range").slider({reversed : false});
+		$("#sale_price_range").slider({reversed : false});
+		$("#rent_price_range").slider({reversed : false});
 	});
 	
 	//select2 autocomplete
@@ -136,7 +139,10 @@ jQuery(function($) {
         }
 		});
 	}
-	window.onload = init();
+	if($('header').length){
+		window.onload = init();
+	}
+	
 	
 	$(document).ready(function() {
     $('.stepwrap a').on('click', function(e)  {
@@ -225,3 +231,56 @@ $(function(){
 		$(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caretHolder"><span class="caret"></span></span>');
 	});
 });
+
+// Go Top Top
+$(function(){
+	//$(".goToTopBtn").addClass("hide");
+	$(window).scroll(function(){
+		if($(window).scrollTop() > 200){
+			$(".goToTopBtn").addClass("showToTopBtn");
+		} else {
+			$(".goToTopBtn").removeClass("showToTopBtn");
+		}
+	});
+});
+
+// Hide Login Section When Clicked Elsewhere
+$(function(){
+	$(document).click(function(e) {
+		if (!$(e.target).is('.socialnav-collapse *')) {
+			$(".login_popupdiv").hide();
+		}
+	});
+})
+
+$(function(){
+	$('[data-toggle="search"]').bind('keyup blur change',function(){
+		var selector = $(this).data('target');
+        var ths = $(this);
+        var v = ths.val();
+        if(v.length==0){
+           $(selector).show()
+        }else{
+            
+            //alert($('td:contains('+v+')').length)
+            
+            $(selector).each(function(){                
+                //if($(this).find(':contains('+v+')').length){
+                if($(this).text().search(new RegExp(v, "i")) > 0){    
+                    $(this).show();
+                }else{
+                    $(this).hide();
+                }
+                
+            });
+            
+        }
+    });
+    $('[data-toggle="scrollTo"]').bind('click',function(){
+    	var selector = $(this).data('target');
+    	var time = ($(window).scrollTop());
+    	$('html, body').animate({
+			scrollTop: $(selector).offset().top-100
+		}, time,'easeInOutQuint');
+    });
+})

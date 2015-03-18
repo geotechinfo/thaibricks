@@ -73,4 +73,88 @@
     </div>
 </div>
 
+<div class="modal fade" id="adminUpdateTransport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update</h4>
+      </div>
+      <div class="modal-body">
+      {{ Form::open(array('id'=>'frm','class' => '', 'route' => array('location.update_transport'), 'method' => 'post')) }} 
+      
+        <div class="row">
+          <div class="col-sm-3 text-right">Parent:</div>
+          <div class="col-sm-9  text-left">            
+            {{Form::select('parent_id',$dataset['transport_parents'],'',array('class'=>'form-control','id'=>'parent_id'))}}
+          </div>
+        </div>
+        <p></p>
+        <div class="row">  
+          <div class="col-sm-3 text-right">Title:</div>
+          <div class="col-sm-9  text-left">
+            <input type="hidden" id="nodeid">
+            <input type="hidden" name="transport_id" id="transport_id">
+            <input type="text" name="transport_name" id="transport_name" class="form-control">
+          </div>          
+        </div>
+        <p></p>
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <button type="button" id="save_transport" class="btn btn-success"> Update</button>
+          </div>
+        </div>
+      {{ Form::close() }}  
+        
+      </div>
+    </div>  
+  </div>
+</div> 
+<script type="text/javascript">
+    $(document).ready(function(){
+         $('#nearby_tree')
+          .treeview({data:''})
+          .on('nodeSelected', function(event, node) {
+                //alert(node.parent_id);
+              $('#nodeid').val(node.nodeId)
+              $('#transport_id').val(node.transport_id);
+              $('#transport_name').val(node.transport_name);
+              $('#parent_id').val(node.parent_id);
+              if(node.parent_id==0){
+                 $('#parent_id').prop('disabled',true).closest('.row').hide();
+              }else{
+                $('#parent_id').prop('disabled',false).closest('.row').show();
+              }
+              $('#adminUpdateTransport').modal('toggle');
+          });
+
+          var getNearbyTree = function(){
+            if($('#nearby_tree').length){
+              $.getJSON('<?php echo URL::to("admins/get_transport_tree/");?>/2',function(data){ 
+                $('#nearby_tree').treeview({data:data})
+              });
+            }
+          }
+          //$('#transports').treeview({data: '<?php echo $dataset["transports"]; ?>'})
+
+         
+          getNearbyTree();
+
+          $('#save_transport').click(function(){
+            var ths = $(this);
+            ths.button('loading')
+              $.post(
+                $('#frm').attr('action'),
+                $('#frm').serialize(),
+                function(m){
+                  var  o = $.parseJSON(m);
+                  $('#adminUpdateTransport').modal('toggle');
+                  //getTransportTree();
+                  getNearbyTree();
+                  ths.button('reset')
+                }
+              )
+            });
+    });
+</script>
 @stop

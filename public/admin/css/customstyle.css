@@ -118,8 +118,9 @@ label
 .loginWrap img.productlogo,
 img.productlogo
 {
-	 width:216px;
-	 height:50px;
+	height: 50px;
+    margin-left: 28px;
+    width: 100%;
 }
 
 .signInBtn
@@ -141,13 +142,14 @@ img.productlogo
 .copywright
 {
 	color:#fff;
-	margin-top:20px;
+	margin-left: 245px;
+    margin-top: 10px;
 }
 
 /*innerpage*/
 .innerpage
 {
-	background:#08346B;
+	background:#151515;
 	overflow:hidden;
 }
 /*innerpage*/
@@ -166,7 +168,7 @@ img.productlogo
 }
 .topmenuwrap
 {
-	background-color: #08346B;
+	background-color: #222223;
 }
 .topmenuwrap li a .fa
 {
@@ -339,9 +341,15 @@ img.productlogo
 {
 	width:240px
 }
+
+.topmenuwrap .dropdown-user
+{
+	width:auto;
+}
+
 /*sidenav*/
 .sidebar {
-    background: #08346B;
+    background: #222223;
     bottom: 0;
     display: block;
     left: 0;
@@ -379,7 +387,7 @@ header
 	max-height:100%;
 	padding-left: 40px;
     padding-right: 40px;
-	overflow-x:auto;
+	/*overflow-x:auto;*/
 	overflow-y:hiddden;
 	padding-top: 45px;
 }
@@ -405,12 +413,12 @@ header
 }
 .navbar-secondary .nav-tabs
 {
-	border-top: 1px solid #74879e;
+	border-top: 1px solid #777;
 }
 .navbar-secondary .nav-tabs > li > a,
 .navbar-secondary .nav .open > a, .navbar-secondary .nav .open > a:hover, .navbar-secondary .nav .open > a:focus
 {
-    border-bottom: 1px solid #74879e;
+    border-bottom: 1px solid #777;
     border-radius: 0;
     line-height: 1.42857;
     margin-right: 2px;
@@ -421,33 +429,35 @@ header
 
 .navbar-secondary .nav-tabs > li > a
 {
-	background:#275186;
+	background:#3E3E42;
 }
 
 .navbar-secondary .nav .open > a, .navbar-secondary .nav .open > a:hover, .navbar-secondary .nav .open > a:focus
 {
-	background:#1d508f;
+	background:#3E3E42;
 }
 
 .navbar-secondary .nav-tabs > li > a:hover
 {
-	border-bottom: 1px solid #74879e;
+	border-bottom: 1px solid #777;
 	border-top:0px;
 	border-left:0px;
 	border-right:0px;
+	color:#ccc;
 }
 
 .navbar-secondary .nav-tabs .open .dropdown-menu
 {
 	width:100%;
 	border:0px;
-	background:#0d2a4e;
+	background:#666;
+	border-radius:0;
 }
 
 .navbar-secondary .nav-tabs .open .dropdown-menu li
 {
 	padding: 5px 15px;
-	border-top:1px solid #34557d;
+	border-top:1px solid #999;
 }
 
 .navbar-secondary .nav-tabs .open .dropdown-menu li:first-child
@@ -861,3 +871,37 @@ only screen and (min-device-pixel-ratio : 1.5) {
 /* Styles */
 
 }
+
+/*Super Admin Quick UI fix*/
+/*Login*/
+.loginWrap
+{
+	background:#fff;
+}
+
+.form-signin-heading 
+{
+	border-bottom:1px solid #333;
+	color:#333;
+}
+
+.footer_text
+{
+	margin-top:20px;
+}
+
+.main
+{
+	min-height:640px;
+}
+.navbar
+{
+	border-bottom:1px bottom #fff;
+	border-left:0px;
+	border-right:0px;
+	border-radius:0px;
+}
+
+.topmenuwrap .navbar-right > li.user-menu.open > a {color:#000}
+
+.main .breadcrumb a{color:#C0392B;}

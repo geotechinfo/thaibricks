@@ -20,6 +20,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	
 	protected $hidden = 'password';
 	
+
+	
+
 	public function getAuthIdentifier()
     {
         return $this->getKey();

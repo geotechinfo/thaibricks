@@ -2,10 +2,16 @@
 
 use Illuminate\Routing\Controller;
 
-class LocationsController extends Controller {
+class AdminsLocationsController extends Controller {
+
 
 	public function location()
 	{
+		
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$rules = ["parent_id" => 0];
 		//$rules = ["type" => 1];
 		$parents = Location::where($rules)->get();
@@ -21,10 +27,16 @@ class LocationsController extends Controller {
 		foreach($locations as $parent){
 			if($parent->parent_id == 0){
 				$builder[$counter_parent]["text"] = $parent->location_name;
+				$builder[$counter_parent]["location_name"] = $parent->location_name;
+				$builder[$counter_parent]["location_id"] = $parent->location_id;
+				$builder[$counter_parent]["parent_id"] = $parent->parent_id;
 				$counter_child = 0;
 				foreach($locations as $child){
 					if($parent->location_id == $child->parent_id){
 						$builder[$counter_parent]["nodes"][$counter_child]["text"] = $child->location_name;
+						$builder[$counter_parent]["nodes"][$counter_child]["location_name"] = $child->location_name;
+						$builder[$counter_parent]["nodes"][$counter_child]["location_id"] = $child->location_id;
+						$builder[$counter_parent]["nodes"][$counter_child]["parent_id"] = $child->parent_id;
 						$counter_child++;
 					}
 				}
@@ -37,6 +49,10 @@ class LocationsController extends Controller {
 	}
 	
 	public function addlocation(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$validators = array(
 			'location_name' => 'required'
 		);
@@ -59,6 +75,10 @@ class LocationsController extends Controller {
 	}
 	
 	public function addsublocation(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$validators = array(
 			'location_id' => 'required',
 			'sub_location' => 'required'
@@ -83,6 +103,10 @@ class LocationsController extends Controller {
 	
 	public function transport()
 	{
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$rules = ["parent_id" => 0];
 		$locations = Location::where($rules)->get();
 		$dataset["locations"] = array();
@@ -95,13 +119,14 @@ class LocationsController extends Controller {
 		$rules = ["type" => 1];
 
 		$parents = Transport::where($rules)->join('pr_locations','pr_locations.location_id','=','pr_location_transports.location_id')->get();
-		
+		//pr($parents);
 		$dataset["groups"] = array();
 		$dataset["groups"][""] = "Select Transport Group";
 		foreach($parents as $parent){
 			$dataset["groups"][$parent->location_name][$parent->transport_id] = $parent->transport_name;
+			$dataset['transport_parents'][$parent->location_name][$parent->transport_id] = $parent->transport_name;
 		}
-		
+		//pr($dataset["transport_parents"],1);
 		$transports  = Transport::where(array('type'=>1))->get();
 		$builder = array();
 		$counter_group = 0;
@@ -129,6 +154,10 @@ class LocationsController extends Controller {
 	}
 	
 	public function addgroup(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$validators = array(
 			'location_id' => 'required',
 			'group_name' => 'required'
@@ -153,6 +182,10 @@ class LocationsController extends Controller {
 	}
 	
 	public function addtransport(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$validators = array(
 			'transport_group' => 'required',
 			'transport_name' => 'required'
@@ -237,6 +270,10 @@ class LocationsController extends Controller {
 	public function nearby()
 	{
 
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$rules = ["parent_id" => 0];
 		$locations = Location::where($rules)->get();
 		$dataset["locations"] = array();
@@ -253,6 +290,7 @@ class LocationsController extends Controller {
 		$dataset["groups"][""] = "Select NearBy Group";
 		foreach($parents as $parent){
 			$dataset["groups"][$parent->location_name][$parent->transport_id] = $parent->transport_name;
+			$dataset['transport_parents'][$parent->location_name][$parent->transport_id] = $parent->transport_name;
 		}
 	
 		$transports  = Transport::where(array('type'=>2))->get();
@@ -279,6 +317,10 @@ class LocationsController extends Controller {
 	}
 	
 	public function addnearbygroup(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$validators = array(
 			'location_id' => 'required',
 			'group_name' => 'required'
@@ -304,6 +346,10 @@ class LocationsController extends Controller {
 	}
 	
 	public function addnearby(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$validators = array(
 			'transport_group' => 'required',
 			'transport_name' => 'required'
@@ -326,11 +372,17 @@ class LocationsController extends Controller {
 		}
 	}
 	
+	
+	
 
 	function update_transport(){
-		
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
 		$transport = new Transport();
 		$tr = $transport ::find(Input::get('transport_id'));
+		$tr->parent_id = Input::get('parent_id');
 		$tr->transport_name = Input::get('transport_name');
 		$tr->save();
 		echo json_encode($tr);exit;
@@ -339,10 +391,14 @@ class LocationsController extends Controller {
 	}
 
 	function get_transport_tree($type=1){
+		
+
 		$transports  = Transport::where(array('type'=>$type))->get();
 		$builder = array();
 		$counter_group = 0;
 		//pr($transports,1);
+		$queries = DB::getQueryLog();
+		//echo $last_query = end($queries);
 		$k = 0;
 		foreach($transports as  $group){
 
@@ -350,6 +406,7 @@ class LocationsController extends Controller {
 				$builder[$k]["text"] = $group->transport_name."[".$group->location->location_name."]";
 				$builder[$k]["transport_name"] = $group->transport_name;
 				$builder[$k]["transport_id"] = $group->transport_id;
+				$builder[$k]["parent_id"] = $group->parent_id;
 				//$builder[$k]["nodes"] = array();
 				$ck =0;
 				foreach($transports as $child){
@@ -357,6 +414,7 @@ class LocationsController extends Controller {
 						$builder[$k]["nodes"][$ck]["text"] = $child->transport_name;
 						$builder[$k]["nodes"][$ck]["transport_id"] = $child->transport_id;
 						$builder[$k]["nodes"][$ck]["transport_name"] = $child->transport_name;
+						$builder[$k]["nodes"][$ck]["parent_id"] = $child->parent_id;
 						$ck++;
 					}
 				}
@@ -369,5 +427,46 @@ class LocationsController extends Controller {
 
 	}
 
+	function get_location_tree(){
+		$locations  = Location::all();
+		$builder = array();
+		$counter_parent = 0;
+		foreach($locations as $parent){
+			if($parent->parent_id == 0){
+				$builder[$counter_parent]["text"] = $parent->location_name;
+				$builder[$counter_parent]["location_name"] = $parent->location_name;
+				$builder[$counter_parent]["location_id"] = $parent->location_id;
+				$builder[$counter_parent]["parent_id"] = $parent->parent_id;
+				$counter_child = 0;
+				foreach($locations as $child){
+					if($parent->location_id == $child->parent_id){
+						$builder[$counter_parent]["nodes"][$counter_child]["text"] = $child->location_name;
+						$builder[$counter_parent]["nodes"][$counter_child]["location_name"] = $child->location_name;
+						$builder[$counter_parent]["nodes"][$counter_child]["location_id"] = $child->location_id;
+						$builder[$counter_parent]["nodes"][$counter_child]["parent_id"] = $child->parent_id;
+						$counter_child++;
+					}
+				}
+				$counter_parent++;
+			}
+		}
+		echo json_encode($builder, true);
+
+	}
+
+	function update_location(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+
+		$location = new Location();
+		$tr = $location ::find(Input::get('location_id'));
+		$tr->parent_id = Input::get('parent_id');
+		$tr->location_name = Input::get('location_name');
+		$tr->save();
+		echo json_encode($tr);exit;
+		//DB::statement('UPDATE pr_location_transports SET transport_name = "'.Input::get('transport_name').'" WHERE transport_id = '.Input::get('transport_id'));
+
+	}
 
 }

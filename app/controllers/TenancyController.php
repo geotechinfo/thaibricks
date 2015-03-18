@@ -159,6 +159,17 @@ class TenancyController extends Controller {
 		return View::make('tenancies.list', array("dataset"=>$dataset));
 	}
 	
+	public function transaction_list(){
+		$user_id = Auth::user()->user_id;
+		$transaction = new Transaction();
+		
+		
+		$dataset['list'] = $transaction->getlist(array('user_id'=>$user_id),array('orderby'=>array('transaction_id DESC')));
+		
+		
+		return View::make('tenancies.transaction_list', array("dataset"=>$dataset));
+	}	
+
 	public function transaction($id){
 		$user_id = Auth::user()->user_id;
 	
@@ -173,6 +184,21 @@ class TenancyController extends Controller {
 		return View::make('tenancies.transaction', array("dataset"=>$dataset));
 	}
 
+	public function transaction_edit($id){
+		$user_id = Auth::user()->user_id;
+	
+		$tenancies = new Tenancy();
+		$dataset["tenancies"] = $tenancies->get_tenancies($user_id);
+		$dataset["tenancy_id"] = '';//$id;
+		
+		$dataset['vendors'] = DB::table('ll_vendors')->where(array('user_id'=>Auth::User()->user_id))->get();
+		$transaction = new Transaction();
+		$dataset["transaction_heads"] = $transaction->getlist_heads();
+		$r = $transaction->getlist(array('transaction_id'=>$id,'user_id'=>$user_id));
+		$dataset["transaction"] = isset($r[0])?$r[0]:array();
+		return View::make('tenancies.transaction', array("dataset"=>$dataset));
+	}
+
 	public function addvendor(){
 		$user_id = Auth::user()->user_id;
 	
@@ -181,16 +207,107 @@ class TenancyController extends Controller {
 		$insert['vendor_phone'] =Input::get('vendor_phone');
 		$insert['vendor_email'] =Input::get('vendor_email');
 		$insert['vendor_address'] =Input::get('vendor_address');
+		if (Request::ajax())
+		{
+		   	$vendor_id = DB::table('ll_vendors')->insertGetId($insert);		
+			$row = Vendor::find($vendor_id);
+			echo json_encode($row);exit;
+		}else{
+			$validators = array(
+				'vendor_name' => 'required',
+				'vendor_phone' => 'required|numeric',
+				'vendor_email' => 'required|email',
+				'vendor_address' => 'required'
+			);
+			$validator = Validator::make(
+	            Input::all(),
+	            $validators
+	        );
 
-		$vendor_id = DB::table('ll_vendors')->insertGetId($insert);
+			if($validator->fails()){
+	            return Redirect::route('tenancy.vendor_create')->withErrors($validator)->withInput();
+	            //return Redirect::action('TenancyController@vendor_create', array($id));
+	        }else{
+	        	echo $vendor_id = Input::get('vendor_id',0);
+	        	//pr(Input::All(),1);
+	        	$vendor_id = DB::table('ll_vendors')->insertGetId($insert);		
+	        	return Redirect::route('tenancy.vendor_list')->with('success','Vendor successfully Added in ThaiBricks.');;	
+	        }
+		}
 		
-		$row = Vendor::find($vendor_id);
-		echo json_encode($row);exit;
+	}
+
+public function updatevendor(){
+		$user_id = Auth::user()->user_id;
+	
+		$insert['user_id'] =$user_id;
+		$insert['vendor_name'] =Input::get('vendor_name');
+		$insert['vendor_phone'] =Input::get('vendor_phone');
+		$insert['vendor_email'] =Input::get('vendor_email');
+		$insert['vendor_address'] =Input::get('vendor_address');
+		$id = Input::get('vendor_id');
+		//pr($id,0);
+		$validators = array(
+			'vendor_id' => 'required',
+			'vendor_name' => 'required',
+			'vendor_phone' => 'required|numeric',
+			'vendor_email' => 'required|email',
+			'vendor_address' => 'required'
+		);
+		$validator = Validator::make(
+            Input::all(),
+            $validators
+        );
+
+		if($validator->fails()){
+            return Redirect::route('tenancy.vendor_edit', array('id'=>$id))->withErrors($validator)->withInput();
+            //return Redirect::action('TenancyController@vendor_create', array($id));
+        }else{
+        	echo $vendor_id = Input::get('vendor_id',0);
+        	//pr(Input::All(),1);
+        	$vendor_id = DB::table('ll_vendors')->where('vendor_id',$id)->update($insert);		
+        	return Redirect::route('tenancy.vendor_list')->with('success','Vendor successfully Updated in ThaiBricks.');;	
+        }
+		
+		
+	}
+	
+
+	public function vendor_edit($id = 0){
+		$user_id = Auth::user()->user_id;
+		$vendor = new Vendor();
+		$condi  = array('user_id'=>$user_id);
+		if($id>0){
+			$condi['vendor_id'] = $id;
+			$r = $vendor->getlist($condi);
+			$dataset['vendor'] = isset($r[0])?$r[0]:$vendor;
+		}else{
+			$dataset['vendor'] = $vendor;
+		}
+		return View::make('tenancies.create_vendor', array("dataset"=>$dataset));
+	}
+
+	public function vendor_create(){
+		$user_id = Auth::user()->user_id;
+		$vendor = new Vendor();		
+		$dataset['vendor'] = $vendor;		
+		return View::make('tenancies.create_vendor', array("dataset"=>$dataset));
+	}
+
+	public function vendor_list(){
+		$user_id = Auth::user()->user_id;
+		$vendor = new Vendor();
+		
+		
+		$dataset['list'] = $vendor->getlist(array('user_id'=>$user_id),array('orderby'=>array('vendor_id DESC')));
+		//pr($dataset['list']);
+		
+		return View::make('tenancies.vendor_list', array("dataset"=>$dataset));
 	}
 	
 	public function transactionsave($id){
 		$validators = array(
-			'tenancy_name' => 'required',
+			/*'tenancy_name' => 'required',*/
 			'transaction_head' => 'required',
 			'transaction_date' => 'required',
 			'transaction_amount' => 'required'
@@ -204,15 +321,29 @@ class TenancyController extends Controller {
             return Redirect::route('tenancy.transaction', array($id))->withErrors($validator)->withInput();
         }
 		
-		$transaction = new Transaction();
-		$transaction->tenancy_id = Input::get('tenancy_name');
-		$transaction->transaction_head_id = Input::get('transaction_head');
-		$transaction->vendor_id = Input::get('vendor_id',0);
-		$transaction->transaction_date = CommonHelper::dateToDb(Input::get('transaction_date'));
-		$transaction->amount = Input::get('transaction_amount');
-        if($transaction->save()){
-			return Redirect::route('tenancy.tenancies')->with('success', 'Transaction successfully added.');
+		//$transaction = new Transaction();
+		$transaction['transaction_id'] = Input::get('transaction_id');
+		$transaction['user_id'] = Auth::user()->user_id;
+		$transaction['tenancy_id'] = Input::get('tenancy_name');
+		$transaction['transaction_head_id'] = Input::get('transaction_head');
+		
+		$transaction['vendor_id'] = Input::get('vendor_id',0);
+		$transaction['transaction_date'] = CommonHelper::dateToDb(Input::get('transaction_date'));
+		$transaction['amount'] = Input::get('transaction_amount');
+		
+		if($transaction['transaction_id']==0){
+			$transaction_id = DB::table('ll_transactions')->insertGetId($transaction);
+			if($transaction_id){
+				return Redirect::route('tenancy.transaction_list')->with('success', 'Transaction successfully added.');
+			}
+		}else{
+			
+			DB::table('ll_transactions')
+            ->where('transaction_id', $transaction['transaction_id'])
+            ->update($transaction);
+            return Redirect::route('tenancy.transaction_list')->with('success', 'Transaction successfully Updated.');
 		}
+        
 	}
 	public function adddocument(){
 		//dd($_FILES);die;

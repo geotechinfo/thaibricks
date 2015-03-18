@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Controller;
 
-class AttributesController extends Controller {
+class AdminsAttributesController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -32,6 +32,9 @@ class AttributesController extends Controller {
 	 * @return Response
 	 */
 	public function store(){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
 		$rules = ['deal_id' => Input::get('deal_id'), 'type_id' => Input::get('type_id'), 'group_id' => Input::get('group_id'), 'attribute_id' => Input::get('attribute_id')];
 		$relation = Relation::where($rules)->get();
 
@@ -100,6 +103,10 @@ class AttributesController extends Controller {
 	}
 	
 	public function relation(){		
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+		
 		$properties = new Property();
 		$dataset["deals"] = $properties->getlist_deals();
 		$dataset["types"] = $properties->getlist_types();

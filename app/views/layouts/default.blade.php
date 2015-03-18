@@ -59,6 +59,7 @@ foreach ($dataset['locations'] as $k=>$v){
 {{ HTML::script('js/jquery.prettyPhoto.js') }}
 {{ HTML::script('js/moment.js') }}
 {{ HTML::script('js/date.js') }}
+{{ HTML::script('libraries/validator/validation.js') }}
     
 <link rel="shortcut icon" href="{{URL::to('/')}}/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
@@ -75,7 +76,7 @@ foreach ($dataset['locations'] as $k=>$v){
 <!--/head-->
 <body>
 <!--/header-->
-<header class="navbar navbar-inverse navbar-fixed-top sun-flower" role="banner">
+<header class="navbar navbar-inverse navbar-fixed-top" role="banner">
   <section id="topnav" class="pitch-black">
     <div class="container loginwrap">
       <div class="row">
@@ -111,14 +112,14 @@ foreach ($dataset['locations'] as $k=>$v){
               <li><a href="{{URL::to('/property/mylist/me')}}" class="toplinks">My Properties</a></li>
               <li><a href="{{URL::to('/profile')}}" class="toplinks">Profile</a></li>
               <li><a href="{{URL::to('/logout')}}" class="toplinks">Logout</a></li>-->
-              <li><a href="{{URL::to('/property/mylist/me')}}" data-toggle="tooltip" data-placement="bottom" title="Dashboard" class="toplinks">Dashboard</a></li>
-              <li>
+              <li><a href="{{URL::to('/property/myproperties')}}"  class="toplinks topdash">Dashboard</a></li>
+              <!--<li >
                   <a href="javascript:void(0);" title="Register" class="welcomeuser" data-toggle="dropdown" aria-expanded="false">
                       <span class="fa fa-user"></span> Welcome {{{ Auth::user()->first_name }}} <span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu" role="menu">
-                      <li><a href="" data-toggle="modal" data-target="#addPrperty"><i class="fa fa-plus"></i> Add Property</a></li>
-                      <li><a href="{{URL::to('/property/mylist/me')}}"><i class="fa fa-list"></i> My Properties</a></li>
+                      <li><a href="{{URL::to('/property/create')}}" ><i class="fa fa-plus"></i> Add Property</a></li>
+                      <li><a href="{{URL::to('/property/myproperties')}}"><i class="fa fa-list"></i> My Properties</a></li>
                       <li class="divider"></li>
                       <li><a href="{{URL::to('/tenancy/create')}}"><i class="fa fa-plus"></i> Add Tenancy</a></li>
                       <li><a href="{{URL::to('/tenancy/transaction')}}/0"><i class="fa fa-plus"></i> Add Transactions</a></li>
@@ -127,7 +128,8 @@ foreach ($dataset['locations'] as $k=>$v){
                       <li><a href="{{URL::to('/profile')}}"><i class="fa fa-user"></i> Profile Manage</a></li>
                       <li><a href="{{URL::to('/logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
                   </ul>
-              </li>
+              </li>-->
+              <li><a class="welcomeuser" href="{{URL::to('/logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
               @else
               <li><a href="javascript:void(0);" class="toplinks login">Login</a></li>
               <li><a href="{{URL::to('/create')}}" class="toplinks">Register</a></li>
@@ -212,11 +214,12 @@ foreach ($dataset['locations'] as $k=>$v){
             <a class="navbar-brand" href="{{URL::to('/')}}">{{ HTML::image('images/logo.png', '', array('class' => '')) }}</a> </div>
           <div class="collapse navbar-collapse mainnav">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="javascript:void(0)">Rent</a></li>
-              <li><a href="javascript:void(0)">Sell</a></li>
-              <li><a href="javascript:void(0)">Projects</a></li>
-              <li><a href="javascript:void(0)">Lease</a></li>
-              <li><a href="javascript:void(0)">Agents</a></li>
+              <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==1 ? 'active':'')?>"><a href="{{URL::to('property/search')}}?deal_id=1">Sale</a></li>
+              <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==2 ? 'active':'')?>"><a href="{{URL::to('property/search')}}?deal_id=2">Rent</a></li>
+              <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==3 ? 'active':'')?>"><a href="{{URL::to('property/search')}}?deal_id=3">Lease</a></li>
+              <!--<li><a href="{{URL::to('property/search')}}">Projects</a></li>-->
+             
+              <li class="<?php echo  (Request::segment(1)=='agents' ? 'active':'')?>"><a href="{{URL::to('agents')}}/all">Agents</a></li>
             </ul>
           </div>
         </div>
@@ -265,23 +268,25 @@ foreach ($dataset['locations'] as $k=>$v){
       </div>
       <!--/.col-md-3-->
       <div class="col-md-4">
-        <h4>newsletter sing up</h4>
+
+        <h4>newsletter sign up</h4>
         <div class="media newsletter-brief">
           <div class="pull-left"> <span class="fa fa-envelope"></span><span class="fa fa-mail-reply"></span> </div>
           <div class="media-body"> <small class="muted">Suscribe to our email list so you can keep pu to date with our latest properties.</small> </div>
         </div>
-        <form role="form">
+        {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('newsletter'), 'method' => 'post','id'=>'newsletter')) }} 
+          <div class="form-group text-success" style="display:none" id="nw_msg">Your Email has been successfully registerd</div>
           <div class="form-group">
-            <input type="text" placeholder="Name" class="form-control">
+            <input type="text" placeholder="Name" name="newsletter_user" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" placeholder="Email" class="form-control">
+            <input type="text" placeholder="Email" name="newsletter_email" class="form-control">
           </div>
           <div class="">
           
             <button type="submit" class="btn btn-grey pull-right subscribe"> Subscribe</button>
           </div>
-        </form>
+        {{ Form::close() }}
       </div>
       <!--/.col-md-3-->
     </div>
@@ -297,12 +302,11 @@ foreach ($dataset['locations'] as $k=>$v){
       <div class="col-sm-8">
       <ul class="pull-left">
           <li><a href="{{URL::to('/')}}">Home</a></li>
-          <li><a href="javascript:void(0);">Buy</a></li>
-          <li><a href="javascript:void(0);">Sell</a></li>
-          <li><a href="javascript:void(0);">Rent</a></li>
-          <li><a href="javascript:void(0);">Projects</a></li>
-          <li><a href="{{URL::to('/about')}}">About Us</a></li>
-          <li><a href="javascript:void(0);">Contact</a></li>
+          <li><a href="{{URL::to('property/search')}}?deal_id=1">Sale</a></li>
+          <li><a href="{{URL::to('property/search')}}?deal_id=2">Rent</a></li>
+          <li><a href="{{URL::to('property/search')}}?deal_id=3">Lease</a></li>
+          <!--<li><a href="{{URL::to('property/search')}}">Projects</a></li>
+          <li><a href="{{URL::to('/about')}}">About Us</a></li>-->
           <li><a href="javascript:void(0);" class="fb">Facebook</a></li>
           <li><a href="javascript:void(0);" class="twtr">Twitter</a></li>
         </ul>
@@ -340,12 +344,46 @@ foreach ($dataset['locations'] as $k=>$v){
 <script>
     //tooltip
 	$(function () {
-		$('[data-toggle="tooltip"]').tooltip()
+		$('[data-toggle="tooltip"]').tooltip();
 	})
 </script>
 
 <script type="text/javascript">
 $(document).ready(function(){
+    $('#newsletter').validate({
+      rules:{
+          'newsletter_user':{required:true},
+          'newsletter_email':{
+              required:true,
+              email:true,
+              remote:{
+                url:"{{URL::to('newsletter_email_check')}}",
+                type:'post'
+              }
+            }
+      },
+      messages:{
+        'newsletter_email':{
+          remote:'This email already registerd'
+        }
+      },
+      errorClass:'text-danger',
+      errorElement:'small',
+      submitHandler:function(form){
+        $.post(
+          $(form).attr('action'),
+          $(form).serialize(),
+          function(m){
+              var row = $.parseJSON(m);
+              //console.log(row);
+              $(form).find('input:text').val('');              
+              $('#nw_msg').fadeIn().delay(5000).fadeOut();
+          }
+        );
+        return false;
+      }
+    });
+
     $(".propertyinfo .propertyformsteps").each(function(e) {
         if (e != 0)
             $(this).hide();
@@ -624,93 +662,7 @@ $(document).ready(function(){
     $('[data-target="#profile_edit"]').trigger('click');
   }
 
-  $('#profile_image,.profile_image').click(function(){
-    var url = '<?php echo route('profile.changeprofileimage');?>'
-    $('<input/>')
-      .attr({type:'file',name:'image_files'})
-      .fileupload({
-          url: url,
-          dataType: 'json',             
-          done: function (e, data) {               
-            $('#profile_image').attr('src',data.result.file_url);
-          },
-          progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('.progress-bar').animate({'width':progress + '%'});         
-          },
-          stop:function(){
-            $('.progress').hide();
-          },
-          start:function(){
-            $('.progress').show();
-            $('.progress-bar').css('width','0%');
-          },
-          add: function(e, data) {
-                  var uploadErrors = [];
-                  console.log(data.originalFiles[0]);
-                  var acceptFileTypes = /^image\/(jpg|jpeg|png|gif)$/i;
-                  if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                      uploadErrors.push('Not an accepted file type!\nPlease Select image file.\nSupported Extention:JPG,GIF,PNG');
-                  }
-                  if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
-                      uploadErrors.push('Filesize is too big');
-                  }
-                  if(uploadErrors.length > 0) {
-                      alert(uploadErrors.join("\n"));
-                  } else {
-                      data.submit();
-                  }
-          }
-                
-      })
-      .trigger('click');  
-  });
-
-  $('#banner_image,.banner_image').click(function(){ 
-    var url = '<?php echo route('profile.changebannerimage');?>'
-    $('<input/>')
-      .attr({type:'file',name:'image_files'})
-      .fileupload({
-          url: url,
-          dataType: 'json',           
-          imageMaxHeight:10,  
-          done: function (e, data) {
-            var time = new Date();               
-            //alert(data.result.file_url+"?"+time.getTime())
-            $('#banner_image').attr('src',data.result.file_url+"?"+time.getTime());
-          },
-          progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('.progress-bar').animate({'width':progress + '%'});         
-          },
-          stop:function(){
-            $('.progress').hide();
-          },
-          start:function(){
-            $('.progress').show();
-            $('.progress-bar').css('width','0%');
-          },
-          add: function(e, data) {
-                  var uploadErrors = [];
-
-                  var acceptFileTypes = /^image\/(jpg|jpeg|png|gif)$/i;
-                  if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                      uploadErrors.push('Not an accepted file type!\nPlease Select image file.\nSupported Extention:JPG,GIF,PNG');
-                  }
-                  if(data.originalFiles[0]['size'].length && data.originalFiles[0]['size'] > 5000000) {
-                      uploadErrors.push('Filesize is too big');
-                  }
-                  if(uploadErrors.length > 0) {
-                      alert(uploadErrors.join("\n"));
-                  } else {
-                      data.submit();
-                  }
-          }
-                
-      })
-      .trigger('click')
-      ;
-  });
+  
 
 function readImage(file) {
     var reader = new FileReader();
@@ -748,6 +700,10 @@ function readImage(file) {
 .propertylistwrap .propertyimg img{
 	height:207px !important;
 }
+.portfolio-items .evPhotoHt {height:auto;}
 </style>
+<a href="javascript:;" class="goToTopBtn gototop ">
+  <i class="fa fa-chevron-up"></i>
+</a>
 </body>
 </html>

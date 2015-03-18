@@ -67,13 +67,15 @@ class UsersController extends Controller {
             'password' => Hash::make(Input::get('password'))
 		));
         if($user){
-			/*Mail::send('template.email.activate', ['link' => URL::route('activate', $code), 'username' => $username], function($message) use ($user)
+        	$dataset['user'] =$user;
+        	$dataset['password'] =  Input::get('password');
+			Mail::send('emails.signup', ['dataset' => $dataset], function($message) use ($user)
             {
                 $message->to($user->email, $user->username)->subject('Account Registration');
-            });*/
+            });
 		
             Auth::login($user);
-            return Redirect::route('property.mylist', array("me"));
+            return Redirect::route('property.myproperties');
         }
 
         return Redirect::route('create')->withInput();
@@ -136,7 +138,7 @@ class UsersController extends Controller {
         	$user->phone = $data['phone'];
 
         	if($user->save()){
-        	/*Mail::send('template.email.activate', ['link' => URL::route('activate', $code), 'username' => $username], function($message) use ($user)
+        	/*Mail::send('template.emails.activate', ['link' => URL::route('activate', $code), 'username' => $username], function($message) use ($user)
             {
                 $message->to($user->email, $user->username)->subject('Account Registration');
             });*/
@@ -161,6 +163,11 @@ class UsersController extends Controller {
 	 * @return Response
 	 */
 	public function changepassword()
+	{
+		return View::make('users.changepassword');
+	}
+
+	public function do_changepassword()
 	{
 		$data = Input::only(['password','new_password', 'new_password_confirmation']);
 
@@ -201,8 +208,6 @@ class UsersController extends Controller {
         }
 
 	}
-
-
 	/**
 	 * Remove the specified resource from storage.
 	 * DELETE /users/{id}
@@ -234,12 +239,13 @@ class UsersController extends Controller {
         }else{
 			$remember = true;
 			$auth = Auth::attempt(array(
-					'email' => Input::get('email'),
-					'password' => Input::get('password')
+					'email' 	=> Input::get('email'),
+					'password' 	=> Input::get('password'),
+					'status'	=> 1
 			), $remember);
 	
 			if($auth) {
-				return Redirect::route('property.mylist', array("me"));
+				return Redirect::route('property.myproperties');
 			}else{
 				Session::flash('error', true);
 				return Redirect::route('login')->withInput();
@@ -267,6 +273,16 @@ class UsersController extends Controller {
 		}
 		return Redirect::route('login');
 	}
+	
+	public function userimages()
+	{
+		return View::make('users.userimages');
+	}
+
+	public function profileimage()
+	{
+		return View::make('users.profileimage');
+	}
 
 	function changeprofileimage(){
 		$image_files = $_FILES['image_files'];
@@ -287,6 +303,10 @@ class UsersController extends Controller {
 		echo json_encode($json); exit;
 	}
 
+	public function bannerimage()
+	{
+		return View::make('users.bannerimage');
+	}
 	function changebannerimage(){
 		//$image_files = $_FILES['image_files'];
 		//$image_files = Input::file('image_files');
@@ -311,4 +331,15 @@ class UsersController extends Controller {
 		echo json_encode($json); exit;
 	}
 
+	function mail_test(){
+
+		$user  = User::find(9);
+		//pr($user,1);
+		$dataset['user'] =$user;
+    	$dataset['password'] =  'asdfghjkl';
+		Mail::send('emails.signup', ['dataset' => $dataset], function($message) use ($user)
+        {
+            $message->to('santanujana1987@yopmail.com', 'Santanu Jana')->subject('Account Registration');
+        });
+	}
 }

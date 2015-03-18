@@ -1,11 +1,27 @@
 @extends('layouts.default')
 @section('content')
+<section class="container container2" id="gototopwrap">
+  <div class="">
+    <div class="innerBread">
+      <div class="col-sm-12">
+          <span>You are here:</span>
+          <ul class="topBreadcrumbs">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="javascript:;">Sign up</a></li>
+          </ul>
+      
+      </div>
+      
+    </div>
+  </div>
+</section>
+
 <section class="container container2 margin-top-10" id="propertylist">
   <aside class="col-sm-3 col-sm-push-9">
-  	<div class="well featuredagentbox clearfix grey">
+  	<div class="well clearfix grey">
          	<h4 class="text-left no-margin">Sign In</h4>
             <div class="border-bottom"></div>
-            <p class="text-left">Already have an account the login direcly</p>
+            <p class="text-left margin-top-10">Already have an account the login direcly</p>
             {{ Form::open(array('route' => array('login'), 'method' => 'post')) }}
                   <div class="form-group">
                     {{Form::text('email', null,array('class' => 'form-control', 'placeholder' => 'Email'))}}
@@ -429,17 +445,17 @@
     </div>
   </div>
 </section>
-<section class="container container2" id="gototopwrap">
+<!--<section class="container container2" id="gototopwrap">
   <div class="">
     <div class="">
       <div class="col-sm-6"> You are here: <a title="home" href="javascript:void(0)">Sign up</a></div>
       <div class="col-sm-6">
         <ul class="pull-right">
           <li class="totop"><a href="#" class="gototop" id="gototop">Top <span class="fa fa-arrow-up"></span></a></li>
-          <!--#gototop-->
+          
         </ul>
       </div>
     </div>
   </div>
-</section>
+</section>-->
 @stop

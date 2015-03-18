@@ -28,7 +28,8 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	//'host' => 'smtp.mailgun.org',
+	'host' => 'smtp.gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +55,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => array('address' => 'geotech.informtics@gmail.com', 'name' => 'Geotech Informtics'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ return array(
 	|
 	*/
 
-	'username' => null,
+	'username' => 'geotech.informatics@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +94,7 @@ return array(
 	|
 	*/
 
-	'password' => null,
+	'password' => 'Geo@1234',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -23,10 +23,10 @@
     
     <div class="row">
       <div class="col-sm-6">
-      <div class="well featuredagentbox clearfix grey loginAside">
+      <div class="well clearfix grey loginAside">
           <h4 class="text-left no-margin">Sign In</h4>
             <div class="border-bottom"></div>
-            <p class="text-left">Already have an account the login direcly</p>
+            <p class="text-left margin-top-10">Already have an account the login direcly</p>
 				{{ Form::open(array('route' => array('login'), 'method' => 'post')) }}
                   <div class="form-group">
                     {{Form::text('email', null,array('class' => 'form-control', 'placeholder' => 'Email'))}}
@@ -39,10 +39,10 @@
          </div>
       </div>
       <div class="col-sm-6">
-      <div class="well featuredagentbox clearfix grey registerAside">
+      <div class="well clearfix grey registerAside">
           <h4 class="text-left no-margin">New to Thaibricks?</h4>
             <div class="border-bottom"></div>
-            <p class="text-left">Donot have an account ? Start now register yourself as a seller and start posting your property details</p>
+            <p class="text-left margin-top-10">Donot have an account ? Start now register yourself as a seller and start posting your property details</p>
             <a class="btn login_btn goToRegisterBtn" href="{{URL::to('/create')}}">Register Now</a>
          </div>
       </div>

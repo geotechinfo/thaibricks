@@ -30,209 +30,150 @@ foreach ($dataset['locations'] as $k=>$v){
 ?> 
 
 
+<section class="container container2" id="gototopwrap">
+  <div class="">
+    <div class="innerBread">
+      <div class="col-sm-12">
+      	  <span>You are here:</span>
+          <ul class="topBreadcrumbs">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="javascript:;">Search Property</a></li>
+          </ul>
+      
+      </div>
+    </div>
+  </div>
+</section>
+
 <!--/Main Theme & Search-->
 <section class="no-margin" id="list-search">
   <div class="container searchcontent container2">
     <h2>Searching for property here :</h2>
     <div role="tabpanel">
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#bsearch" aria-controls="bsearch" role="tab" data-toggle="tab">Basic
-            search</a></li>
-        <!--<li role="presentation"><a href="#bts" aria-controls="bts" role="tab" data-toggle="tab">BTS
-            / MRT</a></li>
-        <li role="presentation"><a href="#gmap" aria-controls="gmap" role="tab" data-toggle="tab">Google
-            Map</a></li>
-        <li role="presentation"><a href="#school" aria-controls="school" role="tab" data-toggle="tab">Schools</a></li>-->
+        <li role="presentation" class="<?php echo (($dataset['transport']=='' && $dataset['gmap']==0)?'active':'');?>"><a href="#bsearch" aria-controls="bsearch" role="tab" data-toggle="tab">Search</a></li>
+        <li role="presentation" class="<?php echo ($dataset['transport']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=1" aria-controls="bts" role="tab" >BTS </a></li>
+        <li role="presentation" class="<?php echo ($dataset['transport']=='2'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=2" aria-controls="mrt" role="tab" >MRT</a></li>
+        <li role="presentation" class="<?php echo ($dataset['transport']=='3'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=3" aria-controls="alink" role="tab" >ALink</a></li>
+        <li role="presentation" class="<?php echo ($dataset['gmap']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?gmap=1" aria-controls="alink" role="tab" >Google Map</a></li>
       </ul>
     </div>
-    <div class="tab-content searchparam">
-      <div role="tabpanel" class="tab-pane active" id="bsearch">
+    <div class="tab-content searchparam noPadding">
+      <div role="tabpanel" class="tab-pane <?php echo (($dataset['transport']=='' && $dataset['gmap']==0 )?'active':'');?>" id="bsearch">
         
         {{ $dataset['search_panel'] }}
         
       </div>
-      <div role="tabpanel" class="tab-pane active" id="bts"> </div>
-      <div role="tabpanel" class="tab-pane active" id="gmap"></div>
-      <div role="tabpanel" class="tab-pane active" id="school"></div>
+      <?php
+        $location = new Location;
+        $location_list=$location->get_location_with_sub();
+      ?>
+      <div role="tabpanel" class="tab-pane <?php echo ($dataset['transport']=='1'?'active':'');?>" id="bts">
+        <fieldset class="search-form">
+        <form action="{{URL::to('property/search')}}">
+
+        <div class="row">
+          <div class="col-md-10">
+            <div class="row">
+            <input type="hidden" name="transport" value="1">  
+            <?php
+              foreach ($location_list[1]['Transport'][1]['Child'] as $key => $value) {
+            ?>
+              <label class="col-sm-3">
+                <input type="radio" name="sub_transport[]" <?php echo (isset($_GET['sub_transport']) && in_array($value->transport_id, $_GET['sub_transport'])?'checked':'')?> value="{{$value->transport_id}}"> 
+                <span>{{$value->transport_name}}</span>
+              </label>
+            <?php    
+              }
+            ?>
+            </div>
+          </div>
+          <div class="col-md-2">
+          <div class="col-md-5 search-btn-wrap">
+            <button class="btn btn-primary btn-lg search-button orange noMargin"> <span class="fa fa-search block"></span> <span>Search</span></button>
+          </div>
+          </div>
+        </div>
+        </form>
+        </fieldset>  
+      </div>
+      <div role="tabpanel" class="tab-pane <?php echo ($dataset['transport']=='2'?'active':'');?>" id="mrt">
+        <fieldset class="search-form">
+        <form action="{{URL::to('property/search')}}">
+          <div class="row">
+          <div class="col-md-10">
+            <div class="row">
+            <input type="hidden" name="transport" value="2">  
+            <?php
+              foreach ($location_list[1]['Transport'][2]['Child'] as $key => $value) {
+            ?>
+              <label class="col-sm-3">
+                <input type="radio" name="sub_transport[]" <?php echo (isset($_GET['sub_transport']) && in_array($value->transport_id, $_GET['sub_transport'])?'checked':'')?> value="{{$value->transport_id}}"> 
+                <span>{{$value->transport_name}}</span>
+              </label>
+            <?php    
+              }
+            ?>
+            </div>
+          </div>
+          <div class="col-md-2">
+          <div class="col-md-5 search-btn-wrap">
+            <button class="btn btn-primary btn-lg search-button orange noMargin"> <span class="fa fa-search block"></span> <span>Search</span></button>
+          </div>
+          </div>
+        </div>
+        </form>
+        </fieldset> 
+      </div>
+      <div role="tabpanel" class="tab-pane <?php echo ($dataset['transport']=='3'?'active':'');?>" id="alink">
+        <fieldset class="search-form">
+        <form action="{{URL::to('property/search')}}">
+          <div class="row">
+          <div class="col-md-10">
+            <div class="row">
+            <input type="hidden" name="transport" value="3">  
+            <?php
+              foreach ($location_list[1]['Transport'][3]['Child'] as $key => $value) {
+            ?>
+              <label class="col-sm-3">
+                <input type="radio" name="sub_transport[]" <?php echo (isset($_GET['sub_transport']) && in_array($value->transport_id, $_GET['sub_transport'])?'checked':'')?> value="{{$value->transport_id}}"> 
+                <span>{{$value->transport_name}}</span>
+              </label>
+            <?php    
+              }
+            ?>
+            </div>
+          </div>
+          <div class="col-md-2">
+          <div class="col-md-5 search-btn-wrap">
+            <button class="btn btn-primary btn-lg search-button orange noMargin"> <span class="fa fa-search block"></span> <span>Search</span></button>
+          </div>
+          </div>
+        </div>
+        </form>
+        </fieldset>  
+      </div>
+       <div role="tabpanel" class="tab-pane <?php echo ($dataset['gmap']=='1'?'active':'');?>" style="display:none" id="alink">
+        <fieldset class="search-form">
+        <form action="{{URL::to('property/search')}}">
+          
+        </div>
+        </form>
+        </fieldset>  
+      </div>
     </div>
   </div>
   <!---->
 </section>
+
 <!--/Main Theme & Search-->
 
 <!--HotProperty-->
-<!--<section class="no-margin">
-<div class="container searchcontent container2 grey">
-<h2>Trending properties from selected locations :</h2>
-	<ul class="portfolio-items trendingproperty hot">
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-	</ul>
-    
-    <ul class="portfolio-items trendingproperty featured">
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <img src="images/portfolio/thumb/item1.jpg" alt="">
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>
-            
-	</ul>
-</div>
-</section>-->
 <!--HotProperty-->
 
 
 <section class="container container2" id="propertylist">
-  <aside class="col-sm-3 col-sm-push-9">
-  	<div class="ad-wrap">{{ HTML::image('images/demoimages/ad1.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad5.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad7.jpg', '', array('class' => '')) }}</div>
-  </aside>
-  <div class="col-sm-9 col-sm-pull-3 propertylistwrap">
+  <div class="col-sm-9 propertylistwrap">
   	@if(Session::get('info'))
     <div class="margin-top-10 message">
     <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
@@ -240,11 +181,12 @@ foreach ($dataset['locations'] as $k=>$v){
     {{{ Session::forget('info') }}}
     @endif
   
-  
+    @if($dataset['gmap']==0)
   	@foreach($dataset["properties"] as $property)
   	<div class="propertylist clearfix new">
       <div class="col-md-5"><div class="propertyimg" style="overflow:hidden;"><div class="propertymark"></div>
-      	{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}
+        <!--<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>-->
+      	<a href="URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
       </div></div>
       <div class="col-md-7 propertylist-body">
         <h3 class="propertylist-heading uppercase">{{{ $property->title }}}</h3>
@@ -263,7 +205,9 @@ foreach ($dataset['locations'] as $k=>$v){
             	<small>My rating:</small>
             </div>-->
         </div>
-        <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="saveshortlist"><small>Read More</small></a></p>
+        <!--<p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="saveshortlist"><small>Read More</small></a></p>-->
+        <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="saveshortlist"><small>Read More</small></a></p>
+
          <!--<div class="linkgroup">
          	<a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
             <a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
@@ -272,419 +216,126 @@ foreach ($dataset['locations'] as $k=>$v){
          	<div class="col-sm-12">
                  <div class="nearLocation">
 					<?php foreach($property->transports as $transports){ ?>
+                      <?php if($transports->type=='1'){ ?>
                         <?php foreach($transports as $transport){ ?>
+                          
                             <?php if(is_array($transport)){ ?>
                             <?php foreach($transport as $location){ ?>
                                 <?php if(array_key_exists($location->transport_id, $property->selected_transports)){ ?>
                                   <div class="text-center">
-                                    <div class="location" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
-                                    <p>Near to <?php echo $location->transport_name; ?></p>
+                                    <div class="location" data-toggle="tooltip" title="<?php echo $location->transport_name; ?>" data-placement="bottom" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
+                                    <!--<p>Near to <?php echo $location->transport_name; ?></p>-->
                                   </div>
                                 <?php } ?>
                             <?php } ?>
                             <?php } ?>
                         <?php } ?>
+                      <?php } ?>
                     <?php } ?>
-                      <!--<div class="text-center">
-                        <div class="location nearMrt"></div>
-                        <p>Near MRT</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearAirport"></div>
-                        <p>Near Airport</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearHospital"></div>
-                        <p>Hospital (2Km)</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearSchool"></div>
-                        <p>School (1Km)</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearPark"></div>
-                        <p>Park (4Km)</p>
-                      </div>-->
+                      
                  </div>
             </div>
          </div>
          
          <div>
               <div class="pull-right">
-              	<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
+                <!--<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>-->
+              	<a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
               </div>
               </div>
       </div>
     </div>
     @endforeach
+    @endif
+    @if($dataset['gmap']==1)
+
+    <div class="gap10">
+    </div>
+      <div class="row">
+              <div class="col-sm-8">
+                <h2 class="noMargin noPadding">Map View</h2>
+              </div>
+              <div class="col-sm-4 text-right">
+              <div class="arrow">
+                <select class="form-control" id="gmaplocation">
+                <?php foreach ($loc as $key => $value) {
+                  echo '<option value="'.$key.'" '.((isset($_GET['location']) && $_GET['location']==$key)?'selected':'').'>'.$value.'</option>';
+                }?>
+                  
+                </select>
+              </div>
+              </div>
+      </div>
+
+    <div class="gap10">
+    </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD40Kax9O0IRkBb8QWHcZaRDiehfuTXEX0"></script>
+          <script type="text/javascript">
+          var markersArray=new Array();
+            function bindInfoWindow(marker, map, infoWindow, html) {
+              google.maps.event.addListener(marker, 'click', function() {
+                infoWindow.setContent(html);
+                infoWindow.open(map, marker);
+              });
+            }
+            function initialize() {
+              var myLatlng = new google.maps.LatLng(15.870032,100.992541);
+              var infoWindow = new google.maps.InfoWindow;
+            
+              var myOptions = {
+                            center:myLatlng, 
+                            zoom: 6, 
+                            /*mapTypeId: google.maps.MapTypeId.SATELLITE,*/
+                            navigationControlOptions:{style: google.maps.NavigationControlStyle.SMALL}
+                          };
+              var map = new google.maps.Map(document.getElementById('map-canvas-1'),myOptions);
+              geocoder = new google.maps.Geocoder();
+              <?php foreach($dataset['properties'] as $k => $v) {?>
+              latlang = geocoder.geocode( {'address': '<?php echo str_replace(array("\n","\r"),array(",",","),$v->address).",".$v->location_name;?>'},function(results, status){  
+                if (status == google.maps.GeocoderStatus.OK){
+                    //map.setCenter(results[0].geometry.location);
+                    marker = new google.maps.Marker({
+                      map: map,
+                      position: results[0].geometry.location,
+                      title:'<?php echo $v->title?>'
+                    });
+                    html = '<div style="height:50;width:100px"><a target="_blank" href="{{URL::to("properties")}}/{{seo_url($v->title)}}_{{$v->property_code}}">{{$v->title}}</a></div>';
+                    bindInfoWindow(marker, map, infoWindow, html);
+                }
+              });  
+              <?php }?>
+
+              
+
+            }
+
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+          </script>
+          <div id="map-canvas-1"  style="height:500px;width:100%;border: 5px solid rgb(255, 255, 255);outline: 1px solid rgb(170, 170, 170);" ></div>
+        </div>
+      </div>
+    @endif
+
   
+    
+  </div>
+  <aside class="col-sm-3">
+  	<div class="ad-wrap">{{ HTML::image('images/demoimages/ad1.jpg', '', array('class' => '')) }}</div>
+    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad5.jpg', '', array('class' => '')) }}</div>
+    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad7.jpg', '', array('class' => '')) }}</div>
+  </aside>
   
-    <!--<div class="propertylist clearfix new">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix new">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star2" type="radio" class="star"/> <input name="star2" type="radio" class="star"/> <input name="star2" type="radio" class="star"/> <input name="star2" type="radio" class="star"/> <input name="star2" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star3" type="radio" class="star"/> <input name="star3" type="radio" class="star"/> <input name="star3" type="radio" class="star"/> <input name="star3" type="radio" class="star"/> <input name="star3" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star4" type="radio" class="star"/> <input name="star4" type="radio" class="star"/> <input name="star4" type="radio" class="star"/> <input name="star4" type="radio" class="star"/> <input name="star4" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="ad-wrap"><img src="images/ads/ad2.png"/></div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star5" type="radio" class="star"/> <input name="star5" type="radio" class="star"/> <input name="star5" type="radio" class="star"/> <input name="star5" type="radio" class="star"/> <input name="star5" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star6" type="radio" class="star"/> <input name="star6" type="radio" class="star"/> <input name="star6" type="radio" class="star"/> <input name="star6" type="radio" class="star"/> <input name="star6" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star7" type="radio" class="star"/> <input name="star7" type="radio" class="star"/> <input name="star7" type="radio" class="star"/> <input name="star7" type="radio" class="star"/> <input name="star7" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star8" type="radio" class="star"/> <input name="star8" type="radio" class="star"/> <input name="star8" type="radio" class="star"/> <input name="star8" type="radio" class="star"/> <input name="star8" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star9" type="radio" class="star"/> <input name="star9" type="radio" class="star"/> <input name="star9" type="radio" class="star"/> <input name="star9" type="radio" class="star"/> <input name="star9" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star10" type="radio" class="star"/> <input name="star10" type="radio" class="star"/> <input name="star10" type="radio" class="star"/> <input name="star10" type="radio" class="star"/> <input name="star10" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    <div class="propertylist clearfix">
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <input name="star11" type="radio" class="star"/> <input name="star11" type="radio" class="star"/> <input name="star11" type="radio" class="star"/> <input name="star11" type="radio" class="star"/> <input name="star11" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a href="javascript:void(0);" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button class="btn btn-primary upperclass viewproperty" type="button">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>-->
-  </div>
 </section>
-<section class="container container2" id="gototopwrap">
-  <div class="">
-    <div class="">
-      <div class="col-sm-6"> You are here: <a title="home" href="javascript:void(0)">Home</a></div>
-      <div class="col-sm-6">
-        <ul class="pull-right">
-          <li class="totop"><a href="#" class="gototop" id="gototop">Top <span class="fa fa-arrow-up"></span></a></li>
-          <!--#gototop-->
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#gmaplocation').change(function(){
+      window.location.href="{{URL::to('property/search')}}?location="+$(this).val()+"&gmap=1";
+    });
+  });
+</script>
 @stop

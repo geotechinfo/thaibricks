@@ -1,28 +1,7 @@
 @extends('layouts.default')
 @section('content')
-
-<?php
-
-$loc = array(''=>'Select Location');
-$subloc[''] = array(''=>'Select Location');
-$transport_group =  array('' => 'Select Transport Group' );
-foreach ($dataset['locations'] as $k=>$v){
-  $loc[$k]=$v['location_name'];
-   if($v['SubLocation']){
-	   foreach ($v['SubLocation'] as $k1 => $v1) {
-		  $subloc[$k][$v1['location_id']]=$v1['location_name'];
-	   }
-   }
-   if($v['Transport']){
-	   foreach ($v['Transport'] as $k1 => $v1) {
-		  $transport_group[$k][$v1['transport_id']]=$v1['transport_name'];
-	   }
-   }
-}
-//print_r($dataset["property"]->location);die;
-?>
-
 <!--/Main Theme & Search-->
+
 <section class="no-margin" id="main-slider">
   <div class="container ad-text-wrap">
   	<!--<div class="ad-text_">
@@ -74,12 +53,33 @@ foreach ($dataset['locations'] as $k=>$v){
         -->
       <!--/#portfolio-filter-->
       <div class="tab-content">
-      	<div class="ad-wrap margin-top-20" style="width:98%;">{{ HTML::image('images/demoimages/bannerAd.jpg', '', array('class' => '')) }}</div>
+      	<div class="ad-wrap margin-top-20">
+        <a href="javascript:;">{{ HTML::image('images/demoimages/bannerAd.jpg', '', array('class' => '')) }}</a>
+       </div>
       
         <div role="tabpanel" class="tab-pane active" id="project">
           <ul class="portfolio-items">
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a9.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a9.jpg', '', array('class' => '')) }}</a>
+                <div class="eventphototext">
+                  <h5>Asoke Plu Condo</h5>
+                  <p>We can add a short description here, for 1 to 2 lines of sentences.</p>
+                </div>
+                <!--
+                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
+                -->
+              </div>
+              <div class="commentwrap asbestos">
+                <div>
+                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
+                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
+                        More</span> </a> </div>
+                </div>
+              </div>
+            </li>
+            <!--/.portfolio-item-->
+            <li class="portfolio-item col-md-3 col-sm-6">
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a2.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -99,7 +99,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a2.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a3.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -119,7 +119,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a3.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -139,7 +139,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -159,7 +159,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a6.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -179,8 +179,8 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a6.jpg', '', array('class' => '')) }}
-                <div class="eventphototext">
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}</a>
+                <div class="eventphototext ">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
                     sentences.</p>
@@ -199,27 +199,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a8.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a8.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -243,7 +223,7 @@ foreach ($dataset['locations'] as $k=>$v){
         <div role="tabpanel" class="tab-pane" id="condos">
           <ul class="portfolio-items">
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -263,7 +243,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a10.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a10.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -283,7 +263,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -303,7 +283,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a12.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a12.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -323,7 +303,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a13.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a13.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -343,7 +323,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a14.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a14.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -363,7 +343,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a15.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a15.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -383,7 +363,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -407,7 +387,7 @@ foreach ($dataset['locations'] as $k=>$v){
         <div role="tabpanel" class="tab-pane" id="apartments">
           <ul class="portfolio-items">
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a2.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a2.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -427,7 +407,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -447,7 +427,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -467,7 +447,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a14.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a14.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -487,7 +467,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a9.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a9.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -507,7 +487,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a1.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a1.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -527,7 +507,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a3.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a3.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -547,7 +527,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -571,7 +551,7 @@ foreach ($dataset['locations'] as $k=>$v){
         <div role="tabpanel" class="tab-pane" id="house">
           <ul class="portfolio-items">
           	<li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -591,7 +571,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a12.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a12.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -611,7 +591,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a15.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a15.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -631,7 +611,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a10.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a10.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -651,7 +631,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -671,7 +651,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a8.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a8.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -691,7 +671,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}
+              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -711,7 +691,7 @@ foreach ($dataset['locations'] as $k=>$v){
             </li>
             <!--/.portfolio-item-->
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}
+              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
                 <div class="eventphototext">
                   <h5>Asoke Plu Condo</h5>
                   <p>We can add a short description here, for 1 to 2 lines of
@@ -757,13 +737,16 @@ foreach ($dataset['locations'] as $k=>$v){
 <section class="container">
   <div class="row">
 	<h2>Latest Properties</h2>
-    <ul class="portfolio-items">
+    <ul class="portfolio-items home_latest">
     	@foreach($dataset["properties"] as $property)
-    	<li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> {{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => '')) }}
-                <div class="eventphototext">
+    	<li class="portfolio-item col-md-2 col-sm-6">
+              <div class="item-inner"> 
+              <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="homeLatestPhotoHolder">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => '')) }}
+              <span class="latestLocation">Bangkok</span>
+              </a>
+                <div class="eventphototext evPhotoHt">
                   <h5>{{{ $property->title }}}</h5>
-                  <p>{{{ substr($property->description, 0, 125) }}}</p>
+                  <!--<p>{{{ substr($property->description, 0, 125) }}}</p>-->
                 </div>
                 <!--
                 <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
@@ -771,9 +754,12 @@ foreach ($dataset['locations'] as $k=>$v){
               </div>
               <div class="commentwrap asbestos">
                 <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="seemore"><span class="">See
-                        More</span> </a> </div>
+                  <div class="price projectinfobtn center pull-left fullWidth">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</div>
+                  <!-- <div class="viewmore projectinfobtn center pull-right">
+                      <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="seemore">
+                          <span class="">See More</span>
+                      </a>
+                  </div> -->
                 </div>
               </div>
             </li>
@@ -945,13 +931,15 @@ foreach ($dataset['locations'] as $k=>$v){
 <section class="container" id="gototopwrap" style="background:none;">
   <div class="">
     <div class="row">
-      <div class="col-sm-6"> You are here:  <a title="home" href="javascript:void(0)">Home</a></div>
-      <div class="col-sm-6">
-        <ul class="pull-right">
-          <li class="totop"><a href="#" class="gototop" id="gototop">Top  <span class="fa fa-arrow-up"></span></a></li>
-          <!--#gototop-->
-        </ul>
+      <div class="col-sm-12">
+
+          <span>You are here:</span>
+          <ul class="topBreadcrumbs">
+            <li><a href="javascript:;">Home</a></li>
+          </ul>
+
       </div>
+
     </div>
   </div>
 </section>

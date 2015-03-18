@@ -21,4 +21,19 @@ class CommonHelper{
 		$properties = new Property();
 		return $properties->getlist_deals();
 	}
+	static function change_bool($con = array()){
+
+		if(isset($con['table']) && $con['table']!=='' && isset($con['field']) && $con['field']!=''){
+			$sql = "UPDATE ".$con['table']." SET ".$con['field']."=IF(".$con['field']."=1,0,1) WHERE 1=1 ";
+			if(isset($con['where'])){
+				foreach ($con['where'] as $k => $v) {
+					$sql = $sql." AND ".$k."=".$v;
+				}
+			}
+			return DB::statement($sql);
+		}else{
+			return false;
+		}
+		
+	} 
 }

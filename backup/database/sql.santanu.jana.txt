@@ -49,3 +49,69 @@ CREATE TRIGGER `trg_ai_tenancy` AFTER INSERT ON `ll_tenancy` FOR EACH ROW BEGIN 
 ----------------------------------------
 
 ALTER TABLE `ll_vendors` ADD `vendor_email` VARCHAR(100) NOT NULL AFTER `vendor_name`;
+
+
+-- DATE 26/02/2015
+----------------------------------------
+ALTER TABLE `ll_transactions` ADD `user_id` INT(11) NOT NULL AFTER `transaction_id`;
+
+-- DATE 27/02/2015
+----------------------------------------
+ALTER TABLE `pr_properties` ADD `status` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '0->Inactive,1->Active' AFTER `is_tenancy`;
+UPDATE `pr_properties` SET status = 1;
+
+-- DATE 02/03/2015
+----------------------------------------
+ALTER TABLE `ac_users` ADD `status` SMALLINT(1) NOT NULL DEFAULT '1' COMMENT '0->Inactive,1->Active' AFTER `banner_image`;
+
+-- DATE 03/03/2015
+----------------------------------------
+ALTER TABLE `ac_users` ADD `description` TEXT NOT NULL AFTER `last_name`;
+ALTER TABLE `pr_properties` ADD `is_featured` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '1->Featured' AFTER `is_tenancy`, ADD `is_hot` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '1->hot' AFTER `is_featured`;
+ALTER TABLE `ac_users` ADD `logo` VARCHAR(255) NOT NULL AFTER `banner_image`;
+
+CREATE TABLE `pr_amenities` (
+ `amenity_id` int(11) NOT NULL AUTO_INCREMENT,
+ `amenity_title` varchar(255) NOT NULL,
+ `amenity_icon` varchar(255) NOT NULL,
+ PRIMARY KEY (`amenity_id`)
+) 
+CREATE TABLE `pr_property_amenities` (
+ `property_amenity_id` int(11) NOT NULL AUTO_INCREMENT,
+ `property_id` int(11) NOT NULL,
+ `amenity_id` int(11) NOT NULL,
+ PRIMARY KEY (`property_amenity_id`)
+) 
+
+
+Done till 03/03/2015
+******************************************************************************************************
+
+-- DATE 03/03/2015
+----------------------------------------
+ALTER TABLE `pr_properties` ADD `property_code` VARCHAR(10) NOT NULL AFTER `property_id`;
+
+CREATE TRIGGER `trg_bi_properties` BEFORE INSERT ON `pr_properties`
+ FOR EACH ROW BEGIN
+	DECLARE SPV_R INT(5);
+    DECLARE SPV_MAX_ID INT(11);
+    SET SPV_MAX_ID = (SELECT MAX(property_id) FROM pr_properties)+1;
+    SET SPV_R = RAND()*1000000;
+	SET NEW.property_code = CONCAT('PRO',SPV_MAX_ID,SPV_R);
+END
+
+
+ALTER TABLE `ac_users` ADD `user_code` VARCHAR(20) NOT NULL AFTER `user_id`;
+CREATE TRIGGER `trg_bi_users` BEFORE INSERT ON `ac_users` FOR EACH ROW BEGIN DECLARE SPV_R INT(5); DECLARE SPV_MAX_ID INT(11); SET SPV_MAX_ID = (SELECT MAX(user_id) FROM ac_users)+1; SET SPV_R = RAND()*1000000; SET NEW.user_code = CONCAT('AGN',SPV_MAX_ID,SPV_R); END
+
+
+Done till 16/03/15
+*******************************************************************************************************
+-- DATE 17/03/2015
+-----------------------------------------
+CREATE TABLE IF NOT EXISTS `nw_newsletters` (
+`newsletter_id` int(11) NOT NULL,
+  `newsletter_user` varchar(255) NOT NULL,
+  `newsletter_email` varchar(255) NOT NULL,
+  `created` datetime NOT NULL
+)

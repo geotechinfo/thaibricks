@@ -1,35 +1,57 @@
 @extends('layouts.default')
-
+<!-- config section  -->
+  <?php $validity_days = 90; ?>
 @section('content')
+<section class="container container2" id="gototopwrap">
+  <div class="">
+    <div class="innerBread">
+      <div class="col-sm-12">
+          <span>You are here:</span>
+          <ul class="topBreadcrumbs">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="javascript:;">Agent Page</a></li>
+          </ul>
+      
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
 <!--/profileimage-->
 <section class="container container2 margin-top-10 white radius-top" id="profileimage">
   <div class="clearfix padding-5 clouds">
-    <!--- <div class="white clearfix">
-      <div class="col-md-2 col-sm-2 col-xs-2 no-margin">
-        <div class="white center">
-          <div class="profileimg">
-          @if($dataset["user_id"] == Auth::user()->user_id)
-          <a href="javascript:void(0)" class="editphoto"><span class="fa fa-camera" style="color:#ababab;"></span><a href="javascript:void(0)">
-          @endif
-          <a href="javascript:void(0)" class="flex_wrap flexCenter"> {{ HTML::image('images/demoimages/logo1.jpg', '', array('class' => 'img-responsive')) }}</a>
-          </div>
-          <div class="padding-5"><a class="" href="javascript:void(0)"> {{{ Auth::user()->first_name }}} {{{ Auth::user()->last_name }}}</a></div>
-          <div> </div>
-        </div>
-      </div>
-      <div class="col-md-10 col-sm-10 col-xs-10 no-margin">
-        <div class="white padding-5 coverpic">
-        @if($dataset["user_id"] == Auth::user()->user_id)
-        <a href="javascript:void(0)" class="editphoto"><span class="fa fa-camera"></span><a href="javascript:void(0)">
-        @endif
-        {{ HTML::image('images/agentprofile/banner.png', '', array('class' => 'img-responsive')) }}
-        </div>
-      </div>
-    </div> -->
     {{ $dataset['banner_panel'] }}
   </div>
 </section>
 <!--/profileimage-->
+
+<!-- Agent Details -->
+  <div class="container container2">
+    <div class="gap20">
+    </div>
+    <div class="well agDetailsSection row">
+      <div class="row">
+          <div class="col-sm-3">
+            <div class=" agDetailSpace">
+                      <h4 class="noMargin"><i class="fa fa-user"></i> Santanu Jana</h4>
+                      <div class="gap10"></div>
+                      <p><i class="fa fa-check-circle"></i> Present Code</p>
+                      <p><i class="fa fa-phone"></i> 9876543210</p>
+                      <p><i class="fa fa-envelope"></i>santanu@gamil.com</p>
+              </div>
+          </div>
+          <div class="col-sm-9">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+      </div>
+    </div>
+  </div>
+<!-- Agent Details -->
+
+
+
 <section class="container container2 margin-top-10 white radius-top">
   <aside class="col-sm-3 col-sm-push-9">
   	@if($dataset["user_id"] == Auth::user()->user_id)
@@ -54,7 +76,7 @@
     {{{ Session::forget('info') }}}
     @endif
   
-  	<?php $validity_days = 7; ?>
+  	
   	@foreach($dataset["properties"] as $property)
     <div class="propertylist clearfix new myproperty">
       	<div class="btn-group btn-group-xs edit-delete" role="group" aria-label="...">
@@ -65,7 +87,7 @@
         </div>
       <div class="col-md-5 cls_extend">
           <div class="propertyimg" style="overflow:hidden;">
-          		<?php if(floor((strtotime("now")-$property->last_active)/3600/24) > $validity_days){ ?>
+          		<?php if(floor((strtotime("now")-$property->last_active)/3600/24) > $validity_days && $property->user_id==Auth::user()->user_id){ ?>
           		<div class="disablePropertyHolder">
                     <div class="disablePropertyText flexCenter enableBtnHolder">
                         <a href="javascript:;" class="cls_extend_btn" data-id="{{ $property->property_id}}"><i class="fa fa-check-circle"></i> Enable your Property</a>
@@ -74,7 +96,7 @@
                 </div>
                 <?php } ?>
             	<div class="propertymark"></div>
-            	{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}
+            	<a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
               
           </div>
           <p>
@@ -86,7 +108,7 @@
               ?>
               
             </span>
-            <?php if($day_renmain<=($validity_days-2) && $day_renmain!=0){ ?>
+            <?php if($day_renmain<=($validity_days-2) && $day_renmain!=0 && $property->user_id==Auth::user()->user_id){ ?>
               
               <a href="javascript:;" class="btn btn-primary btn-xs cls_extend_btn" data-id="{{ $property->property_id}}">Extend</a>
               
@@ -110,7 +132,8 @@
             	<small>My rating:</small>
             </div>-->
         </div>
-        <p class="propertydesc">{{{ substr($property->description, 0, 125) }}} <a class="saveshortlist" href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}"><small>Read More</small></a></p>
+        <!--<p class="propertydesc">{{{ substr($property->description, 0, 125) }}} <a class="saveshortlist" href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}"><small>Read More</small></a></p>-->
+        <p class="propertydesc">{{{ substr($property->description, 0, 125) }}} <a class="saveshortlist" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}"><small>Read More</small></a></p>
          <!--<div class="linkgroup">
          	<a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/mtrsmall.png', '', array('class' => 'searchsmallimg')) }}Ekamai station </a>
             <a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/googlemall.png', '', array('class' => 'searchsmallimg')) }}Location</a>
@@ -132,190 +155,27 @@
                             <?php } ?>
                         <?php } ?>
                     <?php } ?>
-                      <!--<div class="text-center">
-                        <div class="location nearMrt"></div>
-                        <p>Near MRT</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearAirport"></div>
-                        <p>Near Airport</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearHospital"></div>
-                        <p>Hospital (2Km)</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearSchool"></div>
-                        <p>School (1Km)</p>
-                      </div>
-                      <div class="text-center">
-                        <div class="location nearPark"></div>
-                        <p>Park (4Km)</p>
-                      </div>-->
                  </div>
             </div>
          </div>
          <div>
               <div class="pull-right">
-              <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
+              <!--<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>-->
+              <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
               </div>
               </div>
       </div>
     </div>
     @endforeach
     
-    <!--<div class="propertylist clearfix new myproperty">
-      	<div class="btn-group btn-group-xs edit-delete" role="group" aria-label="...">
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-edit"></span></a>
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-trash-o"></span></a>
-        </div>
-      <div class="col-md-5"><div class="propertyimg"><div class="propertymark"></div></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <span class="star-rating-control"><div class="rating-cancel"><a title="Cancel Rating"></a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div></span><input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> 
-            <a class="saveshortlist" href="javascript:void(0);"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a class="saveshortlist" href="javascript:void(0);"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/mtrsmall.png', '', array('class' => 'searchsmallimg')) }}Ekamai station </a>
-            <a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/googlemall.png', '', array('class' => 'searchsmallimg')) }}Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button type="button" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    
-    <div class="propertylist clearfix myproperty">
-      	<div class="btn-group btn-group-xs edit-delete" role="group" aria-label="...">
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-edit"></span></a>
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-trash-o"></span></a>
-        </div>
-      <div class="col-md-5"><div class="propertyimg"></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <span class="star-rating-control"><div class="rating-cancel"><a title="Cancel Rating"></a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div></span><input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> 
-            <a class="saveshortlist" href="javascript:void(0);"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a class="saveshortlist" href="javascript:void(0);"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/mtrsmall.png', '', array('class' => 'searchsmallimg')) }}Ekamai station </a>
-            <a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/googlemall.png', '', array('class' => 'searchsmallimg')) }}Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button type="button" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    
-    <div class="propertylist clearfix myproperty">
-      	<div class="btn-group btn-group-xs edit-delete" role="group" aria-label="...">
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-edit"></span></a>
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-trash-o"></span></a>
-        </div>
-      <div class="col-md-5"><div class="propertyimg"></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <span class="star-rating-control"><div class="rating-cancel"><a title="Cancel Rating"></a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div></span><input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> 
-            <a class="saveshortlist" href="javascript:void(0);"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a class="saveshortlist" href="javascript:void(0);"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/mtrsmall.png', '', array('class' => 'searchsmallimg')) }}Ekamai station </a>
-            <a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/googlemall.png', '', array('class' => 'searchsmallimg')) }}Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button type="button" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>
-    
-    <div class="propertylist clearfix myproperty">
-      	<div class="btn-group btn-group-xs edit-delete" role="group" aria-label="...">
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-edit"></span></a>
-          <a href="javascript:void(0);" class="btn btn-default"><span class="fa fa-trash-o"></span></a>
-        </div>
-      <div class="col-md-5"><div class="propertyimg"></div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">Windows Development</h3>
-        <h5 class="uppercase">&#xe3f;25,000 / month</h5>
-        <small>&#xe3f;50,000 deposit + 25,000 1 month rent. Other terms and fee may apply. </small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>3 bedroom house to rent</h5>
-            </div>
-            
-            <div class="pull-right starwrap">
-            <span class="star-rating-control"><div class="rating-cancel"><a title="Cancel Rating"></a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div><div class="star-rating rater-0 star star-rating-applied star-rating-live" aria-label="" role="text"><a title="on">on</a></div></span><input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> <input type="radio" class="star star-rating-applied" name="star1" style="display: none;"> 
-            <a class="saveshortlist" href="javascript:void(0);"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>
-        </div>
-        <p class="propertydesc">Pellentesque habitant morbi tristique senectus et netus et malesuada
-          fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae. <a class="saveshortlist" href="javascript:void(0);"><small>Read More</small></a></p>
-         <div class="linkgroup">
-         	<a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/mtrsmall.png', '', array('class' => 'searchsmallimg')) }}Ekamai station </a>
-            <a class="" href="javascript:void(0);">{{ HTML::image('images/searchwrapbuttons/googlemall.png', '', array('class' => 'searchsmallimg')) }}Location</a>
-         </div>
-         <div>
-              <div class="pull-right">
-              <button type="button" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</button>
-              </div>
-              </div>
-      </div>
-    </div>-->
     
     <ul class="portfolio-items trendingproperty hot myitems">
            @foreach($dataset["hot"] as $hot)
-            <li class="portfolio-item col-md-4 col-sm-6">
-              <div class="item-inner"> {{ HTML::image(asset('files/properties')."/".$hot->media[0]->media_data, '', array('class' => '')) }}
+            <li class="portfolio-item col-md-3 col-sm-4">
+              <div class="item-inner"> 
+                <div class="item-inner-image">
+                  {{ HTML::image(asset('files/properties')."/".$hot->media[0]->media_data, '', array('class' => '')) }}
+                </div>  
                 <div class="eventphototext">
                   <h5>{{{ $hot->title }}}</h5>
                   <p>{{{ substr($hot->description, 0, 125) }}}</p>
@@ -324,66 +184,18 @@
               <div class="commentwrap asbestos">
                 <div>
                   <div class="price projectinfobtn center pull-left">&#xe3f; {{{ number_format($hot->price, 2, ".", ",") }}}</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a class="seemore" href="{{URL::to('/property/show')}}/{{{ $hot->property_id }}}"><span class="">See
-                        More</span> </a> </div>
+                  <div class="viewmore projectinfobtn center pull-right">
+                    <a class="seemore" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}"><span class="">See More</span> </a> 
+                  </div>
                 </div>
               </div>
               <div class="propertymark"></div>
             </li>
             @endforeach
-            <!--/.portfolio-item-->
-            <!--<li class="portfolio-item col-md-4 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/portfolio/thumb/item1.jpg', '', array('class' => '')) }}
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a class="seemore" href="#"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>-->
-            <!--/.portfolio-item-->
-            <!--<li class="portfolio-item col-md-4 col-sm-6">
-              <div class="item-inner"> {{ HTML::image('images/portfolio/thumb/item1.jpg', '', array('class' => '')) }}
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a class="seemore" href="#"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-              <div class="propertymark"></div>
-            </li>-->
-            <!--/.portfolio-item-->
+   
 	</ul>
     
     
-  </div>
-</section>
-<section class="container container2" id="gototopwrap">
-  <div class="">
-    <div class="">
-      <div class="col-sm-6"> You are here: <a title="home" href="javascript:void(0)">Home</a></div>
-      <div class="col-sm-6">
-        <ul class="pull-right">
-          <li class="totop"><a href="#" class="gototop" id="gototop">Top <span class="fa fa-arrow-up"></span></a></li>
-          <!--#gototop-->
-        </ul>
-      </div>
-    </div>
   </div>
 </section>
 <script type="text/javascript">

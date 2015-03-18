@@ -1,14 +1,18 @@
-@extends('layouts.default')
+@extends('layouts.dashboard')
 @section('content')
-
-<section class="container container2 margin-top-10" id="propertylist">
-  <aside class="col-sm-3 col-sm-push-9">
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad2.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad5.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad3.jpg', '', array('class' => '')) }}</div>
-  </aside>
-  <div class="col-sm-9 col-sm-pull-3 propertylistwrap">
-    <h2>Add Transaction</h2>
+<?php
+  //pr($dataset['transaction']);
+  $transaction_id = isset($dataset['transaction']->transaction_id)?$dataset['transaction']->transaction_id:0;
+  $tenancy_id = isset($dataset['transaction']->tenancy_id)?$dataset['transaction']->tenancy_id:$dataset["tenancy_id"];
+  $tenancy_id = ($tenancy_id==''?0:$tenancy_id);
+  $transaction_head = isset($dataset['transaction']->transaction_head_id)?$dataset['transaction']->transaction_head_id:0;
+  $transaction_date = isset($dataset['transaction']->transaction_date)?CommonHelper::dateToUx($dataset['transaction']->transaction_date):0;
+  $transaction_amount = isset($dataset['transaction']->transaction_amount)?$dataset['transaction']->transaction_amount:'';
+?>  
+<section class="" id="propertylist">
+ 
+  <div class="col-sm-12 propertylistwrap">
+    <h3 class="noMargin"><span class="fa fa-btc noMargin"></span> Add Transaction</h3>
     
     @foreach ($errors->all() as $message)
     <div class="margin-top-10 message">
@@ -19,11 +23,12 @@
     </div>
     <?php break; ?>
     @endforeach
-    <div class="propertylist clearfix new">    	
+    <div class="propertylist clearfix new" style="padding:0;">    	
       <div class="formwrap addTransactionForm">
 
       <!-- Add transaction Form Begins -->
-      {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('tenancy.transactionsave', $dataset["tenancy_id"]), 'files' => true, 'method' => 'post')) }} 
+      {{ Form::open(array('class' => 'form-horizontal', 'route' => array('tenancy.transactionsave', $tenancy_id), 'files' => true, 'method' => 'post')) }} 
+      <input type="hidden" name="transaction_id" value="{{$transaction_id}}">
         <div>
             <h4>Select Tenancy</h4>
             <div class="border-bottom"></div>
@@ -36,12 +41,12 @@
                                 <div class="btn-group mutiselectbtn">
                                      <?php
                                         $current_tenancies = array();
-                                        $current_tenancies[""] = "Select your tenancy for transaction.";
+                                        $current_tenancies["0"] = "Select your tenancy for transaction.";
                                         foreach($dataset["tenancies"] as $tenancy){
                                             $current_tenancies[$tenancy->tenancy_id] = $tenancy->title;
                                         }
                                       ?>
-                                      {{Form::select('tenancy_name', $current_tenancies, $dataset["tenancy_id"], array('class' => 'form-control', 'id'=>""))}}
+                                      {{Form::select('tenancy_name', $current_tenancies, $tenancy_id, array('class' => 'form-control', 'id'=>""))}}
                                 </div>
                             </div>
                       </div>
@@ -62,19 +67,7 @@
                                           <label class="control-label" for="propertyname">Transaction Type</label>
                                                 <div class="arrow">
                                                     <div class="btn-group mutiselectbtn">
-                                                        {{Form::select('transaction_head', $dataset["transaction_heads"], null, array('class' => 'form-control', id => 'selectTransactionHead'))}}
-                                                        <!--<select class="form-control" id="vendorTypeSelect">
-                                                            <option selected="true" style="display:none;">Select Transaction Type</option>
-                                                            <optgroup label="Money Out">
-                                                                <option class="vendorShow">Tax</option>
-                                                                <option class="vendorShow">Repairy</option>
-                                                                <option class="vendorShow">Painting</option>
-                                                            </optgroup>
-                                                            <optgroup label="Money In">                          
-                                                                <option class="vendorHide">Deposit</option>
-                                                                <option class="vendorHide">Rent</option>
-                                                            </optgroup>
-                                                        </select>-->
+                                                        {{Form::select('transaction_head', $dataset["transaction_heads"], $transaction_head, array('class' => 'form-control', id => 'selectTransactionHead'))}}
                                                     </div>
                                                 </div>
                                       </div>
@@ -84,7 +77,7 @@
                                           <div class="form-group">
                                                   <label for="propertyname" class="control-label">Transaction Date</label>
                                                   <div class='input-group date datetimepicker1' id=''>
-                                                      {{Form::text('transaction_date', CommonHelper::dateToUx($dataset["transaction"]->transaction_date), array('class' => 'form-control', 'placeholder' => 'Transaction Date'))}}
+                                                      {{Form::text('transaction_date', $transaction_date, array('class' => 'form-control', 'placeholder' => 'Transaction Date'))}}
                                                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                       </span>
                                                   </div>
@@ -96,7 +89,7 @@
                                           <div class="form-group">
                                               <label class="control-label" for="propertyname">Vendor Involvement</label>
                                               <div class="vendorIn">
-                                                <input type="checkbox" id="vandor" name="vendor_id" value="0"> <label for="vandor">Vendor Involved</label>
+                                                <input type="checkbox" id="vandor" name="" value="0"> <label for="vandor">Vendor Involved</label>
                                               </div>
                                           </div>
                                       </div>
@@ -109,18 +102,13 @@
                                                             <div class="arrow">
                                                                 <div class="btn-group mutiselectbtn">
                                                                     <div class="btn-group selectSropGroup">
-    
-                                                                        <button id="vendor_dd" class="btn dropdown-toggle selectDropper" name="recordinput" data-toggle="dropdown">
-                                                                        Select Vendor
-                                                                        <!-- <span class="caretHolder"><span class="caret"></span></span> -->
-                                                                        </button>
-                                                                        <ul class="dropdown-menu selectDrop" id="ul_vendor">
+                                                                        <select class="form-control" name="vendor_id">
+                                                                              <option value="0">Select Vendor</option>
                                                                               @foreach($dataset['vendors'] as $k=>$v)
-                                                                              <li data-vendor_id = "{{ $v->vendor_id }}"><a href="javascript:;">{{$v->vendor_name}}</a></li>
+                                                                              <option  value = "{{ $v->vendor_id }}">{{$v->vendor_name}}</option>
                                                                               @endforeach
                                                                               
-                                                                              <li class="adVendorholder"><button class="btn" data-toggle="modal" data-target="#addVendorModal">Add New Vendor</button></li>
-                                                                        </ul>
+                                                                        </select>
                                                                                                                                             
                                                                     </div>
                                                                 </div>
@@ -144,9 +132,9 @@
                     <label for="cdaddress" class="control-label">Transaction Amount</label>
                     <div class="input-group">
                         <span class="input-group-addon">&#xe3f;</span>
-                        <div class="row no-margin">
-                        <div class="col-xs-12  no-margin">
-                        {{Form::text('transaction_amount', $dataset["transaction"]->transaction_amount, array('class' => 'form-control special_input', 'placeholder' => 'Enter Transaction Amount', 'style'=>'height:36px'))}}
+                        <div class="row">
+                        <div class="col-xs-12  noMargin">
+                        {{Form::text('transaction_amount', $transaction_amount, array('class' => 'form-control special_input', 'placeholder' => 'Enter Transaction Amount'))}}
                         </div>
                         </div>
                      </div>
@@ -164,7 +152,7 @@
 <div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-    {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('tenancy.addvendor'), 'files' => true, 'method' => 'post')) }} 
+    {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('tenancy.savevendor'), 'files' => true, 'method' => 'post')) }} 
     <input type="hidden" name="vendor_id" id="vendor_id" value="0">  
     <input type="hidden" name="user_id" id="user_id" value="0">  
       <div class="modal-header">
@@ -213,19 +201,7 @@
     </div>
   </div>
 </section>
-<section class="container container2" id="gototopwrap">
-  <div class="">
-    <div class="">
-      <div class="col-sm-6"> You are here: <a title="home" href="javascript:void(0)">Home</a></div>
-      <div class="col-sm-6">
-        <ul class="pull-right">
-          <li class="totop"><a href="#" class="gototop" id="gototop">Top <span class="fa fa-arrow-up"></span></a></li>
-          <!--#gototop-->
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+
 <!--prefooter-->
 <script type="text/javascript">
   $(document).ready(function(){

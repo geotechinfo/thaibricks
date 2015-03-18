@@ -811,7 +811,7 @@ header.smaller #mainnav .navbar-nav > li > a
 .arrow:after {
     content:'<>';
     font:14px "Consolas", monospace;
-    color:#aaa;
+    color:#212121;
     -webkit-transform:rotate(90deg);
     -moz-transform:rotate(90deg);
     -ms-transform:rotate(90deg);
@@ -821,12 +821,14 @@ header.smaller #mainnav .navbar-nav > li > a
     position:absolute;
     pointer-events:none;
 	z-index:110;
+	height:20px;
+	width: 20px;
 }
 .arrow:before {
     content:'';
     right:1px; top:1px;
     width:27px; height:32px;
-    background:#111112;
+    background:#D7D7D7;
     position:absolute;
     pointer-events:none;
     display:block;
@@ -835,11 +837,11 @@ header.smaller #mainnav .navbar-nav > li > a
 
 .form-control
 {
-	background:#111112;
-	border:1px solid #252428;
+	background:#D7D7D7;
+	border:1px solid #DDD;
   	border-radius: 0px;
 	font-weight:normal;
-	color:#c1c1c1;
+	color:#212121;
 	text-align: left;
 	opacity: 1;
 }
@@ -867,7 +869,7 @@ select option
 .search-form h5
 {
 	text-transform:uppercase;
-	color:#eaeaea;
+	color:#222;
 }
 
 .search-form .checkoptions a, .search-form .checkoptions a label
@@ -897,11 +899,11 @@ select option
 
 .dropdown-menu
 {
-	background:#141414;
-	border:1px solid #252428;
+	background:#D7D7D7;
+	border:1px solid #DDD;
   	border-radius: 0px;
 	font-weight:normal;
-	color:#868686;
+	color:#555;
 	text-align: left;
 	width:100%;
 	margin-top:2px;
@@ -2073,7 +2075,8 @@ small.text-danger
 	-moz-box-shadow: 10px 17px 72px -18px rgba(0,0,0,0.75);
 	box-shadow: 10px 17px 72px -18px rgba(0,0,0,0.75);
 }
-
+.myitems:after {content:"";display: block;clear: both;}
+.myitems > li {padding: 0 5px;}
 .myitems .portfolio-item .item-inner,
 .myitems .portfolio-item .commentwrap
 {
@@ -2082,7 +2085,7 @@ small.text-danger
 
 .myitems  .propertymark
 {
-	right: 1px;
+	right: 6px;
 }
 
 .myproperty .edit-delete
@@ -2286,7 +2289,10 @@ input.checkbox_radio[type="checkbox"], input.checkbox_radio[type="radio"]
       .mainnav .navbar-right {margin-right: -15px;}
       .propertyimg{width:100%;}
       .myproperty .edit-delete {top:20px;left:20px;right: auto;}
-}
+	.home_latest {margin:0 0 20px;}
+	.ad-text {max-width: 100%;}
+	.portfolio-items .item-inner .homeLatestPhotoHolder img {height: auto; !important;}
+} 
 
 
 
@@ -2516,8 +2522,10 @@ small.error_special{
 }
 .relatedproperty .portfolio-items .item-inner img
 {
-	height:110px !important;
+	height:80px !important;
 }
+
+
 
 .relatedpropety .btn-block
 {
@@ -2570,11 +2578,16 @@ small.error_special{
 .srchByLocation a:last-child:hover {}
 #portfolio .nav-tabs > li {width:25%;}
 #portfolio .nav-tabs > li > a {text-align: center;padding: 5px 0}
+.item-inner-image {min-height:160px;}
 
+@media screen and (max-width:992px) {
+ .relatedproperty .portfolio-items .item-inner img {height: 120px !important;}
+}
 @media screen and (max-width:768px) {
  #portfolio .nav-tabs > li,
  #portfolio .nav-tabs > li > a {text-align: center;display: block;width: 100%;}
  .commentwrap.asbestos {margin: 0 11px;}
+ .relatedproperty .portfolio-items .item-inner img {height: auto !important;}
 }
 
 /* Tenancy Form */
@@ -2600,7 +2613,6 @@ small.error_special{
 .selectDrop > li > a {color: #AAA;padding: 8px;}
 .selectDrop > li > a:hover {color: #FFF;background: #3399ff;}
 .selectDrop {padding: 0;}
-option {background: #000;}
 optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-size: 14px;background: #444;display: block;margin: 0;}
 .selectDropper .caretHolder:not(*:root) {
 	background: transparent;
@@ -2659,3 +2671,135 @@ optgroup, .selectDrop li span {color:#FFF;font-weight: bold;padding: 0px;font-si
 .delImgAlert {position: absolute;width: 100%;padding: 2px 5px;left:0;top:-30px;}
 
 .form-control[disabled], .form-control[readonly], fieldset[disabled]  {cursor: default;background-color: #111112;opacity: 1;}
+
+/*Antaroop Feb 27*/
+.portfolio-items .eventphototext {height:auto;}
+.homeLatestPhotoHolder {height:100px;display: block;position: relative;}
+.portfolio-items .item-inner .homeLatestPhotoHolder img {height:100px !important;}
+.fullWidth {width:100% !important;}
+.latestLocation {position: absolute;top: 0;right: 0;display: block;background: rgba(192,57,43,.9);padding: 0 4px 0 7px;color: #FFF;border-bottom-left-radius: 4px;}
+.amenitiesIcon {width:50px;height:50px;background:#FAFAFA;border:2px #AAA solid;border-radius: 50%;}
+.amenities p {height:62px;display: flex;align-items: center;padding-left:10px;}
+.amenities .row > div {margin:5px 0;}
+.amenitiesIcon img {height:26px;}
+.viewproperty:focus {background: none repeat scroll 0% 0% #C0392B;}
+.greyBackground {background: #EEE}
+.amenities p {color:#444;}
+.nrbyHeader {color: #777;padding: 5px 0;margin:0;}
+.nrbyList {padding: 4px;background:#eee}
+.nrbyList li {border-bottom: 1px #FAFAFA solid;padding: 5px 0; text-indent:5px;}
+.nrbyList li:last-child {border-bottom:none;}
+.relatedpropety 	.commentwrap, .portfolio-item .item-inner {margin:0;}
+.relatedproperty .relatedpropety .portfolio-item {margin:0 0 20px 0;padding: 0 15px;}
+.relatedpropety li {margin-bottom: 20px;}
+.saveMessage {color: rgb(255, 255, 255);background:#AC4334;padding: 20px 0;text-align: center;}
+.saveMessage p {font-size: 18px;margin-bottom: 0}
+.saveMessage span {font-size: 16px;display: block;}
+.nrbyHeader + ul {font-size: 11px;height: 92px;overflow: auto;}
+.featurelist > div {border-right:1px #FAFAFA solid;}
+.featurelist > div:nth-child(4n+0),.featurelist > div:last-child {border-right:none;}
+.featurelist .media {margin-top:0;padding: 5px;}
+.propety-feature .featurelist {padding: 0 15px;}
+.home_latest li {padding: 0 15px;}
+.home_latest .commentwrap.asbestos {margin:0;}
+
+
+#project .portfolio-items > li {padding: 0 5px;}
+#project .commentwrap.asbestos {width:100%;margin:0;background: transparent;}
+#project .commentwrap.asbestos:after {content:"";display: block;clear: both;}
+#project .projectinfobtn {width: 49.8%;}
+.propertydetailswrap .property-image-carousel .carousel-inner .item img {height: auto;}
+.textEllipsis, .textTruncate{display: inline-block;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.topdash {border-radius: 2px;color: #fff !important;margin: 0 9px;position: relative;top: -2px;background: 	#C0392B}
+.topdash:hover {background:#d51b00 !important;}
+.goToTopBtn {border: 2px solid #800;border-radius: 50px;bottom: 50px;align-items: center;display: flex;justify-content: center;padding:0;height:55px;position: fixed;right: 50px;text-align: center;width: 55px;opacity: 0;transition:all .4s;box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);background: #C0392B;color: #FFF;z-index: 2000;}
+.goToTopBtn:hover {border: 2px solid #FFF !important;z-index: 1111111111111111;color: #FFF;}
+.goToTopBtn:focus {color: #FFF;}
+.showToTopBtn {opacity: 1}
+body {position: relative;}
+.topBreadcrumbs li:after {content:"/";display: inline-block;margin:0 5px;}
+.topBreadcrumbs li:last-child:after {content:"";display: inline-block;margin:0 5px;cursor: default;}
+.topBreadcrumbs li {display: inline-block;}
+.innerBread .topBreadcrumbs {display: inline-block;margin-left: 5px;margin-bottom: 0;color:#EEE;}
+.topBreadcrumbs {display: inline-block;margin-left: 5px;margin-bottom: 0;color:#777;}
+.topBreadcrumbs li a:hover {text-decoration: underline;}
+.topBreadcrumbs li:last-child a:hover {text-decoration: none;}
+.innerBread .topBreadcrumbs li a {color:#DDD;}
+.topBreadcrumbs li a {color:#777;}
+.innerBread .topBreadcrumbs li:last-child a {color:#FFF;cursor: default;}
+.topBreadcrumbs li:last-child a {color:#444;cursor: default;}
+.innerBread {}
+#gototopwrap {background: #686868}
+.innerBread span {color: #EEE;}
+.property-image-carousel .carousel-indicators li,.property-image-carousel .carousel-indicators li:active {background-size:100% !important;}
+.mt30 {margin-top:40px;}
+.featuredagentbox {background: #444;border-color:#222;border-radius:0;box-shadow: none;}
+.featuredagentbox * {color:#EEE;}
+.featuredagentbox p{margin-bottom: 0;}
+.featuredagentbox .btn-default {color:#222;}
+.adminRule .btn-default {color:#AAA;background:#EEE;}
+.home_latest {margin:0 -15px 20px;}
+.home_latest:after {content:"";display: block;clear:both;}
+html {overflow-x:hidden;}
+.propertydetailswrap .mapwrap .ad-wrap {position: relative;}
+.propertydetailswrap .mapwrap .ad-wrap:after {position:absolute;padding: 2px 4px;background:#FFF;border:1px #DDD dashed;color:#888;content:"Click to zoom";bottom:2px;left:2px;display: none;}
+.propertydetailswrap .mapwrap:hover .ad-wrap:after {display: inline-block;}
+
+.gap10 {display: block;height:10px;}
+.gap20 {display: block;height:20px;}
+.gap30 {display: block;height:30px;}
+.gap40 {display: block;height:40px;}
+.gap50 {display: block;height:50px;}
+.agentDesc {max-height: 120px;overflow: auto;margin:0 !important;}
+.agDescHolder {border-left:1px #888 dashed;}
+.agDetailsHolder small span {word-wrap: break-word}
+.agHeightFix {height:120px;background:#555;padding: 5px 15px 10px;}
+.agHeightFix .agentImage {max-width: 100%;max-height: 110px;}
+.agBox {padding: 10px 5px 10px 20px;}
+#mainnav .navbar-nav > li > a {border-top: 2px #2E2D32 solid;}
+.featureAgBox {border-radius: 0;box-shadow: none;}
+.searchparam .tab-pane {padding: 10px 10px 0;}
+.propertyname_price > h2 {margin-top:0}
+.agListImageHolder {display: block;height: 150px;overflow: hidden !important;padding: 0;border-radius: 0;border: 3px #FFF solid;outline: 1px #CCC solid;}
+.agListImageHolder:hover {outline:1px #888 solid;}
+.agDetailsSection {border-radius: 0;background: #FFF;box-shadow: none;}
+.agDetailSpace {background:#EEE;border:1px #DDD solid;padding: 10px;color:#444;}
+
+
+@media (max-width: 992px) {
+	.portfolio-items .item-inner .homeLatestPhotoHolder img,.homeLatestPhotoHolder {height:160px;}
+}
+@media (max-width: 768px) {
+	.homeLatestPhotoHolder,.portfolio-items .item-inner .homeLatestPhotoHolder img {height: auto !important;}
+	.homeLatestPhotoHolder {padding: 15px 10px;}
+	.goToTopBtn {bottom: 10px;right: 15px;}
+	#FeaturedAgent .slider {width:100%;}
+	.col-md-15{width: 30%;float: left;margin: 0 1.4%;}
+	#project .portfolio-items .item-inner img {height: auto !important;}
+}
+
+
+
+
+
+
+/* Super Admin Rule*/
+.adminRule
+{
+	margin-top:18px;
+}
+
+/*Super Admin Quick UI fix*/
+/*Login*/
+
+.form-signin-heading 
+{
+	border-bottom:1px solid #333;
+	color:#333;
+}
+
+.footer_text
+{
+	margin-top:20px;
+}
+

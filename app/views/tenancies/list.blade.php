@@ -1,16 +1,12 @@
-@extends('layouts.default')
+@extends('layouts.dashboard')
 
 @section('content')
-<section class="container container2 margin-top-10" id="propertylist">
-  <aside class="col-sm-3 col-sm-push-9">
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad6.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad8.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad7.jpg', '', array('class' => '')) }}</div>
-  </aside>
-  <div class="col-sm-9 col-sm-pull-3 propertylistwrap">
+<section class="" id="propertylist">
+  
+  <div class="col-sm-12 propertylistwrap">
     <div class="clearfix">
-        <h2 class="pull-left">Tenancy Details</h2>
-        <a href="{{URL::to('/tenancy/create')}}" class="btn orange pull-right addNewVendorButton">Add New Tenancy</a>
+        <h3 class="pull-left noMargin"><span class="fa fa-building-o noMargin"></span> Tenancy Details</h3>
+        <a href="{{URL::to('/tenancy/create')}}" class="btn orange pull-right  pull-right">Add New Tenancy</a>
     </div>
     
     @if(Session::get('success'))
@@ -24,33 +20,42 @@
     <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
     </div>
     @endif
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="input-group innerSearchBox">
+                        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search noMargin"></i></span>
+                    <input type="search" data-toggle="search" data-target=".tenancy_row" class="form-control search_text" placeholder = "Search by text">
+            </div>
+            
+        </div>
+    </div>
     
     @if(count($dataset["tenancies"])>0)
-    <div class="propertylist clearfix new">    	
+    <div class="propertylist clearfix new" style="padding:0 0 10px;">    	
         
-        <div class="tenantDetailHead hidden-xs">
+        <div class="tenantDetailHead" style="padding:10px;">
           <div class="row bold">
             <div class="col-sm-3">Property Name</div>
             <div class="col-sm-2">Tenant Name</div>
             <div class="col-sm-2">Tenant Email</div>
             <div class="col-sm-2">Tenant Phone</div>
-            <div class="col-sm-3">View Details</div>
+            <div class="col-sm-3 text-center">View Details</div>
           </div>
         </div>
 
-        <div class="borderThin hidden-xs"></div>
+        
         <div class="tenantListHolder">
 			@foreach ($dataset["tenancies"] as $tenancy)
-            <div class="tenantRow">
+            <div class="tenantRow tenancy_row">
                   <div class="row fontBold">
                     <div class="col-sm-3">{{{ substr($tenancy->title, 0, 25) }}}...</div>
                     <div class="col-sm-2">{{{ substr($tenancy->tenant_fname." ".$tenancy->tenant_lname, 0, 12) }}}...</div>
                     <div class="col-sm-2">{{{ substr($tenancy->tenant_email, 0, 15) }}}...</div>
                     <div class="col-sm-2">{{{ $tenancy->tenant_phone }}}</div>
-                    <div class="col-sm-3">
-                      <a href="javascript:;" data-id="{{ $tenancy->tenancy_id }}" title="Upload Others Document" data-toggle="modal" data-target="#upload" class="btn btn-default viewAddDocumentForm" style="padding:0px 6px;"><span class="fa fa-upload"></span></a>
-                    	<a href="{{URL::to('/tenancy/transaction')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-btc"></span></a>
-                        <a href="{{URL::to('/tenancy/edit')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-edit"></span></a>
+                    <div class="col-sm-3 text-center">
+                      <a href="javascript:;" data-id="{{ $tenancy->tenancy_id }}" title="Upload Others Document" data-toggle="modal" data-target="#upload" class="btn btn-default viewAddDocumentForm" style="padding:0px 6px;"><span class="fa fa-upload noMargin"></span></a>
+                    	<a href="{{URL::to('/tenancy/transaction')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-btc noMargin"></span></a>
+                        <a href="{{URL::to('/tenancy/edit')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-edit noMargin"></span></a>
                     	<a href="javascript:;" class="btn btn-block orange viewTenantbtn" style="width:60px; display:inline-block;">View</a>
                     </div>
                   </div>
@@ -236,19 +241,6 @@
 
     </div>
     @endif
-  </div>
-</section>
-<section class="container container2" id="gototopwrap">
-  <div class="">
-    <div class="">
-      <div class="col-sm-6"> You are here: <a title="home" href="javascript:void(0)">Home</a></div>
-      <div class="col-sm-6">
-        <ul class="pull-right">
-          <li class="totop"><a href="#" class="gototop" id="gototop">Top <span class="fa fa-arrow-up"></span></a></li>
-          <!--#gototop-->
-        </ul>
-      </div>
-    </div>
   </div>
 </section>
 <!--prefooter-->
