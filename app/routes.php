@@ -52,7 +52,7 @@ Route::get('/wi', function(){/*dd(new WideImage);*/});
 Route::get('/mail_test', array('as' => 'mail_test', 'uses' => 'UsersController@mail_test'));
 
 
-Route::get('/dashboard', array('as' => 'dashboard', 'uses' => 'PagesController@test'));
+Route::get('/dashboard', array('as' => 'dashboard', 'uses' => 'PagesController@dashboard'));
 
 Route::get('/download/{type}/{file}', array('before' => 'auth','as' => 'download', 'uses' => 'DownloadController@get'));
 
@@ -116,7 +116,7 @@ Route::group(['prefix' => 'admins'], function() {
     Route::get('/', array('as' => 'admin.signin', 'uses' => 'AdminsController@index'));
     Route::post('/login',array('as' => 'admin.login', 'uses' => 'AdminsController@login')) ; 
     Route::get('/logout',array('as' => 'admin.logout', 'uses' => 'AdminsController@logout')) ; 
-	Route::get('/dashboard', array('as' => 'admin.dashboard', 'uses' => 'AdminsController@dashboard'));
+	Route::get('/dashboard', array('as' => 'admins.dashboard', 'uses' => 'AdminsController@dashboard'));
 	Route::get('/attribute/relation', array('as' => 'attribute.relation', 'uses' => 'AdminsAttributesController@relation'));
 	Route::post('/attribute/store', array('as' => 'attribute.store', 'uses' => 'AdminsAttributesController@store'));
 	Route::get('/location/location', array('as' => 'location.location', 'uses' => 'AdminsLocationsController@location'));
@@ -136,6 +136,7 @@ Route::group(['prefix' => 'admins'], function() {
 	Route::post('/property/activate', array('as' => 'admin.property.activate', 'uses' => 'AdminsController@property_activate'));
 	Route::get('/users/list', array('as' => 'admin.users.list', 'uses' => 'AdminsController@user_list'));
 	Route::get('/user/changestatus/{id}', array('as' => 'admin.user.changestatus', 'uses' => 'AdminsController@userchangestatus'));
+	Route::get('/user/changefeatured/{id}', array('as' => 'admin.user.changefeatured', 'uses' => 'AdminsController@userchangefeatured'));
 
 	Route::get('/relation/', array('as' => 'admin.relation.', 'uses' => 'AdminsRelationController@index'));	
 	Route::post('/relation/save_deal', array('as' => 'admin.save_deal', 'uses' => 'AdminsRelationController@save_deal'));	

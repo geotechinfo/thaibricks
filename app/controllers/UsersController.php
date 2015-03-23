@@ -180,7 +180,7 @@ class UsersController extends Controller {
             ]
         );
 		if($validator->fails()){
-            return Redirect::route('profile',array('#changePass'))->withErrors($validator)->withInput();
+            return Redirect::route('profile.changepassword')->withErrors($validator)->withInput();
         }else{
 
         	$user = User::find(Auth::User()->user_id);
@@ -201,7 +201,7 @@ class UsersController extends Controller {
 	        	}
         	}else{
         		Session::flash('error', 'Please Enter Correct Old Password');
-        		return Redirect::route('profile',array('#changePass'));
+        		return Redirect::route('profile.changepassword',array('#changePass'));
         	}
 
         	

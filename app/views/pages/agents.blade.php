@@ -18,7 +18,7 @@
       <div class="col-sm-12">
       	  <span>You are here:</span>
           <ul class="topBreadcrumbs">
-            <li><a href="javascript:;">Home</a></li>
+            <li><a href="{{URL::to('/')}}">Home</a></li>
             <li><a href="javascript:;">Agents </a></li>
           </ul>
       
@@ -34,6 +34,7 @@
   <div class="container searchcontent container2 headrow">
 
    <div class="col-sm-9 propertyname_price">
+   <div class="gap10"></div>
     <h2 class="pull-left">Agent List</h2>
     <h2 class="pull-right"></h2>
    </div>
@@ -76,14 +77,14 @@
                 
                   <div class="phototext text-left">
                   <div class="gap20"></div>
-                      <p class="textTruncate">
+                      <p class="textTruncate text-capitalize">
                         <strong><span class="fa fa-user"></span> {{$user->first_name }} {{$user->last_name}}</strong>
                         @if($user->location_name!='')
                         <small>({{$user->location_name}})</small>
                         @endif
                       </p>
-                      <p class="textTruncate"><small><i class="fa fa-envelope"></i> : <span>{{$user->email}}</span></small></p>
-                      <p class="textTruncate"><small><i class="fa fa-mobile"></i> : <span>{{$user->phone}}</span></small></p>
+                      <p class="textTruncate"><small><i class="fa fa-envelope"></i> <span>{{$user->email}}</span></small></p>
+                      <p class="textTruncate"><small><i class="fa fa-phone"></i> <span>{{$user->phone}}</span></small></p>
                     <div class="gap20"></div>
                       <a href="{{URL::to('agent/')}}/{{seo_url($user->first_name." ".$user->last_name)}}_{{$user->user_code}}" target="_blank" class="btn btn-default fullWidth">View Other Properties</a>
                       

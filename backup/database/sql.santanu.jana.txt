@@ -115,3 +115,7 @@ CREATE TABLE IF NOT EXISTS `nw_newsletters` (
   `newsletter_email` varchar(255) NOT NULL,
   `created` datetime NOT NULL
 )
+
+-- DATE 18/03/2015
+-----------------------------------------
+ALTER TABLE `ac_users` ADD `is_featured` SMALLINT(1) NOT NULL DEFAULT '0' COMMENT '1->Featured' AFTER `status`;

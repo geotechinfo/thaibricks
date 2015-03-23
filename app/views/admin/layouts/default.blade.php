@@ -31,7 +31,7 @@
       <div class="">
         <div class="navbar-header">
           <button data-target="#topnavdrpdwn" data-toggle="collapse" class="navbar-toggle" type="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-          <a href="{{URL::to('/admin/dashboard')}}" class="logo">
+          <a href="{{URL::to('/admins/dashboard')}}" class="logo">
           	{{ HTML::image('images/logo.png', '', array('class' => 'productlogo')) }}
           </a>
         </div>

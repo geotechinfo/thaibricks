@@ -37,6 +37,21 @@ class AdminsAttributesController extends Controller {
 		}
 		$rules = ['deal_id' => Input::get('deal_id'), 'type_id' => Input::get('type_id'), 'group_id' => Input::get('group_id'), 'attribute_id' => Input::get('attribute_id')];
 		$relation = Relation::where($rules)->get();
+		/*
+		$validators = array(
+			'type_id' => 'required|min:1',
+			'group_id' => 'required|min:1'			
+		);
+		$validator = Validator::make(
+            Input::all(),
+            $validators
+        );
+		pr($validator->fails(),1);
+		*/
+		//pr(Input::all(),1);
+		if(Input::get('deal_id')==0 || Input::get('type_id')==0){
+			return Redirect::route('attribute.relation')->with('info','All fields are mandatory');
+		}
 
 		if(!$relation->isEmpty()){
 			return Redirect::route('attribute.relation')->withInput();

@@ -51,7 +51,7 @@
         <div class="divider"></div>
          @if(Session::get('info'))
         <div class="margin-top-10 message">
-        <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+        <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
         </div>
         {{{ Session::forget('info') }}}
         @endif

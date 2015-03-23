@@ -28,7 +28,7 @@ class AdminsController extends Controller {
 			$admin->username = 'admin';
 			$admin->password = 'admin123';			
 			Session::put('admin', $admin);
-			return Redirect::route('admin.dashboard');
+			return Redirect::route('admins.dashboard');
 		}else{
 			return Redirect::route('admin.signin')->with('info','Invalid Login');
 		}
@@ -117,6 +117,14 @@ class AdminsController extends Controller {
 			return Redirect::route('admin.signin')->with('info','Please Login First');
 		}
 		DB::statement('UPDATE ac_users SET status  = IF(status=1,0,1) WHERE user_id = '.$id);
+		return Redirect::route('admin.users.list');	
+	}
+
+	function userchangefeatured($id=0){
+		if(!Session::has('admin')){			
+			return Redirect::route('admin.signin')->with('info','Please Login First');
+		}
+		DB::statement('UPDATE ac_users SET is_featured  = IF(is_featured=1,0,1) WHERE user_id = '.$id);
 		return Redirect::route('admin.users.list');	
 	}
 

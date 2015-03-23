@@ -1,0 +1,465 @@
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: auto;
+  background-color: #222222;
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+  
+  }
+}
+
+/* -------- END Sticky footer styles ------------------ */
+/*********************************************************/
+
+/*                 Template Layout                       */
+
+/*********************************************************/
+/*
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 1em;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 1em;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: rgba(110, 110, 110, 0.25);
+}
+
+*/
+
+#footer:before,
+#footer:after {
+  display: table;
+  content: " ";
+}
+
+#footer:after {
+  clear: both;
+}
+
+
+/* END footer */
+
+
+
+@media (min-width: 768px) {
+  .user-media {
+    display: block;
+  }
+  .user-media .media-body {
+    display: none;
+  }
+  .user-media .user-link {
+    position: relative;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .user-media .user-link .user-img {
+    margin: 10px auto;
+  }
+  .user-media .user-link .user-label {
+    position: absolute;
+    top: -6px;
+    right: 6px;
+  }
+}
+
+@media (min-width: 992px) {
+  .user-media .user-link {
+    float: left;
+  }
+  .user-media .user-link .user-img {
+    margin: 10px;
+  }
+  .user-media .user-link .user-label {
+    top: 6px;
+    right: 0;
+  }
+  .user-media .media-body {
+    display: block;
+    float: left;
+    margin-left: 12px;
+  }
+  .user-media .media-body h5.media-heading {
+   	font-size: 18px;
+	padding-top: 8px;
+	margin-bottom: 11px;
+	color: #050505;
+	font-weight: bolder;
+  }
+  .user-media .media-body ul.user-info li {
+    /*color: #ccc;*/
+  }
+}
+
+@media (min-width: 768px) {
+  .mini-sidebar .media-body {
+    display: none;
+  }
+  .side-right .user-link .user-label {
+    right: auto;
+    left: 6px;
+  }
+}
+
+/* ============== END LEFT Styles ================= */
+.sellermenu{
+  position: relative;
+  overflow: hidden;
+  clear:both;
+}
+
+.sellermenu,
+.sellermenuul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-bottom:1px solid #565656;
+}
+
+@media (min-width: 768px) {
+  .sellermenu.collapse {
+    display: inherit !important;
+  }
+}
+
+.sellermenu> li {
+  position: relative;
+  display: block;
+  margin: 0;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.sellermenu> li > a {
+  position: relative;
+  display: block;
+  border-top:1px solid #565656;
+}
+
+.sellermenu li a span.fa
+{
+	padding:10px 0;
+	width:33px;
+	text-align:center;
+	border-right:1px solid #565656;
+	margin-right:5px;
+	font-size:16px;
+}
+
+.sellermenu> li > a:hover,
+.sellermenu> li > a:focus{
+  color: #333;
+  text-decoration: none;
+  background: #fff;
+  outline: none;
+}
+
+.counter, .sellermenu a.counter
+{
+	margin:12px 5px;
+	font-size:9px;
+	
+}
+
+.sellermenu> li > a .label {
+  float: right;
+}
+
+.sellermenu> li.active > a {
+  color: #333;
+  background-color: #fff;
+
+}
+
+.sellermenu> li.panel {
+  background-color: transparent;
+}
+
+.sellermenuli > a {
+  text-decoration: none;
+}
+
+.sellermenuul {
+  padding: 5px 0 5px 15px;
+  border-top: 1px solid rgb(216, 215, 215);
+  -webkit-box-shadow: 0 1px 0px rgba(255, 255, 255, 0.05) inset;
+          box-shadow: 0 1px 0px rgba(255, 255, 255, 0.05) inset;
+}
+
+.sellermenuul a {
+  display: block;
+  padding: 10px 0;
+  /*margin-left: 15px;*/
+   /*font-size: 12px;*/
+  font-size: 14px;
+  /*color: #000;*/
+}
+
+.sellermenu.nav-header {
+  padding: 3px 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #777;
+  text-shadow: 0 1px 0px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  background: #404040;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 0px rgba(255, 255, 255, 0.05) inset;
+          box-shadow: 0 1px 0px rgba(255, 255, 255, 0.05) inset;
+}
+
+.sellermenu.nav-divider {
+  height: 6px;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.01);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset;
+}
+
+.sellermenu> li.active > a {
+  position: relative;
+}
+.sellermenu> li.panel.active ul > li.active
+{
+	position:relative;
+}
+.sellermenu> li.panel.active ul > li.active > a:after {
+  position: absolute;
+  right: 0;
+  border-color: transparent #fff transparent transparent;
+  border-style: solid;
+  border-width: 6px;
+  content: "";
+  top:30%;
+}
+
+.side-right .sellermenu> li > a > .label {
+  right: auto;
+  left: 3px;
+}
+
+@media (min-width: 768px) {
+  .mini-sidebar .sellermenu> li > a,
+  .sellermenu> li > a {
+    text-align: left;
+  }
+  .mini-sidebar .sellermenu> li > a > i,
+  .sellermenu> li > a > i {
+    display: block;
+    font-size: 20px;
+  }
+  .mini-sidebar .sellermenu> li > a .label,
+  .sellermenu> li > a .label {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+  }
+  .mini-sidebar.side-right .sellermenu> li > a .label,
+  .side-right .sellermenu> li > a .label {
+    right: auto;
+  }
+  .sellermenu:after,
+  .mini-sidebar .sellermenu:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 0;
+    /*background: #333;*/
+    /*content: " ";*/
+    -webkit-box-shadow: 97px 1px 5px 2px rgba(0, 0, 0, 0.6);
+            box-shadow: 97px 1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+  .side-right .sellermenu:after,
+  .side-right.mini-sidebar .sellermenu:after {
+    -webkit-box-shadow: 3px 1px 5px 2px rgba(0, 0, 0, 0.6);
+            box-shadow: 3px 1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (min-width: 992px) {
+  .sellermenu> li > a {
+    text-align: left;
+  }
+  .sellermenu> li > a > i {
+    display: inline;
+    font-size: 14px;
+  }
+  .sellermenu> li > a > .label {
+    position: relative;
+  }
+  .sellermenu:after {
+    -webkit-box-shadow: 217px 1px 5px 2px rgba(0, 0, 0, 0.6);
+            box-shadow: 217px 1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+  .mini-sidebar .sellermenu:after {
+    -webkit-box-shadow: 97px 1px 5px 2px rgba(0, 0, 0, 0.6);
+            box-shadow: 97px 1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* BEGIN CONTENT STYLES */
+
+.outer {
+  padding: 10px;
+  background-color: #6e6e6e;
+}
+
+.outer:before,
+.outer:after {
+  display: table;
+  content: " ";
+}
+
+.outer:after {
+  clear: both;
+}
+
+.inner {
+  position: relative;
+  min-height: 1px;
+  /*padding-right: 10px;
+  padding-right: 15px;
+  padding-left: 10px;*/
+  background: #fff;
+  border: 0px solid #e4e4e4;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    float: left;
+    width: 100%;
+
+  }
+ 
+}
+
+.inner .row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+/* END CONTENT STYLES */
+/* BEGIN FOOTER */
+
+#footer {
+  margin: 0 auto;
+  color: #1933EC;
+background-color:#f8f8f8;
+ border:1px solid rgb(216, 215, 215);
+
+}
+
+#footer p {
+	color: #333;
+    font-size: 12px;
+    padding: 12px 0 0;
+    text-align: center;  
+}
+
+/** END FOOTER */
+
+
+/* Welcome user wrap */
+.welcomeuserWrap
+{
+	background:#000;
+	min-height: 100px;
+	padding:10px;
+	text-align:center;
+}
+.welcomeuserWrap .image
+{
+	background: #fff;
+    border: 1px solid #eeeeee;
+    height: 45px;
+    width: 45px;
+	border-radius:50%;
+	margin:0 auto;
+}
+
+.welcomeuserWrap .image .fa-user
+{
+	font-size:21px;
+	line-height:37px;
+}
+.welcomeuserWrap .info
+{
+	color:#fff;
+	margin-top:13px;
+	background:#c0392b;
+	padding: 2px;
+	border: 1px solid #c0392b;
+}
+
+.welcomeuserWrap .info p
+{
+	margin:0;
+	padding:0;
+}
+ul.sellermenu ul
+{
+	margin-left:0px;
+	padding-left:0px;
+	background:#414141;
+}
+ul.sellermenu ul li
+{
+	list-style:none;
+	border-top:1px solid #565656;
+}
+ul.sellermenu ul li:hover, ul.sellermenu ul li:focus,
+ul.sellermenu ul li.active
+{
+	background:#1C2725;
+}
+ul.sellermenu ul li:hover a, ul.sellermenu ul li:focus a
+{
+	text-decoration:none;
+}
+
+
+ul.sellermenu ul li a span.fa
+{
+	font-size:14px;
+	padding: 10px 0px;
+}
+.relativeAnchor
+{
+	position:relative;
+}
+
+.relativeAnchor .caret
+{
+	position:absolute;
+	right:10px;
+	top:45%;
+}
+
+.sellermenu a
+{
+	display:block;
+}
+/* Welcome user wrap */

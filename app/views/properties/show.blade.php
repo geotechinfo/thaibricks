@@ -18,7 +18,7 @@
       	  <span>You are here:</span>
           <ul class="topBreadcrumbs">
             <li><a href="{{URL::to('/')}}">Home</a></li>
-            <li><a href="javascript:;">Featured Property</a></li>
+            <li><a href="javascript:;">Property Detail</a></li>
           </ul>
       
       </div>
@@ -28,7 +28,7 @@
 </section>
 
 <?php $property = $dataset["properties"][0]; ?>
-<!--/Main Theme & Search-->
+<!--/Main Theme & Search
 <section class="no-margin" id="list-search">
   <div class="container searchcontent container2 headrow">
      <?php if(Session::has('admin')){?>
@@ -56,17 +56,47 @@
    </div>
     
   </div>
-  <!---->
-</section>
+</section>-->
 
 
 <!--/Main Theme & Search-->
 <section class="container container2" id="propertydetail">
   
 
-<div class="<?php if(Session::has('admin')){echo "col-md-12";}else{echo "col-md-9 col-md-push-3";}?> propertydetailswrap">
+<div class="<?php if(Session::has('admin')){echo "col-md-12 noBorder";}else{echo "col-md-9 col-md-push-3";}?> propertydetailswrap">
   
-  
+
+
+<section class="noMargin" id="list-search">
+  <div class="searchcontent  headrow clearfix">
+     <?php if(Session::has('admin')){?>
+    <div class="col-md-3" style="padding-left:0;">
+     <div class="adminRule">
+     
+      <a href="{{URL::to('property/change_status/')}}/status/{{$property->property_id}}" class="btn <?php echo ($property->status==1?'btn-default':'orange')?> btn-sm ">
+        <i class="fa fa-cog"></i> 
+        <?php echo ($property->status==1?'Deactivate':'Activate')?>
+      </a>
+      <a href="{{URL::to('property/change_status/')}}/featured/{{$property->property_id}}" class="btn <?php echo ($property->is_featured==1?'btn-default':'orange')?> btn-sm">
+        <i class="fa fa-star-o"></i>
+        <?php echo ($property->is_featured==1?'Unfeatured':'Featured')?> 
+      </a>
+      <a href="{{URL::to('property/change_status/')}}/hot/{{$property->property_id}}" class="btn <?php echo ($property->is_hot==1?'btn-default':'orange')?> btn-sm  ">
+        <i class="fa fa-fire"></i> Hot
+      </a>
+      
+      </div>
+    </div>
+    <?php }?>
+   <div class="col-md-<?php echo (Session::has('admin')?'9':'12')?> propertyname_price noPadding clearfix">
+    <h2 class="pull-left noPadding">{{{ $property->title }}}</h2>
+    <h2 class="pull-right noPadding">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</h2>
+   </div>
+   <div class="col-sm-12"><div class="gap10"></div></div>
+    
+  </div>
+<div class="gap20"></div>
+</section>
 	
     <div class="clearfix propetymap-desc padding greyBackground" style="padding-top:20px;">
       <div class="col-md-5">
@@ -80,12 +110,40 @@
             @endforeach
           </div>
         </div>
+        <div class="gap10"></div>
+        <div class="share text-left">
+                <a href="https://api.addthis.com/oexchange/0.8/forward/pinterest/offer?url=<?php echo urlencode(URL::to('property/change_status/')."/hot/".$property->property_id)?>&pubid=ra-550a7f4438a2d811&ct=1&title=<?php echo urlencode($property->title)?>&pco=tbxnj-1.0" target="_blank">
+                        <i class="fa fa-pinterest-square" title="Pinterest"></i>
+                </a>
+
+
+                <a href="https://api.addthis.com/oexchange/0.8/forward/google_plusone_share/offer?url=<?php echo urlencode(URL::to('property/change_status/')."/hot/".$property->property_id)?>&pubid=ra-550a7f4438a2d811&ct=1&title=<?php echo urlencode($property->title)?>&pco=tbxnj-1.0" target="_blank">
+                        <i class="fa fa-google-plus-square" title="Google+"></i>
+                </a>
+
+
+                <a href="https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=<?php echo urlencode(URL::to('property/change_status/')."/hot/".$property->property_id)?>&pubid=ra-550a7f4438a2d811&ct=1&title=<?php echo urlencode($property->title)?>&pco=tbxnj-1.0" target="_blank">
+                        <i class="fa fa-facebook-square" title="Facebook"></i>
+                </a>
+
+
+                <a href="https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=<?php echo urlencode(URL::to('property/change_status/')."/hot/".$property->property_id)?>&pubid=ra-550a7f4438a2d811&ct=1&title=<?php echo urlencode($property->title)?>&pco=tbxnj-1.0" target="_blank">
+                        <i class="fa fa-twitter-square" title="Twitter"></i>
+                </a>
+
+
+                <a href="https://www.addthis.com/bookmark.php?source=tbx32nj-1.0&v=300&url=<?php echo urlencode(URL::to('property/change_status/')."/hot/".$property->property_id)?>&pubid=ra-550a7f4438a2d811&ct=1&title=<?php echo urlencode($property->title)?>&pco=tbxnj-1.0" target="_blank">
+                        <i class="fa fa-plus-square" title="More"></i>
+                </a>
+
+
+        </div>
       </div>
       <div class="col-md-7 propertylist-body">
         <!--<h5 class="uppercase">{{{ $property->first_name }}} {{{ $property->last_name }}}</h5>-->
         <p class="">{{{ $property->description }}}</p>
         <p><a class="btn btn-primary btn-lg orange" href="javascript:;" data-toggle="scrollTo" data-target=".agent_details"> <span class="fa fa-envelope"></span> <span>Contact Info</span> </a></p> 
-         <div>
+        <div>
               
          </div>
       </div>
@@ -110,7 +168,7 @@
         <div class="ad-wrap">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => '')) }}</div>
     </div>
     </div>-->
-    
+    @if(count($property->amenities))
     <div class="">
     <div class="clearfix propety-feature">
         <div class="col-md-12 noPadding">
@@ -130,6 +188,7 @@
         </div>
     </div>
     </div>
+    @endif
     <?php 
         $trns = array();
         foreach($property->transports as $transports){ 
@@ -241,11 +300,12 @@
       </div>
       
     </div>
+    @if(count($dataset["related"])>0)
     
     <div class="relatedproperty clearfix">
     <div class="col-md-12">
     <h2>Related Properties :</h2>
-    @if(count($dataset["related"])<2)
+    @if(count($dataset["related"])==0)
     <div class="margin-top-10 message">
     <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>No related properties found at this time!<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
     </div>
@@ -273,6 +333,7 @@
           </ul>
     </div>
     </div>
+    @endif
   </div>
   <?php if(!Session::has('admin')){?>
   <aside class="col-md-3 col-md-pull-9 left-panel">

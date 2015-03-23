@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('content')
+{{ HTML::script('libraries/validator/validation.js') }}
 
 
 <!--/profileimage-->
@@ -29,7 +30,7 @@
             <div role="tabpanel" class="tab-pane active" id="acDetails">
               <h4>Change Password</h4>
             	<div class="padding greyBg">
-                {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('profile.do_changepassword'), 'method' => 'post')) }}
+                {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('profile.do_changepassword'), 'method' => 'post','id'=>'frm')) }}
 
                 <div class="accountInfoGroup">
                         <div class="row">
@@ -45,7 +46,7 @@
                         <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
                             <label class="control-label">New Password</label>
-                            {{ Form::password('new_password',array('class'=>'form-control','placeholder'=>'New Password'))}}
+                            {{ Form::password('new_password',array('class'=>'form-control','placeholder'=>'New Password','id'=>'new_password'))}}
                           </div>
                         </div>
                         <p></p>
@@ -84,7 +85,28 @@
   </div>
 </section>
 
-
+<script type="text/javascript">
+  $(function(){
+    $('#frm').validate({
+      rules:{
+        password:{
+          required:true,
+          minlength:5
+        },
+        new_password:{
+          required:true,
+          minlength:5
+        },
+        new_password_confirmation:{
+          required:true,
+          equalTo:'#new_password'
+        }
+      },
+      errorClass:'text-danger',
+      errorElement:'small'
+    })
+  })
+</script>
 
 
 @stop

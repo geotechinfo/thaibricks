@@ -51,11 +51,11 @@ foreach ($dataset['locations'] as $k=>$v){
     <h2>Searching for property here :</h2>
     <div role="tabpanel">
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="<?php echo (($dataset['transport']=='' && $dataset['gmap']==0)?'active':'');?>"><a href="#bsearch" aria-controls="bsearch" role="tab" data-toggle="tab">Search</a></li>
+        <li role="presentation" class="<?php echo (($dataset['transport']=='' && $dataset['gmap']==0)?'active':'');?>"><a href="{{URL::to('property/search')}}" >Search</a></li>
         <li role="presentation" class="<?php echo ($dataset['transport']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=1" aria-controls="bts" role="tab" >BTS </a></li>
         <li role="presentation" class="<?php echo ($dataset['transport']=='2'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=2" aria-controls="mrt" role="tab" >MRT</a></li>
         <li role="presentation" class="<?php echo ($dataset['transport']=='3'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=3" aria-controls="alink" role="tab" >ALink</a></li>
-        <li role="presentation" class="<?php echo ($dataset['gmap']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?gmap=1" aria-controls="alink" role="tab" >Google Map</a></li>
+        <li role="presentation" class="<?php echo ($dataset['gmap']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?location=1&gmap=1" aria-controls="alink" role="tab" >Google Map</a></li>
       </ul>
     </div>
     <div class="tab-content searchparam noPadding">
@@ -73,7 +73,10 @@ foreach ($dataset['locations'] as $k=>$v){
         <form action="{{URL::to('property/search')}}">
 
         <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-2 srch_icon_bg">
+            {{ HTML::image(asset('images/icons/bts_big.png'), '', array('class' => '')) }}
+          </div>
+          <div class="col-md-8">
             <div class="row">
             <input type="hidden" name="transport" value="1">  
             <?php
@@ -101,7 +104,10 @@ foreach ($dataset['locations'] as $k=>$v){
         <fieldset class="search-form">
         <form action="{{URL::to('property/search')}}">
           <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-2 srch_icon_bg">
+            {{ HTML::image(asset('images/icons/mrt_big.png'), '', array('class' => '')) }}
+          </div>
+          <div class="col-md-8">
             <div class="row">
             <input type="hidden" name="transport" value="2">  
             <?php
@@ -129,7 +135,10 @@ foreach ($dataset['locations'] as $k=>$v){
         <fieldset class="search-form">
         <form action="{{URL::to('property/search')}}">
           <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-2 srch_icon_bg">
+            {{ HTML::image(asset('images/icons/alink_big.png'), '', array('class' => '')) }}
+          </div>
+          <div class="col-md-8">
             <div class="row">
             <input type="hidden" name="transport" value="3">  
             <?php
@@ -186,10 +195,12 @@ foreach ($dataset['locations'] as $k=>$v){
   	<div class="propertylist clearfix new">
       <div class="col-md-5"><div class="propertyimg" style="overflow:hidden;"><div class="propertymark"></div>
         <!--<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>-->
-      	<a href="URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
+      	<a target="_blank" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
       </div></div>
       <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">{{{ $property->title }}}</h3>
+        <h3 class="propertylist-heading uppercase">
+          <a target="_blank" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">  {{{ $property->title }}} </a>
+        </h3>
         <h5 class="uppercase">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</h5>
         <small>{{{ $property->first_name }}} {{{ $property->last_name }}}</small>
         <div class="otherinfo clearfix">
@@ -197,21 +208,9 @@ foreach ($dataset['locations'] as $k=>$v){
             <h5>{{{ $property->locationsub_name }}}, {{{ $property->location_name }}}</h5>
             </div>
             
-            <!--<div class="pull-right starwrap">
-            <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> <input name="star1" type="radio" class="star"/> 
-            <a href="javascript:void(0);" class="saveshortlist"><small>Save to shortlist</small></a>
-            </div>
-            <div class="pull-right starwrap">
-            	<small>My rating:</small>
-            </div>-->
+            
         </div>
-        <!--<p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="saveshortlist"><small>Read More</small></a></p>-->
-        <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="saveshortlist"><small>Read More</small></a></p>
-
-         <!--<div class="linkgroup">
-         	<a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/mtrsmall.png" class="searchsmallimg">Ekamai station </a>
-            <a href="javascript:void(0);" class=""><img width="22" height="27" src="{{{ asset('') }}}/images/searchwrapbuttons/googlemall.png" class="searchsmallimg"/>Location</a>
-         </div>-->
+        <p class="propertydesc">{{{ $property->description }}} <a target="_blank" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="saveshortlist"><small>Read More</small></a></p>
          <div class="row">
          	<div class="col-sm-12">
                  <div class="nearLocation">
@@ -259,7 +258,9 @@ foreach ($dataset['locations'] as $k=>$v){
               <div class="arrow">
                 <select class="form-control" id="gmaplocation">
                 <?php foreach ($loc as $key => $value) {
-                  echo '<option value="'.$key.'" '.((isset($_GET['location']) && $_GET['location']==$key)?'selected':'').'>'.$value.'</option>';
+                  if($key!=''){
+                    echo '<option value="'.$key.'" '.((isset($_GET['location']) && $_GET['location']==$key)?'selected':'').'>'.$value.'</option>';
+                  }
                 }?>
                   
                 </select>
@@ -287,12 +288,15 @@ foreach ($dataset['locations'] as $k=>$v){
             
               var myOptions = {
                             center:myLatlng, 
-                            zoom: 6, 
+                            zoom: 12, 
                             /*mapTypeId: google.maps.MapTypeId.SATELLITE,*/
                             navigationControlOptions:{style: google.maps.NavigationControlStyle.SMALL}
                           };
               var map = new google.maps.Map(document.getElementById('map-canvas-1'),myOptions);
               geocoder = new google.maps.Geocoder();
+              var tot_lat=0;
+              var tot_lng=0;
+              var count = <?php echo count($dataset['properties']);?>;
               <?php foreach($dataset['properties'] as $k => $v) {?>
               latlang = geocoder.geocode( {'address': '<?php echo str_replace(array("\n","\r"),array(",",","),$v->address).",".$v->location_name;?>'},function(results, status){  
                 if (status == google.maps.GeocoderStatus.OK){
@@ -302,14 +306,20 @@ foreach ($dataset['locations'] as $k=>$v){
                       position: results[0].geometry.location,
                       title:'<?php echo $v->title?>'
                     });
+
+                    //tot_lat = tot_lat + results[0].geometry.location.lat();
+                    //tot_lng = tot_lng + results[0].geometry.location.lng();
                     html = '<div style="height:50;width:100px"><a target="_blank" href="{{URL::to("properties")}}/{{seo_url($v->title)}}_{{$v->property_code}}">{{$v->title}}</a></div>';
+                    map.setCenter(new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng()));
                     bindInfoWindow(marker, map, infoWindow, html);
+
                 }
               });  
+
               <?php }?>
 
+              //alert(count+"/"+tot_lat);
               
-
             }
 
 

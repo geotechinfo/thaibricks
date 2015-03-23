@@ -28,13 +28,11 @@
 @endforeach
 </div>
 <section>
-<div class="clearfix" style="margin:10px 0">
-	<h3 class="pull-left" style="margin:0">List</h3>
-</div>
+<p></p>
     
     <div class="row">
         <div class="col-sm-8">
-            <input type="search" class="form-control" data-toggle="search" data-target=".prop_list tr" Placeholder="Search By Text">
+            <input type="search" class="form-control" data-toggle="search" data-target=".prop_list tr" data-norecord=".nrf" Placeholder="Search By Text">
         </div>
         <div class="col-sm-4 text-right">            
             <a href="javascript:;" class="btn btn-primary" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="">All</a>
@@ -95,7 +93,12 @@
     				@endforeach
     			</tbody>
     		</table>
-                        </div>
+            <div class="nrf" style="display:none">
+                <div class="alert alert-warning">
+                   <i class="fa fa-exclamation-triangle"></i> No Record Found
+                </div>
+            </div>
+        </div>
     	</div>
     </div>
 

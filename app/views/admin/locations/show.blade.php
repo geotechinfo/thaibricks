@@ -1,5 +1,7 @@
 @extends('admin.layouts.default')
 @section('body')
+{{ HTML::script('libraries/validator/validation.js') }}
+
 <!-- /Page Header and Breadcrumb Start -->
 <section class="content-header row">
   <h1 class="page-header"> Manage Location <small>locations and transport</small> </h1>
@@ -34,8 +36,8 @@
 
 <div class="row">
     <h3>Create Location</h3>
-    {{ Form::open(array('route' => array('location.addlocation'), 'method' => 'post')) }}
-    <div class="form-group col-md-12">
+    {{ Form::open(array('route' => array('location.addlocation'), 'method' => 'post','id'=>'frm_loc')) }}
+    <div class="form-group col-md-4">
         {{Form::label('location','Location Name')}}
         {{Form::text('location_name', null, array('class' => 'form-control'))}}
     </div>
@@ -47,7 +49,7 @@
 
 <div class="row">
     <h3>Add Sub Location</h3>
-    {{ Form::open(array('route' => array('location.addsublocation'), 'method' => 'post')) }}
+    {{ Form::open(array('route' => array('location.addsublocation'), 'method' => 'post','id'=>'frm_subloc')) }}
     <div class="form-group col-md-6">
         {{Form::label('location','Location/City')}}
         {{Form::select('location_id', $dataset["parents"], null, array('class' => 'form-control'))}}
@@ -108,6 +110,22 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+        $('#frm_loc').validate({
+          rules:{
+            'location_name':{required:true},
+          },
+          errorElement:'small',
+          errorClass:'text-danger'
+        });
+        $('#frm_subloc').validate({
+          rules:{
+            'location_id':{required:true},
+            'sub_location':{required:true},
+          },
+          errorElement:'small',
+          errorClass:'text-danger'
+        });
+
          $('#locations')
           .treeview({data: ''})
           .on('nodeSelected', function(event, node) {

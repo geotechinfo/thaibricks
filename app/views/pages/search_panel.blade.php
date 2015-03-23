@@ -106,21 +106,21 @@ $dataset["deals"] = $properties->getlist_deals();
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 no-margin">
+                <div class="col-md-6" style="padding-left:0;padding-right:1px;">
                 <div class="form-group margin-top">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                      {{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location"))}}
+                      {{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"location", 'style'=>"padding-left:0"))}}
                     </div>
                   </div>
                 </div>
                 
                 </div>
-                <div class="col-md-6 no-margin">
+                <div class="col-md-6" style="padding-right:0;padding-left:1px;">
                 <div class="form-group margin-top">
                   <div class="arrow">
                     <div class="btn-group mutiselectbtn">
-                      {{Form::select('location_sub', array(), '', array('class' => 'form-control', 'id'=>"location_sub"))}}
+                      {{Form::select('location_sub', array(''=>'Select Sub-Location'), '', array('class' => 'form-control', 'id'=>"location_sub", 'style'=>"padding-left:0"))}}
                     </div>
                   </div>
                 </div>
@@ -187,10 +187,21 @@ $(document).ready(function(){
       'location':{required:true,min:1}
     },
     messages:{
-      'location':{required:'Please Select Location'}
+      'location':{required:'!'}
     },
-    errorClass:'text-danger search_validation',
-    errorElement:'small'
+    errorClass:'search_error search_validation',
+    errorElement:'small',
+    errorPlacement:function(error,element){
+        $(element).closest('.arrow').addClass('search_error_parent')
+    }
   });
+
+  $("[name='location']").change(function(){
+    if($(this).val()!="")
+    {
+      $(this).closest('.arrow').removeClass('search_error_parent')
+    }
+  });
+
 });
 </script>

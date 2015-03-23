@@ -122,8 +122,9 @@ div.arrow_fix:before{height:35px !important;}
                             <label class="control-label">Transaction Type</label>
                             <?php
                               $dval = isset($dataset['property']->deal_id)?$dataset['property']->deal_id:null;
+                              $disabled = (isset($dataset['property']->property_id) && $dataset['property']->property_id>0)?true:false;
                             ?>
-                            {{Form::select('deal_id', $dataset['deals'], $dval, array('class' => 'form-control','id'=>'deal_id'))}} 
+                            {{Form::select('deal_id', $dataset['deals'], $dval, array('class' => 'form-control','id'=>'deal_id','disabled'=>$disabled))}} 
                           </div>
                         </div>
 
@@ -133,7 +134,7 @@ div.arrow_fix:before{height:35px !important;}
                             <?php
                               $tval = isset($dataset['property']->type_id)?$dataset['property']->type_id:null;
                             ?>
-                            {{Form::select('type_id', $dataset['types'], $tval, array('class' => 'form-control','id'=>'type_id'))}}
+                            {{Form::select('type_id', $dataset['types'], $tval, array('class' => 'form-control','id'=>'type_id','disabled'=>$disabled))}}
                           </div>
                         </div>
                         

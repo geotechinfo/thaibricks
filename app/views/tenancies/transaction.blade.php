@@ -77,7 +77,7 @@
                                           <div class="form-group">
                                                   <label for="propertyname" class="control-label">Transaction Date</label>
                                                   <div class='input-group date datetimepicker1' id=''>
-                                                      {{Form::text('transaction_date', $transaction_date, array('class' => 'form-control', 'placeholder' => 'Transaction Date'))}}
+                                                      {{Form::text('transaction_date', $transaction_date, array('class' => 'form-control', 'placeholder' => 'Transaction Date',))}}
                                                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                       </span>
                                                   </div>

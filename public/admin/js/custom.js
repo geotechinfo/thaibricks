@@ -5,6 +5,7 @@ if($('#session').length){$('#session').daterangepicker();}
 $('[data-toggle="search"]').bind('keyup blur change',function(){
 
 		var selector = $(this).data('target');
+        var norecordcss = $(this).data('norecord');
         var ths = $(this);
         var v = ths.val();
         if(v.length==0){
@@ -12,17 +13,23 @@ $('[data-toggle="search"]').bind('keyup blur change',function(){
         }else{
             
             //alert($('td:contains('+v+')').length)
-            
+            var totlen = $(selector).length;
+            var count = 0;
             $(selector).each(function(){                
                 //if($(this).find(':contains('+v+')').length){
                 if($(this).text().search(new RegExp(v, "i")) > 0){    
                     $(this).show();
                 }else{
+                    count++;
                     $(this).hide();
-                }
-                
+                }                
             });
-            
+
+            if(totlen==count){
+                $(norecordcss).show();
+            }else{
+                $(norecordcss).hide();
+            }
         }
     });	
 

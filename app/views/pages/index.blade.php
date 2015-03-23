@@ -34,30 +34,27 @@
     <div role="tabpanel">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#project" aria-controls="project" role="tab" data-toggle="tab">Featured
+        <!--<li role="presentation" class="active"><a href="#project" aria-controls="project" role="tab" data-toggle="tab">Featured
             Projects</a></li>
         <li role="presentation"><a href="#condos" aria-controls="condos" role="tab" data-toggle="tab">Featured
-            Condos</a></li>
+            Condos</a></li>-->
+        @if(count($dataset['featured_apartment']))    
         <li role="presentation"><a href="#apartments" aria-controls="apartments" role="tab" data-toggle="tab">Featured
             Apartments</a></li>
+        @endif
+        @if(count($dataset['featured_house']))        
         <li role="presentation"><a href="#house" aria-controls="house" role="tab" data-toggle="tab">Featured
             House</a></li>
+         @endif    
       </ul>
-      <!--
-        <ul class="portfolio-filter">
-            <li><a class="btn btn-default active" href="#" data-filter="*">All</a></li>
-            <li><a class="btn btn-default" href="#" data-filter=".bootstrap">Bootstrap</a></li>
-            <li><a class="btn btn-default" href="#" data-filter=".html">HTML</a></li>
-            <li><a class="btn btn-default" href="#" data-filter=".wordpress">Wordpress</a></li>
-        </ul>
-        -->
+     
       <!--/#portfolio-filter-->
-      <div class="tab-content">
+      <div class="tab-content featured_bricks">
       	<div class="ad-wrap margin-top-20">
         <a href="javascript:;">{{ HTML::image('images/demoimages/bannerAd.jpg', '', array('class' => '')) }}</a>
        </div>
       
-        <div role="tabpanel" class="tab-pane active" id="project">
+        <div role="tabpanel" class="tab-pane" id="project">
           <ul class="portfolio-items">
             <li class="portfolio-item col-md-3 col-sm-6">
               <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a9.jpg', '', array('class' => '')) }}</a>
@@ -77,147 +74,7 @@
                 </div>
               </div>
             </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a2.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a3.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a6.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext ">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a8.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
+            
           </ul>
         </div>
         <div role="tabpanel" class="tab-pane" id="condos">
@@ -241,155 +98,18 @@
                 </div>
               </div>
             </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a10.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a12.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a13.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a14.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a15.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
+           
           </ul>
         </div>
-        <div role="tabpanel" class="tab-pane" id="apartments">
+
+
+        <div role="tabpanel" class="tab-pane active" id="apartments">
           <ul class="portfolio-items">
+            @foreach($dataset['featured_apartment'] as $k=>$property)
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a2.jpg', '', array('class' => '')) }}</a>
+              <div class="item-inner"> <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => '')) }}</a>
                 <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
+                  <h5><a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{$property->title}}</a></h5>
                   <p>We can add a short description here, for 1 to 2 lines of
                     sentences.</p>
                 </div>
@@ -399,181 +119,22 @@
               </div>
               <div class="commentwrap asbestos">
                 <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
+                  <div class="price projectinfobtn center pull-left">&#xe3f;{{$property->price}}</div>
+                  <div class="viewmore projectinfobtn center pull-right"><a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="seemore"><span class="">See
                         More</span> </a> </div>
                 </div>
               </div>
             </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a14.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a9.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a1.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a3.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
+            @endforeach
           </ul>
         </div>
         <div role="tabpanel" class="tab-pane" id="house">
           <ul class="portfolio-items">
-          	<li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a7.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
+          	 @foreach($dataset['featured_house'] as $k=>$property)
             <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a12.jpg', '', array('class' => '')) }}</a>
+              <div class="item-inner"> <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => '')) }}</a>
                 <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
+                  <h5><a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{$property->title}}</a></h5>
                   <p>We can add a short description here, for 1 to 2 lines of
                     sentences.</p>
                 </div>
@@ -583,133 +144,14 @@
               </div>
               <div class="commentwrap asbestos">
                 <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
+                  <div class="price projectinfobtn center pull-left">&#xe3f;{{$property->price}}</div>
+                  <div class="viewmore projectinfobtn center pull-right"><a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="seemore"><span class="">See
                         More</span> </a> </div>
                 </div>
               </div>
             </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a15.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a10.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a5.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a8.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"><a href="javascript:;"> {{ HTML::image('images/demoimages/a4.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
-            <li class="portfolio-item col-md-3 col-sm-6">
-              <div class="item-inner"> <a href="javascript:;">{{ HTML::image('images/demoimages/a11.jpg', '', array('class' => '')) }}</a>
-                <div class="eventphototext">
-                  <h5>Asoke Plu Condo</h5>
-                  <p>We can add a short description here, for 1 to 2 lines of
-                    sentences.</p>
-                </div>
-                <!--
-                <div class="overlay"> <a class="preview btn btn-danger" href="images/portfolio/full/item1.jpg" rel="prettyPhoto"><i class="fa fa-search"></i></a> </div>
-                -->
-              </div>
-              <div class="commentwrap asbestos">
-                <div>
-                  <div class="price projectinfobtn center pull-left">&#xe3f;24,500</div>
-                  <div class="viewmore projectinfobtn center pull-right"><a href="#" class="seemore"><span class="">See
-                        More</span> </a> </div>
-                </div>
-              </div>
-            </li>
-            <!--/.portfolio-item-->
+            @endforeach
+            
           </ul>
         </div>
       </div>
@@ -745,7 +187,7 @@
               <span class="latestLocation">Bangkok</span>
               </a>
                 <div class="eventphototext evPhotoHt">
-                  <h5>{{{ $property->title }}}</h5>
+                  <h5><a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{{ $property->title }}}</a></h5>
                   <!--<p>{{{ substr($property->description, 0, 125) }}}</p>-->
                 </div>
                 <!--
@@ -777,29 +219,16 @@
   <div class="row">
 	<h2>Featured Agents</h2>
     <div class="slider image_slider agentprofile col-md-12 no-margin">
-       <div class="white col-md-15 col-sm-3">
-       	<div class="profileimg"><a href="{{URL::to('/property/mylist/1')}}"> {{ HTML::image('images/demoimages/logo1.jpg', '', array('class' => 'img-responsive')) }}</a></div>
-       	<!--<a href="javascript:void(0)" class="center"> Agent Name </a>
-        <div>
-        <p class="center">We can add a short description here, for 1 to 2 lines of sentences.</p>
-        </div>-->
-       </div>
-       <div class="white col-md-15 col-sm-3">
-       	<div class="profileimg"><a href="{{URL::to('/property/mylist/1')}}"> {{ HTML::image('images/demoimages/logo2.jpg', '', array('class' => 'img-responsive')) }}</a></div>
-       	
-       </div>
-       <div class="white col-md-15 col-sm-3">
-       	<div class="profileimg"><a href="{{URL::to('/property/mylist/1')}}"> {{ HTML::image('images/demoimages/logo3.jpg', '', array('class' => 'img-responsive')) }}</a></div>
-       	
-       </div>
-       <div class="white col-md-15 col-sm-3">
-       	<div class="profileimg"><a href="{{URL::to('/property/mylist/1')}}"> {{ HTML::image('images/demoimages/logo4.jpg', '', array('class' => 'img-responsive')) }}</a></div>
-       	
-       </div>
-       <div class="white col-md-15 col-sm-3">
-       	<div class="profileimg"><a href="{{URL::to('/property/mylist/1')}}"> {{ HTML::image('images/demoimages/logo5.jpg', '', array('class' => 'img-responsive')) }}</a></div>
-       	
-       </div>
+      <div class="row">
+        @foreach($dataset['featured_user'] as $k=>$agent)
+        @if($agent->profile_image!='')
+        <div class="white col-md-15 col-sm-3">
+       	  <div class="profileimg"><a href="{{URL::to('/property/mylist/')}}/{{$agent->user_id}}"> {{ HTML::image('files/profiles/'.$agent->profile_image, '', array('class' => 'img-responsive')) }}</a></div>
+        </div>
+        @endif
+        @endforeach
+      </div>
+      
     </div>
     
   </div>

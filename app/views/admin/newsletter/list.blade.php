@@ -28,17 +28,13 @@
 @endforeach
 </div>
 <section>
-<div class="clearfix" style="margin:10px 0">
-	<h3 class="pull-left" style="margin:0">List</h3>
-	<!--<a href="javascript:;" id="activate" class="btn btn-primary pull-right">Activate</a>-->
-    <!--<input type="search" class="form-control pull-right search_text" placeholder = "Search by text">-->
-</div>
+<p></p>
     
     {{ Form::open(array('route' => array('admin.user.changestatus'), 'method' => 'post','id'=>'frm_activate')) }}
     <input type="hidden" name="user_id" id="user_id">
     <div class="row">
         <div class="col-sm-8">
-            <input type="search" class="form-control" data-toggle="search" data-target=".user_list tr" Placeholder="Search By Text">
+            <input type="search" class="form-control" data-toggle="search" data-target=".user_list tr" data-norecord=".nrf" Placeholder="Search By Text">
         </div>
         <div class="col-sm-4 text-right">            
             <!--
@@ -84,7 +80,12 @@
     				@endforeach
     			</tbody>
     		</table>
-                        </div>
+            <div class="nrf" style="display:none">
+                <div class="alert alert-warning">
+                 <i class="fa fa-exclamation-triangle"></i>   No Record Found
+                </div>
+            </div>
+        </div>
     	</div>
     </div>
     {{ Form::close() }}

@@ -1,5 +1,7 @@
 @extends('admin.layouts.default')
 @section('body')
+{{ HTML::script('libraries/validator/validation.js') }}
+
 <!-- /Page Header and Breadcrumb Start -->
 <section class="content-header row">
   <h1 class="page-header"> Manage NearBy <small>locations and Nearby</small> </h1>
@@ -34,7 +36,7 @@
 
 <div class="row">
     <h3>NearBy Group</h3>
-    {{ Form::open(array('route' => array('location.addnearbygroup'), 'method' => 'post')) }}
+    {{ Form::open(array('route' => array('location.addnearbygroup'), 'method' => 'post','id'=>'frm_group')) }}
     <div class="form-group col-md-6">
         {{Form::label('location','Location / City')}}
         {{Form::select('location_id', $dataset["locations"], null, array('class' => 'form-control'))}}
@@ -51,7 +53,7 @@
 
 <div class="row">
     <h3>Nearby Name</h3>
-    {{ Form::open(array('route' => array('location.addnearby'), 'method' => 'post')) }}
+    {{ Form::open(array('route' => array('location.addnearby'), 'method' => 'post','id'=>'frm_name')) }}
     <div class="form-group col-md-6">
         {{Form::label('group','NearBy Group')}}
         {{Form::select('transport_group', $dataset["groups"], null, array('class' => 'form-control'))}}
@@ -61,7 +63,7 @@
         {{Form::text('transport_name', null, array('class' => 'form-control'))}}
     </div>
     <div class="form-group col-md-2">
-        {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
+      {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
     </div>
     {{ Form::close() }}
 </div>
@@ -112,6 +114,23 @@
 </div> 
 <script type="text/javascript">
     $(document).ready(function(){
+        $('#frm_group').validate({
+          rules:{
+            'location_id':{required:true},
+            'group_name':{required:true},
+          },
+          errorElement:'small',
+          errorClass:'text-danger'
+        });
+        $('#frm_name').validate({
+          rules:{
+            'transport_group':{required:true},
+            'transport_name':{required:true},
+          },
+          errorElement:'small',
+          errorClass:'text-danger'
+        });
+       // alert($('#frm_group').valid());
          $('#nearby_tree')
           .treeview({data:''})
           .on('nodeSelected', function(event, node) {

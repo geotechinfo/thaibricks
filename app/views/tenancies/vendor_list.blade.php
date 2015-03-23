@@ -24,7 +24,7 @@
         <div class="col-sm-12">
             <div class="input-group innerSearchBox">
                 <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search noMargin"></i></span>
-                <input type="search" data-toggle="search" data-target=".vendor_row" class="form-control search_text" placeholder = "Search by text">
+                <input type="search" data-toggle="search" data-target=".vendor_row" data-norecord=".nrf" class="form-control search_text" placeholder = "Search by text">
             </div>
             
         </div>
@@ -126,6 +126,11 @@
             
     </div>
     @endif
+    <div class="nrf" style="display:none">
+        <div class="alert alert-warning">
+           <i class="fa fa-exclamation-triangle"></i> No Record Found
+        </div>
+    </div>
   </div>
 </section>
 <!--prefooter-->

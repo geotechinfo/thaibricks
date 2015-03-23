@@ -18,9 +18,13 @@ class PagesController extends Controller {
 		
 		$dataset['price'] = $price;
 		$dataset['search_panel'] =  View::make('pages.search_panel',array("dataset"=>$dataset));
+		
+		$dataset['featured_apartment'] = $properties->get_properties(null,null,null,null,null,null,null,array('type_id'=>4,'pr_properties.is_featured'=>1));
+		$dataset['featured_house'] = $properties->get_properties(null,null,null,null,null,null,null,array('type_id'=>5,'pr_properties.is_featured'=>1));
+		$dataset['featured_user'] = User::select('user_id','first_name','last_name','user_code','profile_image')->where(array('ac_users.is_featured'=>'1'))->get();
+
 		//echo $dataset['search_panel'];die;
-		//echo $dataset['search_panel'];die;
-		//pr($dataset['locations'],1);
+		//pr($dataset['featured_user'],1);
 		return View::make('pages.index', array("dataset"=>$dataset));
 	}
 	public function about(){
@@ -83,7 +87,7 @@ class PagesController extends Controller {
 		echo json_encode($json);exit;
 	}
 
-	public function test(){
+	public function dashboard(){
 		//$this->layout = 'layouts.dashboard';
 		return View::make('pages.test');
 	}

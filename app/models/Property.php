@@ -17,6 +17,7 @@ class Property extends Eloquent {
 	 
 	public function getlist_deals(){
 		$return =array('0'=>'Select Transaction Type');
+		//$return =array(''=>'Select Transaction Type');
 		foreach (DB::table('pr_deals')->get() as $value){
 			$return[$value->deal_id] = $value->deal_name;
 		}
@@ -25,6 +26,7 @@ class Property extends Eloquent {
 	
 	public function getlist_types(){
 		$return =array('0'=>'Select Property Type');
+		//$return =array(''=>'Select Property Type');
 		foreach (DB::table('pr_types')->get() as $parent){
 			if($parent->parent_id == 0){
 				$rule = ['parent_id' => $parent->type_id];

@@ -28,6 +28,7 @@ foreach ($dataset['locations'] as $k=>$v){
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>ThaiBricks | Home</title>
 
 <!--<link href="css/bootstrap.css" rel="stylesheet">
@@ -48,11 +49,11 @@ foreach ($dataset['locations'] as $k=>$v){
 {{ HTML::style('css/prettyPhoto.css') }}
 {{ HTML::style('css/main.css') }}
 {{ HTML::style('css/date.css') }}
-<!--[if lt IE 9]>
-    {{ HTML::script('js/html5shiv.js') }}
-    {{ HTML::script('js/respond.min.js') }}
-<![endif]-->
 
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 {{ HTML::script('js/jquery.js') }}
 {{ HTML::script('js/jquery-ui.js') }}
 {{ HTML::script('js/bootstrap.min.js') }}

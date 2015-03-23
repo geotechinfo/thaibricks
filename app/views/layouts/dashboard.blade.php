@@ -87,7 +87,7 @@ foreach ($dataset['locations'] as $k=>$v){
 <body>
 <!-- Left Menu-Logo-user section  -->
 <aside class="darkGrey leftMenuNav col-md-2">
-  <div class="media user-media logoWrap"> <a class="logo" href="javascript:void(0);"> {{ HTML::image('images/logo_icon.png', '', array('class' => 'logo')) }} </a> </div>
+  <div class="media user-media logoWrap"> <a class="logo" href="{{URL::to('property/myproperties')}}"> {{ HTML::image('images/logo_icon.png', '', array('class' => 'logo')) }} </a> </div>
   <div class="welcomeuserWrap">
     <div class="user-panel">
       

@@ -8,7 +8,7 @@
       <div class="col-sm-12">
           <span>You are here:</span>
           <ul class="topBreadcrumbs">
-            <li><a href="javascript:;">Home</a></li>
+            <li><a href="{{URL::to('/')}}">Home</a></li>
             <li><a href="javascript:;">Agent Page</a></li>
           </ul>
       
@@ -35,15 +35,15 @@
       <div class="row">
           <div class="col-sm-3">
             <div class=" agDetailSpace">
-                      <h4 class="noMargin"><i class="fa fa-user"></i> Santanu Jana</h4>
+                      <h4 class="noMargin text-capitalize"><i class="fa fa-user"></i> {{{ $dataset['user']->first_name }}} {{{ $dataset['user']->last_name }}}</h4>
                       <div class="gap10"></div>
-                      <p><i class="fa fa-check-circle"></i> Present Code</p>
-                      <p><i class="fa fa-phone"></i> 9876543210</p>
-                      <p><i class="fa fa-envelope"></i>santanu@gamil.com</p>
+                      <p><i class="fa fa-check-circle"></i> {{{ $dataset['user']->user_code }}}</p>
+                      <p><i class="fa fa-phone"></i> {{{ $dataset['user']->phone }}}</p>
+                      <p><i class="fa fa-envelope"></i> {{{ $dataset['user']->email }}}</p>
               </div>
           </div>
           <div class="col-sm-9">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <p>{{$dataset['user']->description}}</p>
           </div>
       </div>
     </div>
@@ -110,9 +110,10 @@
             </span>
             <?php if($day_renmain<=($validity_days-2) && $day_renmain!=0 && $property->user_id==Auth::user()->user_id){ ?>
               
-              <a href="javascript:;" class="btn btn-primary btn-xs cls_extend_btn" data-id="{{ $property->property_id}}">Extend</a>
+              <a href="javascript:;" class="btn btn-default btn-xs cls_extend_btn" data-id="{{ $property->property_id}}">Extend</a>
               
             <?php }?>
+
           </p>
       </div>
       <div class="col-md-7 propertylist-body">
@@ -174,18 +175,18 @@
             <li class="portfolio-item col-md-3 col-sm-4">
               <div class="item-inner"> 
                 <div class="item-inner-image">
-                  {{ HTML::image(asset('files/properties')."/".$hot->media[0]->media_data, '', array('class' => '')) }}
+                  <a href="{{URL::to('/properties/')}}/{{seo_url($hot->title)}}_{{{$hot->property_code}}}">{{ HTML::image(asset('files/properties')."/".$hot->media[0]->media_data, '', array('class' => '')) }}</a>
                 </div>  
                 <div class="eventphototext">
-                  <h5>{{{ $hot->title }}}</h5>
-                  <p>{{{ substr($hot->description, 0, 125) }}}</p>
+                  <h5><a href="{{URL::to('/properties/')}}/{{seo_url($hot->title)}}_{{{$hot->property_code}}}">{{{ $hot->title }}}</h5>
+                  <p>{{{ substr($hot->description, 0, 125) }}}</a></p>
                 </div>
               </div>
               <div class="commentwrap asbestos">
                 <div>
                   <div class="price projectinfobtn center pull-left">&#xe3f; {{{ number_format($hot->price, 2, ".", ",") }}}</div>
                   <div class="viewmore projectinfobtn center pull-right">
-                    <a class="seemore" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}"><span class="">See More</span> </a> 
+                    <a class="seemore" href="{{URL::to('/properties/')}}/{{seo_url($hot->title)}}_{{{$hot->property_code}}}"><span class="">See More</span> </a> 
                   </div>
                 </div>
               </div>

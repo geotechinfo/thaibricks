@@ -173,7 +173,8 @@ class PropertiesController extends Controller {
 		$dataset["user"] = User::find($dataset["properties"][0]->user_id);
 		//pr($dataset['user'],1);
 		$properties->limit = 12;
-		$dataset["related"] = $properties->get_properties(null, null,null,null,null,null,null,array('property_id !'=>$id));
+		$dataset["related"] = $properties->get_properties(null, null,null,null,null,null,null,array('property_id !'=>$id,'pr_properties.location'=>$dataset["properties"][0]->location,'type_id'=>$dataset["properties"][0]->type_id));
+		//pr($dataset["related"],1);
 		return View::make('properties.show', array("dataset"=>$dataset));
 	}
 
@@ -257,9 +258,11 @@ class PropertiesController extends Controller {
 			$properties = new Property();
 			
 			$properties->delete_values($id);
-			foreach(Input::get()["attributes"] as $key=>$value){
-				if($value!=""){
-					$properties->insert_value($id, $key, $value);
+			if(count(Input::get()["attributes"])){
+				foreach(Input::get()["attributes"] as $key=>$value){
+					if($value!=""){
+						$properties->insert_value($id, $key, $value);
+					}
 				}
 			}
 			//echo "<pre>";print_r(Input::get()["transport_id"]);die;
@@ -362,7 +365,9 @@ class PropertiesController extends Controller {
 		//if($id == "me"){
 		$id = Auth::user()->user_id;
 		//}
-	
+		if(Session::has('admin')){			
+			return Redirect::route('admins.dashboard');
+		}
 		$properties = new Property();		
 		$dataset["properties"] = $properties->get_properties($id, null);
 		
@@ -477,9 +482,7 @@ class PropertiesController extends Controller {
 		//pr($_POST,1);
 		$properties = new Property();
 		$dataset["groups"] = $properties->get_attributes($_POST["deal_id"], $_POST["type_id"]);
-		foreach ($dataset["groups"] as $key => $value) {
-			
-		}
+		
 		//pr($dataset["groups"]);
 		$dataset["deal_id"] = $_POST["deal_id"];
 		$dataset["type_id"] = $_POST["type_id"];
@@ -546,7 +549,9 @@ class PropertiesController extends Controller {
 		$dataset["user"] = User::find($dataset["properties"][0]->user_id);
 		//pr($dataset['user'],1);
 		$properties->limit = 12;
-		$dataset["related"] = $properties->get_properties(null, null,null,null,null,null,null,array('property_code !'=>$code));
+		//$dataset["related"] = $properties->get_properties(null, null,null,null,null,null,null,array('property_code !'=>$code));
+		$dataset["related"] = $properties->get_properties(null, null,null,null,null,null,null,array('property_code !'=>$code,'pr_properties.location'=>$dataset["properties"][0]->location,'type_id'=>$dataset["properties"][0]->type_id));
+		//pr($dataset["related"],1);
 		return View::make('properties.show', array("dataset"=>$dataset));
 	}
 

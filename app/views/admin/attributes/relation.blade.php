@@ -1,5 +1,7 @@
 @extends('admin.layouts.default')
 @section('body')
+{{ HTML::script('libraries/validator/validation.js') }}
+
 <!-- /Page Header and Breadcrumb Start -->
 <section class="content-header row">
   <h1 class="page-header"> Attribute Relations <small>attributes and relations</small> </h1>
@@ -20,6 +22,13 @@
 <p></p>
 <div class="alert alert-success">
 	<span class="fa fa-tick"></span>&nbsp; {{ Session::get('success') }}
+</div>
+@endif
+
+@if(Session::has('info'))
+<p></p>
+<div class="alert alert-info">
+    <span class="fa fa-tick"></span>&nbsp; {{ Session::get('info') }}
 </div>
 @endif
 
@@ -63,5 +72,20 @@
     	<div id="relations"></div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(function(){
+        $('form').validate({
+            rules:{
+                deal_id:{required:true,min:1},
+                type_id:{required:true,min:1},
+            },
+            messages:{
+                deal_id:{required:'Required field.',min:'Required field.'},
+                type_id:{required:'Required field.',min:'Required field.'},
+            },
+            errorClass:'text-danger',
+            errorElement:'small',
+        })
+    })
+</script>
 @stop

@@ -24,7 +24,7 @@
         <div class="col-sm-12">
             <div class="input-group innerSearchBox">
                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search noMargin"></i></span>
-                    <input type="search" data-toggle="search" data-target=".tenancy_row" class="form-control search_text" placeholder = "Search by text">
+                    <input type="search" data-toggle="search" data-target=".tenancy_row" data-norecord=".nrf" class="form-control search_text" placeholder = "Search by text">
             </div>
             
         </div>
@@ -97,14 +97,7 @@
                         </div>
                         @endforeach
                         @endif
-                        <!--<div class="doc">
-                          <div class="row">
-                            <div class="col-sm-10">
-                                <p class="bold">Document name <span>(<span class="bold">Agreement from</span> 12/4/2014 <span class="bold">to</span> 12/10/2014)</span></p>
-                            </div>
-                            <div class="col-sm-2"><a href="javascript:;" class="btn btn-default btn-block btn-xs">Download</a></div>
-                          </div>
-                        </div>-->
+                       
                         
                         @if(count($tenancy->transactions)>0)
                         <h3>Transactions</h3>
@@ -149,98 +142,24 @@
                                 </div>
                           </div>
                           @endforeach
-                          <!--<div class="vTransRow">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                      John Doe
-                                    </div>
-                                    <div class="col-sm-3">
-                                      Multibuilders
-                                    </div>
-                                    <div class="col-sm-3">
-                                      June 4, 2014
-                                    </div>
-                                    <div class="col-sm-3">
-                                      $1234
-                                    </div>
-                                </div>
-                          </div>
-                          <div class="vTransRow">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                      John Doe
-                                    </div>
-                                    <div class="col-sm-3">
-                                      Multibuilders
-                                    </div>
-                                    <div class="col-sm-3">
-                                      June 4, 2014
-                                    </div>
-                                    <div class="col-sm-3">
-                                      $1234
-                                    </div>
-                                </div>
-                          </div>
-                          <div class="vTransRow">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                      John Doe
-                                    </div>
-                                    <div class="col-sm-3">
-                                      Multibuilders
-                                    </div>
-                                    <div class="col-sm-3">
-                                      June 4, 2014
-                                    </div>
-                                    <div class="col-sm-3">
-                                      $1234
-                                    </div>
-                                </div>
-                          </div>-->
+                          
                         </div>
                         @endif
                   </div>
             </div>
 			@endforeach
             
-            <!--<div class="tenantRow">
-                  <div class="row fontBold">
-                    <div class="col-sm-3">Pleasant Home</div>
-                    <div class="col-sm-3">Jenny doe</div>
-                    <div class="col-sm-2">jenny@gmail.com</div>
-                    <div class="col-sm-2">9876543210</div>
-                    <div class="col-sm-2"><a href="javascript:;" class="btn btn-block orange viewTenantbtn">View Details</a></div>
-                  </div>
-
-                  <div class="tenDetails">
-                        <p class="bold">Tenant Address: <span class="regular">1600 Amphitheatre Parkway, Mountain View, CA.</span></p>
-                        <p class="bold">Agreement from: <span class="regular">December 2014.</span></p>
-                        <p class="bold">Agreement to: <span class="regular">April 2015.</span></p>
-                        <div class="borderThin"></div>
-                        <h3>Docs</h3>
-                        <div class="doc">
-                          <div class="row">
-                            <div class="col-sm-10">
-                                <p class="bold">This is a sample document</p>
-                            </div>
-                            <div class="col-sm-2"><a href="javascript:;" class="btn btn-default btn-block btn-xs">Download</a></div>
-                          </div>
-                        </div>
-                        <div class="doc">
-                          <div class="row">
-                            <div class="col-sm-10">
-                                <p class="bold">This is a sample document</p>
-                            </div>
-                            <div class="col-sm-2"><a href="javascript:;" class="btn btn-default btn-block btn-xs">Download</a></div>
-                          </div>
-                        </div>
-                  </div>
-            </div>-->
+            
 
         </div>
 
     </div>
     @endif
+    <div class="nrf" style="display:none">
+        <div class="alert alert-warning">
+           <i class="fa fa-exclamation-triangle"></i> No Record Found
+        </div>
+    </div>
   </div>
 </section>
 <!--prefooter-->
