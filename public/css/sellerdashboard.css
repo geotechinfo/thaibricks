@@ -82,7 +82,7 @@ body
 	width:40px;*/
 	margin:0 auto;
 	display:block;
-	padding: 7px 0;
+	width:141px;
 }
 
 
@@ -733,7 +733,7 @@ small.error_special{
 .arrow:after {top:13px;}
 .select2-container--default .select2-results > .select2-results__options{background:#FFF;color:#888;}
 .input-group-addon {height:42px;}
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {background:#FFF;}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {background:#F9F9F9;color:#C3C3C3;cursor:not-allowed}
 
 
 .addSpImageHolder {padding:12px 25px 0;position:relative;}
@@ -770,7 +770,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .mypropertyThumb
 {
 	background:#F9F9F9;
-	padding: 20px 0 20px 20px;
+	padding: 10px 0;
 	border: 1px solid #C7C7C7;
 }
 
@@ -901,10 +901,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .mypropertyThumb .relatedpropety .portfolio-item
 {
-	margin-left: 0px;
+	margin-left: 1%;
     width: 18%;
-	margin-bottom:40px;
-	margin-right:15px;
+	margin-bottom:20px;
+	margin-right:1%;
 }
 
 .propertylist
@@ -937,8 +937,8 @@ a.green-sea
 
 .propertylistimg
 {
-	height:144px;
-	max-height:144px;
+	height:143px;
+	max-height:143px;
 	overflow:hidden;
 }
 

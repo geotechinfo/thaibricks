@@ -69,8 +69,10 @@ jQuery(function($) {
 	
 	//tooltip	
 	$(function() {
+		$("#all_price_range").slider({reversed : false});
 		$("#sale_price_range").slider({reversed : false});
 		$("#rent_price_range").slider({reversed : false});
+		$("#lease_price_range").slider({reversed : false});
 	});
 	
 	//select2 autocomplete
@@ -254,14 +256,16 @@ $(function(){
 })
 
 $(function(){
-	$('[data-toggle="search"]').bind('keyup blur change',function(){
+	$('[data-toggle="search"]').bind('keyup change',function(e){
+
 		var selector = $(this).data('target');
         var selector = $(this).data('target');
         var norecordcss = $(this).data('norecord');
         var ths = $(this);
         var v = ths.val();
         if(v.length==0){
-           $(selector).show()
+           $(selector).closest('.cls_table').show();
+           $(selector).show();
         }else{
             
             //alert($('td:contains('+v+')').length)
@@ -278,11 +282,16 @@ $(function(){
             });
 
             if(totlen==count){
-                $(norecordcss).show();
+            	 $(selector).closest('.cls_table').hide();
+            	 $(selector).hide();
+                 $(norecordcss).show();
             }else{
+            	$(selector).closest('.cls_table').show();
+            	//$(selector).show();
                 $(norecordcss).hide();
             }
         }
+       
     });
     $('[data-toggle="scrollTo"]').bind('click',function(){
     	var selector = $(this).data('target');
@@ -291,4 +300,4 @@ $(function(){
 			scrollTop: $(selector).offset().top-100
 		}, time,'easeInOutQuint');
     });
-})
+});

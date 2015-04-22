@@ -4,7 +4,7 @@
 	//pr($dataset["list"]);
 ?>
 <section class="content-header row">
-  <h1 class="page-header"> Manage Property  </h1>
+  <h1 class="page-header"> <?php echo (isset($dataset['title'])?$dataset['title']:'Manage Property')?> </h1>
   
 </section>
 <div class="row">
@@ -34,11 +34,13 @@
         <div class="col-sm-8">
             <input type="search" class="form-control" data-toggle="search" data-target=".prop_list tr" data-norecord=".nrf" Placeholder="Search By Text">
         </div>
+        @if($dataset['is_dashboard']==1)
         <div class="col-sm-4 text-right">            
-            <a href="javascript:;" class="btn btn-primary" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="">All</a>
-            <a href="javascript:;" class="btn btn-success" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="s1">Active</a>
-            <a href="javascript:;" class="btn btn-warning" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="s0">Inactive</a>
+            <a href="javascript:;" class="btn btn-primary" data-norecord=".nrf" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="">All</a>
+            <a href="javascript:;" class="btn btn-success" data-norecord=".nrf" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="s1">Active</a>
+            <a href="javascript:;" class="btn btn-warning" data-norecord=".nrf" data-toggle="filter" data-target=".prop_list tr" data-prop_name="data-state" data-prop_value="s0">Inactive</a>
         </div>
+        @endif
     </div>
     <p></p>
     <div class="row">
@@ -85,7 +87,7 @@
 							<?php echo ($v->status==0?'<span class="text-danger">Inactive</span>':'<span class="text-success">Active</span>')?>
 						</td>
                         <td>
-                            <a target="_blank" href="{{URL::to('property/show/')}}/{{$v->property_id}}">
+                            <a target="_blank" href="{{URL::action('PropertiesController@show', [$v->property_id])}}">
                                  Details
                             </a>
                         </td>

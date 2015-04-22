@@ -15,12 +15,12 @@
         <div role="tabpanel">
           @if(Session::get('success'))
             <div class="margin-top-10 message">
-            <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{Session::get('success')}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+            <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{Session::get('success')}}</p>
             </div>
           @endif
           @if(Session::get('error'))
             <div class="margin-top-10 message">
-            <p class="btn-danger  padding-5"><span class="fa fa-cross"></span>{{Session::get('error')}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+            <p class="btn-danger  padding-5"><span class="fa fa-cross"></span>{{Session::get('error')}}</p>
             </div>
           @endif
          
@@ -36,8 +36,8 @@
                         <div class="row">
 
                           <div class="col-sm-6 col-sm-offset-3">
-                            <label class="control-label">Old Password</label>
-                            {{ Form::password('password',array('class'=>'form-control','placeholder'=>'Old Password'))}}
+                            <label class="control-label">Current Password</label>
+                            {{ Form::password('password',array('class'=>'form-control','placeholder'=>'Enter your current password'))}}
                           </div>
                         </div>
                         <p></p>
@@ -46,7 +46,7 @@
                         <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
                             <label class="control-label">New Password</label>
-                            {{ Form::password('new_password',array('class'=>'form-control','placeholder'=>'New Password','id'=>'new_password'))}}
+                            {{ Form::password('new_password',array('class'=>'form-control','placeholder'=>'Enter your new password','id'=>'new_password'))}}
                           </div>
                         </div>
                         <p></p>
@@ -55,7 +55,7 @@
                         <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
                             <label class="control-label">Retype New Password</label>
-                            {{ Form::password('new_password_confirmation',array('class'=>'form-control','placeholder'=>'Confirm Password'))}}
+                            {{ Form::password('new_password_confirmation',array('class'=>'form-control','placeholder'=>'Retype your new password'))}}
                           </div>
                         </div>
                         <p></p>
@@ -64,7 +64,7 @@
                 
                 <div class="text-right row">
                           <div class="col-sm-6 col-sm-offset-3">
-                                    <input type="submit" class="btn orange" />
+                                    <input type="submit" class="btn orange" value="Update" />
                           </div>
                 </div>
                 {{ Form::close()  }}

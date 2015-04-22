@@ -12,7 +12,7 @@ class Document extends Eloquent {
 		$all = DB::table('ll_document_heads')->get();
 		//dd($all);
 
-		$list = array('0'=>'Select Document Head');
+		$list = array(''=>'Select Document Head');
 		foreach ($all as $key => $value) {
 			# code...
 			//print_r($value);

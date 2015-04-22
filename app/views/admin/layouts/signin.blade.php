@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="icon" href="../../favicon.ico">
+
 <title>ThaiBricks Administration Panel</title>
 <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -34,7 +34,8 @@
 {{ HTML::style('css/prettyPhoto.css') }}
 {{ HTML::style('css/main.css') }}
 {{ HTML::style('css/date.css') }}
-
+<link rel="shortcut icon" href="{{URL::to('/')}}/favicon.ico" type="image/x-icon" />
+<link rel="bookmark" href="{{URL::to('/')}}/favicon.ico" />
 </head>
 <body>
 <div class="signInWrap">

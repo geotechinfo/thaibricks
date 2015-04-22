@@ -28,7 +28,7 @@
   <div class="col-sm-9 propertylistwrap">
   	@if(Session::get('info'))
     <div class="margin-top-10 message">
-    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
     </div>
     {{{ Session::forget('info') }}}
     @endif
@@ -36,19 +36,21 @@
   
   	@foreach($dataset["properties"] as $property)
   	<div class="propertylist clearfix new">
-      <div class="col-md-5"><div class="propertyimg" style="overflow:hidden;"><div class="propertymark"></div>
-      	<a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
-      </div></div>
+      <div class="col-md-5">
+        <div class="propertyimg" style="overflow:hidden;"><div class="propertymark"></div>
+      	<a href="{{URL::action('PropertiesController@details')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
+      </div>
+      </div>
       <div class="col-md-7 propertylist-body">
         <h3 class="propertylist-heading uppercase">{{{ $property->title }}}</h3>
-        <h5 class="uppercase">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</h5>
+        <h5 class="uppercase">&#xe3f; {{{ number_format($property->price, 0, ".", ",") }}}</h5>
         <small>{{{ $property->first_name }}} {{{ $property->last_name }}}</small>
         <div class="otherinfo clearfix">
         	<div class="pull-left">
             <h5>{{{ $property->locationsub_name }}}, {{{ $property->location_name }}}</h5>
             </div>
         </div>
-        <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="saveshortlist"><small>Read More</small></a></p>
+        <p class="propertydesc">{{{ $property->description }}} <a href="{{URL::action('PropertiesController@details')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="saveshortlist"><small>Read More</small></a></p>
          <div class="row">
          	<div class="col-sm-12">
                  <div class="nearLocation">
@@ -76,7 +78,7 @@
          
          <div>
               <div class="pull-right">
-              	<a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
+              	<a href="{{URL::action('PropertiesController@details')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
               </div>
               </div>
       </div>
@@ -87,9 +89,7 @@
     
   </div>
   <aside class="col-sm-3">
-  	<div class="ad-wrap">{{ HTML::image('images/demoimages/ad1.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad5.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad7.jpg', '', array('class' => '')) }}</div>
+  {{View::make('layouts.side_ad_block')}}
   </aside>
   
 </section>

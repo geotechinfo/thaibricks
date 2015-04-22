@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 @section('content')
-
+{{ HTML::script('libraries/validator/validation.js') }}
 <!--/profileimage-->
 <section class="" id="propertylist">
   
@@ -17,7 +17,7 @@
     <div class="margin-top-10 message">
     <p class="btn-danger text-danger padding-5">
         <span class="fa fa-times-circle"></span>{{{ $message }}}
-        <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
+        
     </p>
     </div>
     <?php break; ?>
@@ -25,7 +25,7 @@
     
     @if(Session::get('error'))
     <div class="margin-top-10 message">
-    <p class="btn-danger text-danger padding-5"><span class="fa fa-times-circle"></span>{{{ Session::get('error') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-danger text-danger padding-5"><span class="fa fa-times-circle"></span>{{{ Session::get('error') }}}</p>
     </div>
     @endif
 
@@ -55,8 +55,9 @@
 														$tenantable_properties[$property->property_id] = $property->title;
 													}
 												}
+                        $disabled = (isset($dataset['is_edit'])?'disabled':'');
 											  ?>
-                                              {{Form::select('property_id', $tenantable_properties, $dataset["tenancy"]->property_id, array('class' => 'form-control', 'id'=>""))}}
+                                              {{Form::select('property', $tenantable_properties, $dataset["tenancy"]->property_id, array('class' => 'form-control', 'id'=>"",$disabled))}}
                                           </div>
                                       </div>
                               </div>

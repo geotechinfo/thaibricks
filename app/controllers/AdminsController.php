@@ -27,6 +27,7 @@ class AdminsController extends Controller {
 			$admin = new stdClass();
 			$admin->username = 'admin';
 			$admin->password = 'admin123';			
+			$admin->admin_id = '1';			
 			Session::put('admin', $admin);
 			return Redirect::route('admins.dashboard');
 		}else{
@@ -43,8 +44,11 @@ class AdminsController extends Controller {
 		if(!Session::has('admin')){			
 			return Redirect::route('admin.signin')->with('info','Please Login First');
 		}
+		$dataset['title'] = 'Dashboard';
 		$properties = new Property();
-		$dataset["list"] = $properties->get_properties(null,null,null,null,null,null,null,array('pr_properties.status'=>'0'));
+		$dataset["list"] = $properties->get_properties(array("property_status"=>0,'is_tanency'=>array(0,1)));
+		//pr($dataset["list"],1);
+		$dataset['is_dashboard'] = 0;
 		return View::make('admin.property.list', array("dataset"=>$dataset));
 	}
 
@@ -53,9 +57,9 @@ class AdminsController extends Controller {
 		if(!Session::has('admin')){			
 			return Redirect::route('admin.signin')->with('info','Please Login First');
 		}
-
+		$dataset['is_dashboard'] = 1;
 		$properties = new Property();
-		$dataset["list"] = $properties->get_properties(null,null,null,null,null,null,null,null);
+		$dataset["list"] = $properties->get_properties(array('is_tanency'=>array(0,1)));
 		return View::make('admin.property.list', array("dataset"=>$dataset));
 	}
 
@@ -70,10 +74,10 @@ class AdminsController extends Controller {
 		$properties->activate($ids);
 		//pr($ids,1);
 		if(Request::ajax()){
-			$arr['meaasge'] = 'Selected properties are successfuly activeted';
+			$arr['meaasge'] = 'Selected properties are successfully activeted';
 			$arr['error'] = 0;
 		}else{
-			return Redirect::route('admin.property.list')->with("error", "Selected properties are successfuly activeted.");	
+			return Redirect::route('admin.property.list')->with("error", "Selected properties are successfully activeted.");	
 		}
 	}
 
@@ -105,10 +109,10 @@ class AdminsController extends Controller {
 		$properties->activate($ids);
 		//pr($ids,1);
 		if(Request::ajax()){
-			$arr['meaasge'] = 'Selected properties are successfuly activeted';
+			$arr['meaasge'] = 'Selected properties are successfully activeted';
 			$arr['error'] = 0;
 		}else{
-			return Redirect::route('admin.property.list')->with("error", "Selected properties are successfuly activeted.");	
+			return Redirect::route('admin.property.list')->with("error", "Selected properties are successfully activeted.");	
 		}
 	}
 

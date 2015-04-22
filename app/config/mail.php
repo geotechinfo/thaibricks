@@ -55,7 +55,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'geotech.informtics@gmail.com', 'name' => 'Geotech Informtics'),
+	'from' => array('address' => 'geotech.informtics@gmail.com', 'name' => 'Thaibricks'),
 
 	/*
 	|--------------------------------------------------------------------------

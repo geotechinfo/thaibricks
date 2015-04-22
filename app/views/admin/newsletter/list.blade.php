@@ -30,7 +30,6 @@
 <section>
 <p></p>
     
-    {{ Form::open(array('route' => array('admin.user.changestatus'), 'method' => 'post','id'=>'frm_activate')) }}
     <input type="hidden" name="user_id" id="user_id">
     <div class="row">
         <div class="col-sm-8">
@@ -88,7 +87,6 @@
         </div>
     	</div>
     </div>
-    {{ Form::close() }}
 
 </section>
 
@@ -111,27 +109,7 @@
 			*/
 		});
 
-        $('.search_text').keyup(function(){
-            var ths = $(this);
-            var v = ths.val();
-            if(v.length==0){
-               $('#tbluserlist tr').show()
-            }else{
-                
-                //alert($('td:contains('+v+')').length)
-                
-                $('#tbluserlist tr').each(function(){                
-                    //if($(this).find(':contains('+v+')').length){
-                    if($(this).text().search(new RegExp(v, "i")) > 0){    
-                        $(this).show();
-                    }else{
-                        $(this).hide();
-                    }
-                    
-                });
-                
-            }
-        })
+        
 	});
 </script>
 @stop

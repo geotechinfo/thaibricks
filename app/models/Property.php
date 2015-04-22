@@ -16,7 +16,7 @@ class Property extends Eloquent {
 	 */
 	 
 	public function getlist_deals(){
-		$return =array('0'=>'Select Transaction Type');
+		$return =array(''=>'Select Transaction Type');
 		//$return =array(''=>'Select Transaction Type');
 		foreach (DB::table('pr_deals')->get() as $value){
 			$return[$value->deal_id] = $value->deal_name;
@@ -114,44 +114,64 @@ class Property extends Eloquent {
 			DB::statement("INSERT INTO `pr_property_transport` SET $str");
 		}
 	}
-	public function get_properties($user_id=null, $property_id=null, $location_id=null, $sublocation_id=null,$bedroom=array(),$types=array(),$price_range=array(),$additional=array()){
+	public function get_properties($query_set=array()){
 		$property_sql = "";
-		if($user_id != null){
-			$property_sql .= " AND `pr_properties`.`user_id` = ".$user_id;			
+		//pr($query_set);
+		if(isset($query_set['user_id'])){
+			$property_sql .= " AND `pr_properties`.`user_id` = ".$query_set['user_id'];			
+		}
+		if(isset($query_set['type_id']) && count($query_set['type_id'])){
+			$property_sql .= " AND `pr_properties`.`type_id` IN (".implode(',',$query_set['type_id']).")";			
+		}
+		if(isset($query_set['deal_id']) && count($query_set['deal_id'])){
+			$property_sql .= " AND `pr_properties`.`deal_id` IN (".implode(',',$query_set['deal_id']).")";		
+		}
+
+		if(isset($query_set['property_id'])){
+			$property_sql .= " AND `pr_properties`.`property_id` = ".$query_set['property_id'];
+		}
+		if(isset($query_set['property_code']) && $query_set['property_code']!=''){
+			$property_sql .= " AND `pr_properties`.`property_code` = '".$query_set['property_code']."'";
+		}
+		if(isset($query_set['property_ignore'])){
+			$property_sql .= " AND `pr_properties`.`property_id` != '".$query_set['property_id']."'";
+		}
+
+		if(isset($query_set['location_id']) && $query_set['location_id']!=''){
+			$property_sql .= " AND `pr_properties`.`location` = '".$query_set['location_id']."'";
+		}
+		if(isset($query_set['sublocation_id'])){
+			$property_sql .= " AND `pr_properties`.`location_sub` = '".$query_set['sublocation_id']."'";
 		}
 		
-		if($property_id != null){
-			$property_sql .= " AND `pr_properties`.`property_id` = ".$property_id;
-		}
-		if($location_id != null){
-			$property_sql .= " AND `pr_properties`.`location` = '".$location_id."'";
-		}
-		if($sublocation_id != null){
-			$property_sql .= " AND `pr_properties`.`location_sub` = '".$sublocation_id."'";
-		}
-		if(count($types)){
-			$property_sql .= " AND 	`pr_properties`.`type_id` IN (".implode(',',$types).")";
-		}
-		if(count($price_range)){
-			if(count($price_range)==1){
-				$property_sql .= " AND 	`pr_properties`.`price` < ".$price_range[0];
+		if(isset($query_set['price_range'])){
+			if(count($query_set['price_range'])==1 && isset($query_set['price_range'][0]) && $query_set['price_range'][0]>0){
+				$property_sql .= " AND 	`pr_properties`.`price` < ".$query_set['price_range'][0];
 			}
-			if(count($price_range)==2){
-				$property_sql .= " AND 	`pr_properties`.`price` BETWEEN ".$price_range[0]." AND ".$price_range[1];
+			if(count($query_set['price_range'])==2){
+				$property_sql .= " AND 	`pr_properties`.`price` BETWEEN ".$query_set['price_range'][0]." AND ".$query_set['price_range'][1];
 			}			
 		}
-		if(count($bedroom)){
-			$property_sql .= " AND 	`pr_properties`.`property_id` IN (SELECT `property_id` FROM `pr_values` WHERE `attribute_id` =1 AND `attribute_value` IN(".implode(',',$bedroom)."))";
+		if(isset($query_set['bedroom']) && count($query_set['bedroom'])){
+			$property_sql .= " AND 	`pr_properties`.`property_id` IN (SELECT `property_id` FROM `pr_values` WHERE `attribute_id` =1 AND `attribute_value` IN(".implode(',',$query_set['bedroom'])."))";
 		}
-		if($user_id!=Auth::User()->user_id && $property_id==null && !isset($additional['property_code']) && !Session::has('admin')){
-				$property_sql .= "  AND  `pr_properties`.`is_tenancy` = 0";
-				$property_sql .=" AND `pr_properties`.`status` = 1";
+
+		if(isset($query_set['property_status'])){
+			$property_sql .=" AND `pr_properties`.`status` = ".$query_set['property_status'];
 		}
-		if(count($additional)){
-			foreach ($additional as $col => $val) {
-				$property_sql .=" AND $col= '".$val."'";
-			}
+		if(isset($query_set['is_tanency']) && is_array($query_set['is_tanency'])){
+			$property_sql .= "  AND  `pr_properties`.`is_tenancy` IN (".implode(',',$query_set['is_tanency']).")";
+		}else{
+			$property_sql .= "  AND  `pr_properties`.`is_tenancy` = 0";
 		}
+
+		if(isset($query_set['is_hot'])){
+			$property_sql .=" AND `pr_properties`.`is_hot` = ".$query_set['is_hot'];
+		}
+
+		
+
+		//pr($additional);
 		if($this->transport!=null && $this->sub_transport==null){
 			//die('ok');
 			$property_sql = $property_sql. " AND property_id in (SELECT 
@@ -170,35 +190,32 @@ FROM `pr_property_transport`
 WHERE pr_property_transport.transport_id in(".implode(',', $this->sub_transport)."))";
 
 		}
+
 	  $sql = "
 			SELECT
 			`pr_properties`.*,
+			`types`.`type_name` AS `type_name`,
 			`location`.`location_name` AS `location_name`,
 			`location_sub`.`location_name` AS `locationsub_name`,
 			`ac_users`.`first_name`,
 			`ac_users`.`last_name`,
-			`ac_users`.`user_code`
+			`ac_users`.`user_code`,
+			`pr_deals`.`deal_name`,
+			(Select `parent_id` FROM `pr_types` WHERE `type_id` = `pr_properties`.`type_id`) as `type_parent_id`
 			FROM
 			`pr_properties`
-			INNER JOIN
-			`ac_users`
-			ON
-			`pr_properties`.`user_id` = `ac_users`.`user_id`
-			LEFT JOIN
-			`pr_locations` AS `location`
-			ON
-			`location`.`location_id` = `pr_properties`.`location`
-			LEFT JOIN
-			`pr_locations` AS `location_sub`
-			ON
-			`location_sub`.`location_id` = `pr_properties`.`location_sub`
+				INNER JOIN	`ac_users`	ON	`pr_properties`.`user_id` = `ac_users`.`user_id`
+				LEFT JOIN	`pr_types` AS `types` ON `types`.`type_id` = `pr_properties`.`type_id`
+				LEFT JOIN	`pr_locations` AS `location` ON	`location`.`location_id` = `pr_properties`.`location`
+				LEFT JOIN	`pr_locations` AS `location_sub` ON	`location_sub`.`location_id` = `pr_properties`.`location_sub`
+				LEFT JOIN	`pr_deals` AS `pr_deals` ON	`pr_deals`.`deal_id` = `pr_properties`.`deal_id`			
 			WHERE
 			1 = 1
 			".$property_sql."
 			ORDER BY
 			`pr_properties`.`property_id` DESC
 		";
-		//echo $sql;
+		//echo $sql."<hr/>";die;
 		if($this->limit!=null && $this->limit>0){
 
 			$sql = $sql." Limit 0, ".$this->limit;

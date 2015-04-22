@@ -37,15 +37,16 @@
 <div class="row">
     <h3>Transport Group</h3>
     {{ Form::open(array('route' => array('location.addgroup'), 'method' => 'post','id'=>'frm_group')) }}
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('location','Location / City')}}
         {{Form::select('location_id', $dataset["locations"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('transport','Transport Group')}}
         {{Form::text('group_name', null, array('class' => 'form-control'))}}
     </div>
     <div class="form-group col-md-2">
+        <label>&nbsp;</label>
         {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
     </div>
     {{ Form::close() }}
@@ -54,15 +55,16 @@
 <div class="row">
     <h3>Station Name</h3>
     {{ Form::open(array('route' => array('location.addtransport'), 'method' => 'post','id'=>'frm_name')) }}
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('group','Transport Group')}}
         {{Form::select('transport_group', $dataset["groups"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('transport','Transport Name')}}
         {{Form::text('transport_name', null, array('class' => 'form-control'))}}
     </div>
     <div class="form-group col-md-2">
+        <label>&nbsp;</label>
         {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
     </div>
     {{ Form::close() }}

@@ -11,13 +11,13 @@
     
     @if(Session::get('success'))
     <div class="margin-top-10 message">
-    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}</p>
     </div>
     @endif
     
     @if(Session::get('info') == true)
     <div class="margin-top-10 message">
-    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
     </div>
     @endif
     <div class="row">
@@ -31,7 +31,7 @@
     </div>
       @if(count($dataset['list'])>0)
           
-          <div class="vendorTrans">
+          <div class="vendorTrans cls_table">
             <div class="vTranHeader bold transListHeadRow">
                 <div class="row">
                   <div class="col-sm-1">#</div>
@@ -53,10 +53,12 @@
                             {{$k+1}}
                           </div>
                           <div class="col-sm-2">
-                            {{$v->title}}
+                           
+                            <?php echo ($v->title==''?'N/A':$v->title)?>
                           </div>
                           <div class="col-sm-2">
-                            {{$v->tenants_first_name}} {{$v->tenants_first_name}}
+                            {{$v->tenants_first_name}} {{$v->tenants_last_name}}
+                            
                           </div>
                           <div class="col-sm-1">
                             {{$v->transaction_type}}
@@ -81,14 +83,18 @@
                       </div>
                 </div>
             @endforeach
-           
-          </div>
-          @endif
-          <div class="nrf" style="display:none">
+           <div class="nrf" style="display:none">
               <div class="alert alert-warning">
                  <i class="fa fa-exclamation-triangle"></i> No Record Found
               </div>
           </div>
+          </div>
+          @else
+            <div class="alert alert-warning">
+               <i class="fa fa-exclamation-triangle"></i> No Record Found
+            </div>
+          @endif
+          
   </div>
 </section>
 @stop

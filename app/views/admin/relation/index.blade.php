@@ -405,7 +405,7 @@
 
           $('#frm_attribute').validate({
             rules:{
-              'type_name':{required:true}
+              'attribute_name':{required:true}
             },
             errorClass:'text-danger',
             errorElement:'small',

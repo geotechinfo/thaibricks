@@ -11,13 +11,13 @@
     
     @if(Session::get('success'))
     <div class="margin-top-10 message">
-    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}</p>
     </div>
     @endif
     
     @if(Session::get('info') == true)
     <div class="margin-top-10 message">
-    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
     </div>
     @endif
     <div class="row">
@@ -30,7 +30,7 @@
         </div>
     </div>
     @if(count($dataset["list"])>0)
-    <div class="vendorTrans">    	
+    <div class="vendorTrans cls_table">    	
         <div class="vTranHeader bold transListHeadRow">
           <div class="row bold">
             <div class="col-sm-1">#</div>
@@ -53,7 +53,7 @@
                 <div class="col-sm-2"><span class="textTruncate">{{{ $vendor->vendor_phone}}}</span></div>
                 <div class="col-sm-2 text-center">
                   <a href="javascript:;" class="btn btn-default btn-xs cls_vt_list" title="Transaction List" data-toggle="tooltip"><span class="fa fa-list noMargin"></span>({{count($vendor->transaction_list)}})</a>
-                  <a href="{{URL::to('/vendor/edit')}}/{{{ $vendor->vendor_id }}}" class="btn btn-default btn-xs"><span class="fa fa-edit noMargin"></span></a>
+                  <a href="{{URL::action('TenancyController@vendor_edit', [$vendor->vendor_id])}}" class="btn btn-default btn-xs"><span class="fa fa-edit noMargin"></span></a>
                 </div>
               
                 <div class="cls_vendor_transaction_list" style="display:none">
@@ -123,14 +123,18 @@
         </div>
     	@endforeach
             
-            
-    </div>
-    @endif
-    <div class="nrf" style="display:none">
+      <div class="nrf" style="display:none">
         <div class="alert alert-warning">
            <i class="fa fa-exclamation-triangle"></i> No Record Found
         </div>
+      </div>      
     </div>
+    @else
+    <div class="alert alert-warning">
+       <i class="fa fa-exclamation-triangle"></i> No Record Found
+    </div>
+    @endif
+    
   </div>
 </section>
 <!--prefooter-->

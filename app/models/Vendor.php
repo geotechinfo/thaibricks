@@ -61,7 +61,7 @@ class Vendor extends Eloquent {
 		$r = DB::select($sql);
 		$transaction  = new Transaction();
 		foreach ($r as $key => $value) {
-			$list = $transaction->getlist(array('vendor_id'=>$value->vendor_id));
+			$list = $transaction->getlist(array('vendor_id'=>$value->vendor_id),array('orderby'=>array('transaction_id'=>'DESC')));
 			//pr($list);
 			$r[$key]->transaction_list = $list;
 		}

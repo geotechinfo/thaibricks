@@ -44,34 +44,36 @@
 <div class="row">
     <h3>Create Relation</h3>
     {{ Form::open(array('route' => array('attribute.store'), 'method' => 'post')) }}
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('deal','Deal')}}
         {{Form::select('deal_id', $dataset["deals"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('type','Type')}}
         {{Form::select('type_id', $dataset["types"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-2">
         {{Form::label('group','Group')}}
         {{Form::select('group_id', $dataset["groups"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-2">
         {{Form::label('attribute','Attribute')}}
         {{Form::select('attribute_id', $dataset["attributes"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-2">
+        <p style="height:15px;"></p>
     	{{Form::submit('Create', array('class' => 'btn btn-primary'))}}
     </div>
     {{ Form::close() }}
 </div>
-
+<!--
 <div class="row">
     <h3>Attribute Relations</h3>
     <div class="col-md-12">
     	<div id="relations"></div>
     </div>
 </div>
+-->
 <script type="text/javascript">
     $(function(){
         $('form').validate({

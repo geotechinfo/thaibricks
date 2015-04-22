@@ -119,8 +119,7 @@ label
 img.productlogo
 {
 	height: 50px;
-    margin-left: 28px;
-    width: 100%;
+    width: auto;
 }
 
 .signInBtn
@@ -905,6 +904,6 @@ only screen and (min-device-pixel-ratio : 1.5) {
 .topmenuwrap .navbar-right > li.user-menu.open > a {color:#000}
 
 .main .breadcrumb a{color:#C0392B;}
-
+.loginWrap img.productlogo, img.productlogo {width:40px;height:40px;margin:5px;}
 
 

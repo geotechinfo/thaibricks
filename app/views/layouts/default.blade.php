@@ -1,12 +1,17 @@
 <?php
 $location = new Location;
 $dataset['locations']=$location->get_location_with_sub();
-
+$url_loc_name = Request::segment(1);
+$url_loc_id ='';
 $loc = array(''=>'Select Location');
 $subloc[''] = array(''=>'Select Location');
 $transport_group =  array('' => 'Select Transport Group' );
 foreach ($dataset['locations'] as $k=>$v){
 	$loc[$k]=$v['location_name'];
+  if(strtolower($v['location_name'])==strtolower($url_loc_name)){
+    $url_loc_id = $v['location_id'];
+  }
+
 	if($v['SubLocation']){
 	   foreach ($v['SubLocation'] as $k1 => $v1) {
 		  $subloc[$k][$v1['location_id']]=$v1['location_name'];
@@ -19,6 +24,8 @@ foreach ($dataset['locations'] as $k=>$v){
 	}
 }
 //print_r($dataset["property"]->location);die;
+
+
 ?> 
 
 <!DOCTYPE html>
@@ -29,8 +36,9 @@ foreach ($dataset['locations'] as $k=>$v){
 <meta name="description" content="">
 <meta name="author" content="">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>ThaiBricks | Home</title>
-
+<title>ThaiBricks | <?php echo (isset($dataset['page_title'])?$dataset['page_title']:'Home')?></title>
+<link rel="shortcut icon" href="{{URL::to('/')}}/favicon.ico" type="image/x-icon" />
+<link rel="bookmark" href="{{URL::to('/')}}/favicon.ico" />
 <!--<link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/font-awesome.min.css" rel="stylesheet">
 <link href="libraries/slider/css/slider.css" rel="stylesheet">
@@ -89,58 +97,33 @@ foreach ($dataset['locations'] as $k=>$v){
             	Contact us ( 66 ) 894503647
             </div> 
             
-            	
-            
-            
           </div>
           <div class="collapse navbar-collapse topnav socialnav-collapse">
             <ul class="nav navbar-nav navbar-right social-network-menu">
-              <li class="flagitem"><a href="javascript:void(0);">{{ HTML::image('images/flag/flag1.png', '', array('class' => 'flag')) }}</a></li>
-              <!--<li class="active"><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Vimeo"><span class="fa fa-vimeo-square"></span></a></li>-->
-              <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Facebook"><span class="fa fa-facebook-square"></span></a></li>
-              <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Twitter"><span class="fa fa-twitter"></span></a></li>
-              <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><span class="fa fa-pinterest-square"></span></a></li>
-              <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Skype"><span class="fa fa-skype"></span></a></li>
-              <!--<li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="YouTube"><span class="fa fa-youtube-square"></span></a></li>
-              <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Google Plus"><span class="fa fa-google-plus-square"></span></a></li>
-              <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Linkedin"><span class="fa fa-linkedin-square"></span></a></li>
-              -->           
-              
-              @if(Auth::check())
-              <!--<li><a href="javascript:void(0);" class="welcomeuser">
-              	<span class="fa fa-user"></span> Welcome {{{ Auth::user()->first_name }}}</a>
-              </li>
-              <li><a href="{{URL::to('/property/mylist/me')}}" class="toplinks">My Properties</a></li>
-              <li><a href="{{URL::to('/profile')}}" class="toplinks">Profile</a></li>
-              <li><a href="{{URL::to('/logout')}}" class="toplinks">Logout</a></li>-->
-              <li><a href="{{URL::to('/property/myproperties')}}"  class="toplinks topdash">Dashboard</a></li>
-              <!--<li >
-                  <a href="javascript:void(0);" title="Register" class="welcomeuser" data-toggle="dropdown" aria-expanded="false">
-                      <span class="fa fa-user"></span> Welcome {{{ Auth::user()->first_name }}} <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu" role="menu">
-                      <li><a href="{{URL::to('/property/create')}}" ><i class="fa fa-plus"></i> Add Property</a></li>
-                      <li><a href="{{URL::to('/property/myproperties')}}"><i class="fa fa-list"></i> My Properties</a></li>
-                      <li class="divider"></li>
-                      <li><a href="{{URL::to('/tenancy/create')}}"><i class="fa fa-plus"></i> Add Tenancy</a></li>
-                      <li><a href="{{URL::to('/tenancy/transaction')}}/0"><i class="fa fa-plus"></i> Add Transactions</a></li>
-                      <li><a href="{{URL::to('/tenancy/tenancies')}}"><i class="fa fa-list"></i> View Tenancies</a></li>
-                      <li class="divider"></li>
-                      <li><a href="{{URL::to('/profile')}}"><i class="fa fa-user"></i> Profile Manage</a></li>
-                      <li><a href="{{URL::to('/logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
-                  </ul>
-              </li>-->
-              <li><a class="welcomeuser" href="{{URL::to('/logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
-              @else
-              <li><a href="javascript:void(0);" class="toplinks login">Login</a></li>
-              <li><a href="{{URL::to('/create')}}" class="toplinks">Register</a></li>
-              @endif
+                      <li class="flagitem"><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="English">{{ HTML::image('images/flag/flag1.png', '', array('class' => 'flag')) }}</a></li>
+                      <li class="flagitem"><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Thai">{{ HTML::image('images/flag/flag2.png', '', array('class' => 'flag')) }}</a></li>
+                      <!--<li class="flagitem"><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Russian">{{ HTML::image('images/flag/flag3.png', '', array('class' => 'flag')) }}</a></li>
+                      <li class="active"><a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="Vimeo"><span class="fa fa-vimeo-square"></span></a></li>-->
+                      <li><a href="https://www.facebook.com/thaibricks" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Facebook"><span class="fa fa-facebook-square"></span></a></li>
+                      <li><a href="https://twitter.com/ThaiBricks" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Twitter"><span class="fa fa-twitter"></span></a></li>
+                      <li><a href="https://www.pinterest.com/thaibricks/" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><span class="fa fa-pinterest-square"></span></a></li>
+                              
+                      
+                      @if(Auth::check())
+                     
+                      <li><a href="{{URL::action('PropertiesController@myproperties')}}"  class="toplinks topdash">Dashboard</a></li>
+                     
+                      <li><a class="welcomeuser" href="{{URL::action('UsersController@logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
+                      @else
+                      <li><a href="javascript:void(0);" class="toplinks login">Login</a></li>
+                      <li><a href="{{URL::action('UsersController@create')}}" class="toplinks">Register</a></li>
+                      @endif
             </ul>
             
             <?php
-				$property_types = CommonHelper::propertyTypes();
-				$deal_types = CommonHelper::dealTypes();
-			?>
+      				$property_types = CommonHelper::propertyTypes();
+      				$deal_types = CommonHelper::dealTypes();
+      			?>
             <div class="modal fade" id="addPrperty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -178,7 +161,7 @@ foreach ($dataset['locations'] as $k=>$v){
             
             <div class="login_popupdiv white" style="display:none;">
                 <div class="">
-                {{ Form::open(array('class' => 'form-inline', 'route' => array('login'), 'method' => 'post')) }}
+                {{ Form::open(array('class' => 'form-inline noMargin', 'route' => array('login'), 'method' => 'post')) }}
                   <div class="form-group">
                     {{Form::text('email', null,array('class' => 'form-control', 'placeholder' => 'Email'))}}
                   </div>
@@ -192,14 +175,13 @@ foreach ($dataset['locations'] as $k=>$v){
           </div>
         </div>
       </div>
-      
-      <!--<div class="form-group margin-top quicklocationsearch">
-                  <div class="arrow">
-                    <div class="btn-group mutiselectbtn">
-                    	{{Form::select('location', $loc, '', array('class' => 'form-control', 'id'=>"city"))}}
-                    </div>
-                  </div>
-                </div>-->
+      <div class="form-group margin-top quicklocationsearch">
+        <div class="arrow">
+          <div class="btn-group mutiselectbtn">
+          	{{Form::select('home_location', $loc, LOCATION_ID, array('class' => 'form-control', 'id'=>"home_location",'style'=>''))}}
+          </div>
+        </div>
+      </div>
     </div>
     
   </section>
@@ -212,16 +194,21 @@ foreach ($dataset['locations'] as $k=>$v){
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mainnav"> <span class="sr-only">Toggle
             navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            <a class="navbar-brand" href="{{URL::to('/')}}">{{ HTML::image('images/logo.png', '', array('class' => '')) }}</a> </div>
+            <a class="navbar-brand" href="{{URL::action('PagesController@index')}}">{{ HTML::image('images/logo.png', '', array('class' => '')) }}</a> </div>
           <div class="collapse navbar-collapse mainnav">
-            <ul class="nav navbar-nav navbar-right">
-              <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==1 ? 'active':'')?>"><a href="{{URL::to('property/search')}}?deal_id=1">Sale</a></li>
-              <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==2 ? 'active':'')?>"><a href="{{URL::to('property/search')}}?deal_id=2">Rent</a></li>
-              <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==3 ? 'active':'')?>"><a href="{{URL::to('property/search')}}?deal_id=3">Lease</a></li>
-              <!--<li><a href="{{URL::to('property/search')}}">Projects</a></li>-->
-             
-              <li class="<?php echo  (Request::segment(1)=='agents' ? 'active':'')?>"><a href="{{URL::to('agents')}}/all">Agents</a></li>
+            <ul class="nav navbar-nav navbar-right search_nav">
+              <li><a href="{{URL::action('PropertiesController@search')}}" class="orange">Search</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                  <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==1 ? 'active':'')?>"><a href="{{URL::action('PropertiesController@search')}}?deal_id=1">Sale</a></li>
+                  <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==2 ? 'active':'')?>"><a href="{{URL::action('PropertiesController@search')}}?deal_id=2">Rent</a></li>
+                  <li class="<?php echo (isset($_GET['deal_id']) && $_GET['deal_id']==3 ? 'active':'')?>"><a href="{{URL::action('PropertiesController@search')}}?deal_id=3">Lease</a></li>
+                  <!--<li><a href="{{URL::action('PropertiesController@search')}}">Projects</a></li>-->
+                 
+                  <li class="<?php echo  (Request::segment(1)=='agents' ? 'active':'')?>"><a href="{{URL::action('UsersController@agents',['all'])}}">Agents</a></li>
+            </ul>
+
+
           </div>
         </div>
       </div>
@@ -232,13 +219,17 @@ foreach ($dataset['locations'] as $k=>$v){
 @yield('content')
 <!--prefooter-->
 <section class="grey" id="bottom">
-  <div class="container">
-    <div class="row">
+  <div class="container noPadding">
+    <div class="row noMargin">
       <div class="col-md-4">
         <h4>Thaibricks</h4>
         <p>Tired of searching for condos / apartment / house in bangkok, dont
           worry we got your covered. We have great listings and if you have no
           time to search, contact our great Agents.</p>
+
+          <div class="border">
+          </div>
+
         <address>
         <span class="fa fa-map-marker"></span>PhraKhanong, Sukhumvit, Bangkok<br/>
         <span class="fa fa-phone"></span>(66) 02 123 4567<br/>
@@ -248,24 +239,15 @@ foreach ($dataset['locations'] as $k=>$v){
       <!--/.col-md-3-->
       <!--/.col-md-3-->
       <div class="col-md-4">
-        <h4>Tweets</h4>
-        <div>
-          <div class="media clearfix">
-            <div class="pull-left"> <span class="fa fa-twitter"></span> </div>
-            <div class="media-body"> <small class="muted">Check this condo in
-                Thonglor, #TBRecommendation, <a href="javascript:void(0)" title="" class="seagreentxt"> http//www.thaibricks.com </a></small> </div>
-          </div>
-          <div class="media clearfix">
-            <div class="pull-left"> <span class="fa fa-twitter"></span> </div>
-            <div class="media-body"> <small class="muted">Check this condo in
-                Thonglor, #TBRecommendation, <a href="javascript:void(0)" title="" class="seagreentxt"> http//www.thaibricks.com </a></small> </div>
-          </div>
-          <div class="media clearfix">
-            <div class="pull-left"> <span class="fa fa-twitter"></span> </div>
-            <div class="media-body"> <small class="muted">Check this condo in
-                Thonglor,Check this condo in Thonglor #TBRecommendation, <a href="javascript:void(0)" title="" class="seagreentxt"> http//www.thaibricks.com </a></small> </div>
-          </div>
+        
+        
+        <h4>Twitter Feeds</h4>
+        <div style="background:#FFFFFF;padding:10px;border-radius:4px;">
+          <a class="twitter-timeline" height="200"  href="https://twitter.com/ThaiBricks" data-widget-id="580988869421768704">Tweets by @ThaiBricks</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
+          
+          
       </div>
       <!--/.col-md-3-->
       <div class="col-md-4">
@@ -273,19 +255,19 @@ foreach ($dataset['locations'] as $k=>$v){
         <h4>newsletter sign up</h4>
         <div class="media newsletter-brief">
           <div class="pull-left"> <span class="fa fa-envelope"></span><span class="fa fa-mail-reply"></span> </div>
-          <div class="media-body"> <small class="muted">Suscribe to our email list so you can keep pu to date with our latest properties.</small> </div>
+          <div class="media-body"> <small class="muted">Subscribe to our email list so you can keep up to date with our latest properties.</small> </div>
         </div>
         {{ Form::open(array('class' => 'form-horizontal padding', 'route' => array('newsletter'), 'method' => 'post','id'=>'newsletter')) }} 
-          <div class="form-group text-success" style="display:none" id="nw_msg">Your Email has been successfully registerd</div>
+          <div class="form-group text-success" style="display:none" id="nw_msg">Your Email has been successfully registered</div>
           <div class="form-group">
             <input type="text" placeholder="Name" name="newsletter_user" class="form-control">
           </div>
           <div class="form-group">
             <input type="text" placeholder="Email" name="newsletter_email" class="form-control">
           </div>
-          <div class="">
+          <div class="text-right row">
           
-            <button type="submit" class="btn btn-grey pull-right subscribe"> Subscribe</button>
+            <button type="submit" class="btn btn-grey subscribe"> Subscribe</button>
           </div>
         {{ Form::close() }}
       </div>
@@ -300,21 +282,23 @@ foreach ($dataset['locations'] as $k=>$v){
 <footer class="concrete footer" id="footer">
   <div class="container">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-6">
       <ul class="pull-left">
-          <li><a href="{{URL::to('/')}}">Home</a></li>
-          <li><a href="{{URL::to('property/search')}}?deal_id=1">Sale</a></li>
-          <li><a href="{{URL::to('property/search')}}?deal_id=2">Rent</a></li>
-          <li><a href="{{URL::to('property/search')}}?deal_id=3">Lease</a></li>
-          <!--<li><a href="{{URL::to('property/search')}}">Projects</a></li>
-          <li><a href="{{URL::to('/about')}}">About Us</a></li>-->
-          <li><a href="javascript:void(0);" class="fb">Facebook</a></li>
-          <li><a href="javascript:void(0);" class="twtr">Twitter</a></li>
+          <li><a href="{{URL::action('PagesController@index')}}">Home</a></li>
+          <li><a href="{{URL::action('PagesController@about')}}">About Us</a></li>
+          <li><a href="{{URL::action('PropertiesController@search')}}?deal_id=1">Sale</a></li>
+          <li><a href="{{URL::action('PropertiesController@search')}}?deal_id=2">Rent</a></li>
+          <li><a href="{{URL::action('PropertiesController@search')}}?deal_id=3">Lease</a></li>
+         
+          <li><a href="https://www.facebook.com/thaibricks" target="_blank" class="fb">Facebook</a></li>
+          <li><a href="https://twitter.com/ThaiBricks" target="_blank" class="twtr">Twitter</a></li>
         </ul>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-6 footerRight">
       	<div class="copyright">
-        Copyright - Privacy Policy -  <a target="_blank" href="javascript:void(0);" title="ThaiBricks">ThaiBricks</a>
+        <a href="{{URL::action('PagesController@privacy_policy')}}" title="Privacy Policy">Privacy Policy</a>
+        <a href="{{URL::action('PagesController@terms_n_conditions')}}" title="Terms and Conditions">Terms and Conditions</a>
+        <span>Copyright {{date('Y')}} ThaiBricks</span>
         </div>
       </div>
     </div>
@@ -324,16 +308,7 @@ foreach ($dataset['locations'] as $k=>$v){
   </div>
 </footer>
 <!--/#footer-->
-<!--<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.prettyPhoto.js"></script>-->
-<!--<script src="js/jquery.isotope.min.js"></script>-->
-<!--<script src="libraries/slider/js/bootstrap-slider.js"></script>
-<script src="libraries/select2/js/select2.js"></script>
-<script type="text/javascript" src="libraries/slimheader/classie.js"></script>
-<script src="js/main.js"></script>-->
 
-<!--{{ HTML::script('js/jquery.isotope.min.js') }}-->
 {{ HTML::script('libraries/slider/js/bootstrap-slider.js') }}
 {{ HTML::script('libraries/select2/js/select2.js') }}
 {{ HTML::script('libraries/slick/slick.js') }}
@@ -351,6 +326,16 @@ foreach ($dataset['locations'] as $k=>$v){
 
 <script type="text/javascript">
 $(document).ready(function(){
+    $('#home_location').change(function(){
+      //alert($(this).val())
+        var url = ($(this).find('option:selected').text()).toLowerCase().replace(' ','_');  
+        if($(this).val()!=''){
+          window.location.href="{{URL::to('/')}}/"+url+"";
+        }else{
+          window.location.href="{{URL::to('/')}}/";
+        }
+    })
+
     $('#newsletter').validate({
       rules:{
           'newsletter_user':{required:true},
@@ -358,14 +343,14 @@ $(document).ready(function(){
               required:true,
               email:true,
               remote:{
-                url:"{{URL::to('newsletter_email_check')}}",
+                url:"{{URL::action('PagesController@newsletter_email_check')}}",
                 type:'post'
               }
             }
       },
       messages:{
         'newsletter_email':{
-          remote:'This email already registerd'
+          remote:'This email has been already registered'
         }
       },
       errorClass:'text-danger',
@@ -378,7 +363,7 @@ $(document).ready(function(){
               var row = $.parseJSON(m);
               //console.log(row);
               $(form).find('input:text').val('');              
-              $('#nw_msg').fadeIn().delay(5000).fadeOut();
+              $('#nw_msg').fadeIn();
           }
         );
         return false;
@@ -484,7 +469,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-	var locationJson = $.parseJSON('{{ json_encode($dataset['locations']) }}');
+	var locationJson = $.parseJSON("{{ addslashes (json_encode($dataset['locations'])) }}");
 	function chnage_rule(){
     	/*$("#location_sub").empty();
 		if($("#location").val() == "Bangkok"){
@@ -500,7 +485,7 @@ $(document).ready(function(){
 		$("#location_sub").empty();
 		$("#transport_id").empty();
 
-		$("#location_sub").append($("<option />").val("").text("Select Sub Location"));
+		$("#location_sub").append($("<option />").val("").text("Sub-Location"));
 		if(locationJson[location] != undefined){
 			if(locationJson[location].SubLocation){
 				$.each(locationJson[location].SubLocation,function(i,obj){
@@ -693,13 +678,13 @@ function readImage(file) {
 
 <style type="text/css">
 .portfolio-items .item-inner img{
-	height:160px !important;
+	/*height:160px !important;*/
 }
 .portfolio-items .eventphototext {
 	height: 120px; overflow: hidden;
 }
 .propertylistwrap .propertyimg img{
-	height:207px !important;
+	/*height:207px !important;*/
 }
 .portfolio-items .evPhotoHt {height:auto;}
 </style>

@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>ThaiBricks Adminstration Panel</title>
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+<link rel="shortcut icon" href="{{URL::to('/')}}/favicon.ico" type="image/x-icon" />
+<link rel="bookmark" href="{{URL::to('/')}}/favicon.ico" />
+
 <!-- bootstrap 3.0.2 -->
 {{ HTML::style('admin/css/bootstrap.css') }}
 
@@ -32,7 +35,7 @@
         <div class="navbar-header">
           <button data-target="#topnavdrpdwn" data-toggle="collapse" class="navbar-toggle" type="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
           <a href="{{URL::to('/admins/dashboard')}}" class="logo">
-          	{{ HTML::image('images/logo.png', '', array('class' => 'productlogo')) }}
+          	{{ HTML::image('images/admin-logo.png', '', array('class' => 'productlogo')) }}
           </a>
         </div>
         <div id="topnavdrpdwn" class="navbar-collapse collapse">
@@ -65,7 +68,7 @@
             <div class="user-panel">
               
               <div class="pull-left info">
-                <p><span class="fa fa-user"></span>  Hello, Admin User</p>
+                <p><span class="fa fa-user"></span>  Hello Admin</p>
               </div>
             </div>
           </div>
@@ -101,8 +104,21 @@
               <li>
                 <a href="{{URL::to('/admins/users/list')}}"><span class="fa fa-user"></span>Manage Seller/Agents</a>
               </li>
+              <li class="dropdown fhmm nav <?php if(Request::is('admins/advertise/*') == 1) echo "open"; ?>"> <a data-toggle="dropdown" class="dropdown-toggle" href="#"><span class="fa fa-list"></span>Manage Advertisement <b class="caret"></b></a>
+                <ul role="menu" class="dropdown-menu">
+                  <li>
+                    <div><a href="{{URL::to('admins/advertise/adpackages/')}}"><span class="fa fa-angle-right"></span>Manage Packages</a></div>
+                  </li>                  
+                  <li>
+                    <div><a href="{{URL::to('admins/advertise/')}}"><span class="fa fa-angle-right"></span>Manage Advertisement</a></div>
+                  </li>
+                  <li>
+                    <div><a href="{{URL::to('admins/recommendation/')}}"><span class="fa fa-star"></span>Manage Recommendation</a></div>
+                  </li>
+                </ul>
+              </li>
               <li>
-                <a href="{{URL::to('/admins/newsletters')}}"><span class="fa fa-user"></span>Newsletter Subcribers</a>
+                <a href="{{URL::to('/admins/newsletters')}}"><span class="fa fa-user"></span>Newsletter Subscribers</a>
               </li>
             </ul>
           </div>
@@ -133,30 +149,20 @@
 {{ HTML::script('admin/js/bootstrap.js') }}
 {{ HTML::script('admin/js/custom.js') }}
 
-<link type="text/css" href="{{asset("libraries\bootstrap-treeview\src\css\bootstrap-treeview.css")}}" />
-<script src="{{asset("libraries\bootstrap-treeview\src\js\bootstrap-treeview.js")}}"></script>
+<link type="text/css" href="{{asset('libraries/bootstrap-treeview/src/css/bootstrap-treeview.css')}}" />
+<script src="{{asset('libraries/bootstrap-treeview/src/js/bootstrap-treeview.js')}}"></script>
 
   
 
 
 <script>
   $(function(){
-    //alert('ok');
-  
- 
+   // $('#relations').treeview({data: '<?php echo $dataset["relations"]; ?>'});
 
- 
-
-
-  
-
-  
-  $('#relations').treeview({data: '<?php echo $dataset["relations"]; ?>'});
-
-  $('#frm').submit(function(e){
-    $('#save_transport').trigger('click');
-    e.preventDefault();
-  });
+    $('#frm').submit(function(e){
+      $('#save_transport').trigger('click');
+      e.preventDefault();
+    });
   
 });
 </script>

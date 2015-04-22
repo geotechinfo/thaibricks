@@ -18,7 +18,7 @@
     <div class="margin-top-10 message">
     <p class="btn-danger text-danger padding-5">
         <span class="fa fa-times-circle"></span>{{{ $message }}}
-        <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
+        
     </p>
     </div>
     <?php break; ?>
@@ -61,7 +61,7 @@
     
                           <div class="row">
     
-    
+                                  
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label class="control-label" for="propertyname">Transaction Type</label>
@@ -89,10 +89,11 @@
                                           <div class="form-group">
                                               <label class="control-label" for="propertyname">Vendor Involvement</label>
                                               <div class="vendorIn">
-                                                <input type="checkbox" id="vandor" name="" value="0"> <label for="vandor">Vendor Involved</label>
+                                                <input type="checkbox" id="vandor"  name=""  value="0"> <label for="vandor">Vendor Involved</label>
                                               </div>
                                           </div>
                                       </div>
+                                      
                                       <div class="col-sm-6 vandorName">
                                           <div class="form-group">
                                               <label class="control-label" for="propertyname">Select Vendor</label>
@@ -105,7 +106,7 @@
                                                                         <select class="form-control" name="vendor_id">
                                                                               <option value="0">Select Vendor</option>
                                                                               @foreach($dataset['vendors'] as $k=>$v)
-                                                                              <option  value = "{{ $v->vendor_id }}">{{$v->vendor_name}}</option>
+                                                                              <option <?php echo ($v->vendor_id==$dataset['transaction']->vendor_id?'selected':'')?> value = "{{ $v->vendor_id }}">{{$v->vendor_name}}</option>
                                                                               @endforeach
                                                                               
                                                                         </select>
@@ -205,6 +206,14 @@
 <!--prefooter-->
 <script type="text/javascript">
   $(document).ready(function(){
+    //alert({{$dataset['tenancy_id']}});
+    <?php if(isset($dataset['is_edit']) && in_array($transaction_head, array_keys($dataset["transaction_heads"]['Cash Out']))){?>
+      //alert('ok');
+      //$('[name="transaction_head"]').trigger('change');
+      $(".vendorToggle,.vandorName").show();
+      $('#vandor').attr('checked','checked');//.trigger('click');
+    <?php }?>  
+
     $('#add_vendor_frm').click(function(){
       var ths = $(this);
       

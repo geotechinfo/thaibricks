@@ -20,7 +20,7 @@ class Location extends Eloquent {
 
 	public function get_location_with_sub($parent_id = 0){
 
-		$list =  DB::table('pr_locations')->where('parent_id','=',$parent_id)->get();
+		$list =  DB::table('pr_locations')->where('parent_id','=',$parent_id)->orderBy('location_name','ASC')->get();
 		$rt = array();
 		foreach ($list as $k=>$v){
 			$rt[$v->location_id] = (array)$v;

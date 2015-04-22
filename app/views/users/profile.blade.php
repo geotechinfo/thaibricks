@@ -19,12 +19,12 @@
         <div role="tabpanel">
           @if(Session::get('success'))
             <div class="margin-top-10 message">
-            <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{Session::get('success')}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+            <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{Session::get('success')}}</p>
             </div>
           @endif
           @if(Session::get('error'))
             <div class="margin-top-10 message">
-            <p class="btn-danger  padding-5"><span class="fa fa-cross"></span>{{Session::get('error')}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+            <p class="btn-danger  padding-5"><span class="fa fa-cross"></span>{{Session::get('error')}}</p>
             </div>
           @endif
          
@@ -41,7 +41,6 @@
                     <div class="margin-top-10 message">
                     <p class="btn-danger text-danger padding-5">
                       <span class="fa fa-exclamation-triangle"></span>{{{ $message }}}
-                        <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
                     </p>
                     </div>
                     <?php break; ?>

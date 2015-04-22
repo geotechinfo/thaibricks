@@ -20,7 +20,7 @@ class TenancyController extends Controller {
 		$id = Auth::user()->user_id;
 	
 		$properties = new Property();
-		$dataset["properties"] = $properties->get_properties($id, null);
+		$dataset["properties"] = $properties->get_properties(array("user_id"=>$id,'property_status'=>1));
 		
 		return View::make('tenancies.create', array("dataset"=>$dataset));
 	}
@@ -28,7 +28,7 @@ class TenancyController extends Controller {
 	public function store()
 	{
 		$validators = array(
-			'property_id' => 'required',
+			'property' => 'required',
 			'first_name' => 'required',
 			'last_name' => 'required',
 			'email' => 'required|email',
@@ -64,7 +64,7 @@ class TenancyController extends Controller {
 		$tenant->address = Input::get('address');
         if($tenant->save()){
 			$tenancy = new Tenancy();
-			$tenancy->property_id = Input::get('property_id');
+			$tenancy->property_id = Input::get('property');
 			$tenancy->tenant_id = $tenant->tenant_id;
 			$tenancy->agreement_file = ($file_name != "") ? $file_name : "";
 			$tenancy->start_date = CommonHelper::dateToDb(Input::get('start_date'));
@@ -81,12 +81,12 @@ class TenancyController extends Controller {
 		$user_id = Auth::user()->user_id;
 	
 		$properties = new Property();
-		$dataset["properties"] = $properties->get_properties($user_id, null);
-				
+		$dataset["properties"] = $properties->get_properties(array("user_id"=>$user_id,'is_tenancy'=>array(0,1)));
+		//pr($dataset["properties"]);
 		$tenancies = new Tenancy();
 		$tenancy = $tenancies->get_tenancies(null, $id);
 		$dataset["tenancy"] = $tenancy[0];
-
+		$dataset['is_edit'] = 1;
 		return View::make('tenancies.create', array("dataset"=>$dataset));
 	}
 	
@@ -190,7 +190,7 @@ class TenancyController extends Controller {
 		$tenancies = new Tenancy();
 		$dataset["tenancies"] = $tenancies->get_tenancies($user_id);
 		$dataset["tenancy_id"] = '';//$id;
-		
+		$dataset["is_edit"] = 1;
 		$dataset['vendors'] = DB::table('ll_vendors')->where(array('user_id'=>Auth::User()->user_id))->get();
 		$transaction = new Transaction();
 		$dataset["transaction_heads"] = $transaction->getlist_heads();
@@ -310,7 +310,7 @@ public function updatevendor(){
 			/*'tenancy_name' => 'required',*/
 			'transaction_head' => 'required',
 			'transaction_date' => 'required',
-			'transaction_amount' => 'required'
+			'transaction_amount' => 'required|numeric|min:0'			
 		);
 		$validator = Validator::make(
             Input::all(),

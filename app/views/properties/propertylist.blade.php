@@ -2,25 +2,28 @@
 
 @section('content')
 
+<div class="alert alert-success" id="success_msg" style="display:none"></div>
 <section class="">
-  <h3><span class="fa fa-map-marker"></span>My Property</h3>
+  <h3>
+    <span class="fa fa-map-marker"></span>My Property
+    
+  </h3>
   <div class="divider"></div>
   <div class="mypropertyThumb clearfix">
   <div class="propertylistwrap">
   	@if(Session::get('success'))
     <div class="margin-top-10 message">
-    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}</p>
     </div>
     @endif
     
     @if(Session::get('info'))
     <div class="margin-top-10 message">
-    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
     </div>
     {{{ Session::forget('info') }}}
     @endif
-  
-  	<?php $validity_days = 7; ?>
+
     <ul class="portfolio-items relatedpropety myproperty clearfix">
     <li class="portfolio-item col-md-2 addpropertythumb"> 
           <div class="addnewbutton">
@@ -33,22 +36,41 @@
           </div>
           </li>
   	@foreach($dataset["properties"] as $property)
-      <li class="portfolio-item col-md-2"> 
-          <!--<div class="enableDisable">
-            <a href="javascript:;" class="enable enabled" title="Enable"><span class="fa fa-check"></span></a>
-            <span class="seperator">|</span>
-            <a href="javascript:;" class="enable" title="Disable" ><span class="fa fa-ban"></span></a>
-          </div>-->
+    <?php 
+        $remaining_days = (VALIDITY_DAYS - floor((strtotime("now")-$property->last_active)/3600/24));
+        $remaining_text = ""; 
+        $class="";
+        if($remaining_days>=0){
+          $remaining_text =  " $remaining_days days remaining. "; $class="alert-success";
+        }else{
+          $remaining_text = "Inactive for ".($remaining_days*(-1)). " days"; $class="alert-warning";
+        }
+    ?>
+      <li class="portfolio-item col-md-2 cls_extend"> 
+          <div class="small alert {{$class}}" style="position: absolute;top: 4px;left: 4px;padding: 1px
+           5px;border-radius: 2px;z-index: 1;">
+              {{$remaining_text}}
+          </div>
+          <?php if($remaining_days < WARNING_DAYS && $remaining_days>=0){ ?>
+          <div class="" style="position: absolute;top: 4px;right: 4px;z-index: 1;">
+              <a href="javascript:;" class="btn btn-success btn-xs cls_extend_btn" data-id="{{ $property->property_id}}" title=" Enable your Property">Extend</a>
+          </div>
+          <?php }else if($remaining_days<0){ ?>
+          <div class="" style="position: absolute;top: 4px;right: 4px;z-index: 1;">
+              <a href="javascript:;" class="btn btn-success btn-xs cls_extend_btn" data-id="{{ $property->property_id}}" title=" Enable your Property">Enable</a>
+          </div>
+          <?php } ?>   
           <a href="{{URL::to('/property/edit')}}/{{{ $property->property_id }}}" class="item-inner btn-block"> 
               <span class="fa fa-pencil"></span>
               {{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive propertylistimg')) }}
+              <span class="typeOfProp">{{$property->deal_name}}</span>
           </a> 
           <div class="commentwrap asbestos btn-block">
             <div>           
-              <div class="projectinfobtn center addpropertyname"><a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="textEllipsis">{{{ $property->title }}}</a></div>
+              <div class="projectinfobtn center addpropertyname"><a href="{{URL::action('PropertiesController@show',[''])}}/{{{ $property->property_id }}}" class="textEllipsis">{{{ $property->title }}}</a></div>
               <div class="darkGrey locationprice">
                 <span class="lname">{{{ $property->locationsub_name }}}, {{{ $property->location_name }}}</span> | 
-                <span class="price">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</span>
+                <span class="price">&#xe3f; {{{ number_format($property->price, 0, ".", ",") }}}</span>
               </div>
             </div>
           </div> 
@@ -81,9 +103,9 @@
         function(m){
           //alert(m);
           ths.button('reset');
-          ths.closest('.cls_extend').find('.cls_extend_text').text('You property is active for next 7 days.');
-          ths.closest('.cls_extend').find('.cls_extend_btn').hide();
-          ths.closest('.cls_extend').find('.disablePropertyHolder').removeClass('disablePropertyHolder');
+          $('#success_msg').show().text('You property has been successfully enabled.').delay(5000).fadeOut();
+          ths.hide();
+          ths.closest('.cls_extend').find('.small').hide();
         }
       )
     });

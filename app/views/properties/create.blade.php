@@ -4,6 +4,14 @@
 {{ HTML::script('libraries/uploadifive/js/jquery.ui.widget.js') }}
 {{ HTML::script('libraries/uploadifive/js/jquery.fileupload.js') }}
 {{ HTML::script('libraries/validator/validation.js') }}
+
+
+{{ HTML::script('libraries/cropper-master/src/cropper.js') }}
+{{ HTML::script('libraries/cropper-master/demos/js/propertyImageCropper.js') }}
+{{ HTML::style('libraries/cropper-master/src/cropper.css') }}
+{{ HTML::style('libraries/cropper-master/demos/css/docs.css') }}
+
+
 <?php
 $location = new Location;
 $dataset['locations']=$location->get_location_with_sub();
@@ -48,7 +56,6 @@ div.arrow_fix:before{height:35px !important;}
         <div class="margin-top-10 message">
         <p class="btn-danger text-danger padding-5">
             <span class="fa fa-times-circle"></span>{{{ $message }}}
-            <a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a>
         </p>
         </div>
         <?php break; ?>
@@ -122,9 +129,10 @@ div.arrow_fix:before{height:35px !important;}
                             <label class="control-label">Transaction Type</label>
                             <?php
                               $dval = isset($dataset['property']->deal_id)?$dataset['property']->deal_id:null;
-                              $disabled = (isset($dataset['property']->property_id) && $dataset['property']->property_id>0)?true:false;
+							  $dropdown_class = "form-control ";
+							  $readonly = isset($dataset['property']->property_id) && $dataset['property']->property_id>0 ? "disabled" : "none";
                             ?>
-                            {{Form::select('deal_id', $dataset['deals'], $dval, array('class' => 'form-control','id'=>'deal_id','disabled'=>$disabled))}} 
+                            {{Form::select('deal_id', $dataset['deals'], $dval, array('class' => $dropdown_class,'id'=>'deal_id', $readonly))}}
                           </div>
                         </div>
 
@@ -134,7 +142,7 @@ div.arrow_fix:before{height:35px !important;}
                             <?php
                               $tval = isset($dataset['property']->type_id)?$dataset['property']->type_id:null;
                             ?>
-                            {{Form::select('type_id', $dataset['types'], $tval, array('class' => 'form-control','id'=>'type_id','disabled'=>$disabled))}}
+                            {{Form::select('type_id', $dataset['types'], $tval, array('class' => $dropdown_class,'id'=>'type_id', $readonly))}}
                           </div>
                         </div>
                         
@@ -300,10 +308,11 @@ div.arrow_fix:before{height:35px !important;}
                                             </div>
                                             <div class="col-sm-3 col-xs-6 noPadding" style="min-height:inherit !important;">
                                               <div class="fileBack">
-                                                {{ Form::file('image_files', array('class' => 'upFile')) }}
+                                                {{ Form::button('image_files', array('class' => 'upFile','data-target'=>$image_type)) }}
                                                 
                                                 <span><i class="fa fa-plus"></i> Add Image</span>
                                               </div>
+                                              <textarea rows="20" name="image_raw_data[{{{$image_type}}}]" style="display:none"></textarea>
                                             </div>
                                             <div class="col-sm-6 col-xs-12 propImageProgress">
                                               <div class="progress">
@@ -321,21 +330,27 @@ div.arrow_fix:before{height:35px !important;}
                             </div>
                         </div>
                       <p></p>
+                      <?php if(isset($dataset["property"]->media) && count($dataset["property"]->media)){ ?>
                       	<div class="form-group">
                             <div class="addSpImageHolder greyBg padding addImgDisplayList">
+                             <?php if(isset($dataset["property"]->media) && count($dataset["property"]->media)){ ?>
                             <p class="bg-info alertImgDelete">The image will be deleted once you click update.</p>
+                            <?php }?>
                                 <div>
                                     <div class="clearfix">
                                 
                                 
                                     <?php if(isset($dataset["property"]->media)){ ?>
                                     @foreach($dataset["property"]->media as $key=>$media)
+                                    @if($media->media_data!='no_image.png')
                                     <div class="portfolio-item uploadedImages">
                                         <a class="item-inner btn-block" href="javascript:void(0);"> <img alt="{{{ $media->media_title }}}" src="{{{ asset('files/properties')."/".$media->media_data }}}">
                                             <p class="upImageTitle">{{{ $media->media_title }}}</p>
                                         </a>
                                         <div class="deleteCheck"><input type="checkbox" name="image_deletes[]" value="<?php echo $media->media_id; ?>" /> Delete</div>
-                                    </div>  
+                                        
+                                    </div> 
+                                    @endif 
                                     @endforeach
                                     <?php } ?>
                                     
@@ -347,6 +362,7 @@ div.arrow_fix:before{height:35px !important;}
                             
                             
                         </div>
+                      <?php }?>  
                       <br />
                     
                     </div>
@@ -383,7 +399,67 @@ div.arrow_fix:before{height:35px !important;}
     </div>
   </div>
 </section>
-
+<div class="modal fade" id="cropperModal" tabindex="-1" role="dialog" data-backdrop="static" daya-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crop Photo</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+  <div class="col-sm-12">
+     
+      <div class="thumbnail" id="dv_data">
+         <div class="row" style="display: ">
+            
+            <div class="col-sm-12">
+            <div class="row eg-main" style="margin-bottom:0">
+              <div class="col-sm-12">
+                <div class="eg-wrapper" style="height:auto; visibility:hidden;">                 
+                  <img class="cropper" src="http://placehold.it/800x600" alt="Picture">
+                </div>
+              </div>
+                
+              </div>
+              
+             <div class="row eg-output" style="display:none">
+                  <div class="col-md-12" >
+                    <input type="hidden" id="aspectRatio" value="1.333">
+                    <button class="btn btn-primary" id="getDataURL" type="button">Get Data URL</button>                    
+                    <button class="btn btn-warning" id="reset" type="button">Reset</button>
+                    <button class="btn btn-info" id="zoomIn" type="button">Zoom In</button>
+                    <button class="btn btn-info" id="zoomOut" type="button">Zoom Out</button>
+                    <button class="btn btn-info" id="rotateLeft" type="button">Rotate Left</button>
+                    <button class="btn btn-info" id="rotateRight" type="button">Rotate Right</button>
+                    <label class="btn btn-primary" for="inputImage" title="Upload image file">
+                      <input class="hide" id="inputImage" name="file" type="file" accept="image/*">
+                      Upload
+                    </label>
+                  </div>
+                  <div class="col-md-6">
+                    <textarea class="form-control" name="" id="dataURL" rows="10" style="display:"></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="showDataURL"></div>
+                  </div>
+                </div>
+            </div>
+         </div>
+      </div>
+  </div>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="cropdone" class="btn btn-success">
+            <span class="glyphicon glyphicon-ok"></span> Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="image_create_url" value="{{URL::to('image_create_url')}}" >
 <script type="text/javascript">
   $(document).ready(function(){
     $('#deal_id').change(function(){
@@ -420,6 +496,7 @@ div.arrow_fix:before{height:35px !important;}
 
     
     var url = "<?php echo route('property.propertyimage');?>"
+    /*
     $('.upFile')
       .attr({type:'file',name:'image_files'})
       .fileupload({
@@ -469,6 +546,24 @@ div.arrow_fix:before{height:35px !important;}
           }
                 
       });
+      */
+      $('.upFile').click(function(){
+        //$('#cropperModal').modal('toggle');
+        $('#inputImage').trigger('click');
+        $('#cropdone').attr('data-target',$(this).data('target'));
+      });
+	   $('#inputImage').change(function(){
+        $(".eg-wrapper").css("visibility", "hidden");
+	   		$('#cropperModal').modal('show');
+	   });
+
+    
+    //$('#cropperModal').modal('toggle');
+    $('#cropperModal').on('shown.bs.modal', function() {
+        $(window).trigger("resize");
+        setTimeout('$(".eg-wrapper").css("visibility", "visible")', 500);
+    });
+      
 
       $('form').validate({
           rules:{
@@ -476,7 +571,7 @@ div.arrow_fix:before{height:35px !important;}
             deal_id:{required:true,min:1},
             title:{required:true,minlength:10},
             location:{required:true},
-            price:{required:true,number:true},
+            price:{required:true,digits:true},
             description:{required:true,minlength:10},            
             location_sub:{required:true},
             phone:{required:true,digits:true},
@@ -487,7 +582,7 @@ div.arrow_fix:before{height:35px !important;}
             deal_id:{required:'This field is required',min:'Please Select Transaction Type'},
             title:{required:'This field is required',minlength:'Please Enter minimum 5 character'},
             location:{required:'This field is required'},
-            price:{required:'This field is required',number:'Please enter valid price'},
+            price:{required:'This field is required',number:'Please enter valid price',digits:'Plese enter numeric value without decimal',},
             description:{required:'This field is required',minlength:'Please Enter minimum 10 character'},            
             location_sub:{required:'This field is required'},
             phone:{required:'This field is required',digits:'Please Enter valid phone no.'},
@@ -498,6 +593,13 @@ div.arrow_fix:before{height:35px !important;}
           invalidHandler: function(form, validator) {
                   $('small.error_special').remove();
                   $("html, body").animate({ scrollTop: 250 }, "slow");
+          },
+          errorPlacement:function(error,element){
+              if($(element).attr('name')=='price'){
+                $(element).closest('.input-group').after(error);
+              }else{
+                 $(element).after(error);
+              }
           },
           onkeyup: false,
           submitHandler:function(form){

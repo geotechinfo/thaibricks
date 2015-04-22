@@ -36,12 +36,13 @@
 
 <div class="row">
     <h3>Create Location</h3>
-    {{ Form::open(array('route' => array('location.addlocation'), 'method' => 'post','id'=>'frm_loc')) }}
+    {{ Form::open(array('route' => array('location.addlocation'), 'method' => 'post','id'=>'frm_loc_add')) }}
     <div class="form-group col-md-4">
         {{Form::label('location','Location Name')}}
         {{Form::text('location_name', null, array('class' => 'form-control'))}}
     </div>
     <div class="form-group col-md-2">
+        <label>&nbsp;</label>
         {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
     </div>
     {{ Form::close() }}
@@ -50,15 +51,16 @@
 <div class="row">
     <h3>Add Sub Location</h3>
     {{ Form::open(array('route' => array('location.addsublocation'), 'method' => 'post','id'=>'frm_subloc')) }}
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('location','Location/City')}}
         {{Form::select('location_id', $dataset["parents"], null, array('class' => 'form-control'))}}
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-3">
         {{Form::label('location','Sub Location')}}
         {{Form::text('sub_location', null, array('class' => 'form-control'))}}
     </div>
     <div class="form-group col-md-2">
+        <label>&nbsp;</label>
         {{Form::submit('Create', array('class' => 'form-control btn btn-primary'))}}
     </div>
     {{ Form::close() }}
@@ -76,7 +78,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Update</h4>
+        <h4 class="modal-title" id="myModalLabel">Update l</h4>
       </div>
       <div class="modal-body">
       {{ Form::open(array('id'=>'frm_loc','class' => '', 'route' => array('location.update_location'), 'method' => 'post')) }} 
@@ -110,7 +112,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#frm_loc').validate({
+        $('#frm_loc,#frm_loc_add').validate({
           rules:{
             'location_name':{required:true},
           },
@@ -156,6 +158,8 @@
             });
           $('#save_location').click(function(){
             var ths = $(this);
+            //alert($('#frm_loc').serialize());
+            //return false;
             ths.button('loading')
               $.post(
                 $('#frm_loc').attr('action'),

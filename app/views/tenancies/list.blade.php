@@ -1,6 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('content')
+{{ HTML::script('libraries/validator/validation.js') }}
 <section class="" id="propertylist">
   
   <div class="col-sm-12 propertylistwrap">
@@ -11,13 +12,13 @@
     
     @if(Session::get('success'))
     <div class="margin-top-10 message">
-    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-success text-success padding-5"><span class="fa fa-check"></span>{{{ Session::get('success') }}}</p>
     </div>
     @endif
     
     @if(Session::get('info') == true)
     <div class="margin-top-10 message">
-    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
     </div>
     @endif
     <div class="row">
@@ -31,7 +32,7 @@
     </div>
     
     @if(count($dataset["tenancies"])>0)
-    <div class="propertylist clearfix new" style="padding:0 0 10px;">    	
+    <div class="propertylist clearfix new cls_table" style="padding:0 0 10px;">    	
         
         <div class="tenantDetailHead" style="padding:10px;">
           <div class="row bold">
@@ -53,9 +54,9 @@
                     <div class="col-sm-2">{{{ substr($tenancy->tenant_email, 0, 15) }}}...</div>
                     <div class="col-sm-2">{{{ $tenancy->tenant_phone }}}</div>
                     <div class="col-sm-3 text-center">
-                      <a href="javascript:;" data-id="{{ $tenancy->tenancy_id }}" title="Upload Others Document" data-toggle="modal" data-target="#upload" class="btn btn-default viewAddDocumentForm" style="padding:0px 6px;"><span class="fa fa-upload noMargin"></span></a>
-                    	<a href="{{URL::to('/tenancy/transaction')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-btc noMargin"></span></a>
-                        <a href="{{URL::to('/tenancy/edit')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default viewTenantbtn" style="padding:0px 6px;"><span class="fa fa-edit noMargin"></span></a>
+                      <a href="javascript:;" data-id="{{ $tenancy->tenancy_id }}"  data-toggle="modal" data-target="#upload" class="btn btn-default viewAddDocumentForm" style="padding:0px 6px;"><span class="fa fa-upload noMargin" data-toggle="tooltip" title="Upload Others Document" data-placement="bottom"></span></a>
+                    	<a href="{{URL::to('/tenancy/transaction')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default" style="padding:0px 6px;"><span class="fa fa-btc noMargin" data-toggle="tooltip" title="Add Transaction" data-placement="bottom"></span></a>
+                      <a href="{{URL::to('/tenancy/edit')}}/{{{ $tenancy->tenancy_id }}}" class="btn btn-default" style="padding:0px 6px;"><span class="fa fa-edit noMargin" data-toggle="tooltip" title="Edit Tenancy" data-placement="bottom"></span></a>
                     	<a href="javascript:;" class="btn btn-block orange viewTenantbtn" style="width:60px; display:inline-block;">View</a>
                     </div>
                   </div>
@@ -149,17 +150,21 @@
             </div>
 			@endforeach
             
-            
+      <div class="nrf" style="display:none">
+          <div class="alert alert-warning">
+             <i class="fa fa-exclamation-triangle"></i> No Record Found
+          </div>
+      </div>  
 
         </div>
 
+    </div>
+    @else
+    <div class="alert alert-warning">
+       <i class="fa fa-exclamation-triangle"></i> No Record Found
     </div>
     @endif
-    <div class="nrf" style="display:none">
-        <div class="alert alert-warning">
-           <i class="fa fa-exclamation-triangle"></i> No Record Found
-        </div>
-    </div>
+    
   </div>
 </section>
 <!--prefooter-->
@@ -177,6 +182,7 @@
         <input type="hidden" value="0" name="document_id" value="0">
           <div class="row">
             <div class="col-sm-6">
+              <label class="control-lebel"><b>Select Document</b></label>
               <div class="row" id="doc_list" style="max-height:236px;overflow:auto;cursor:pointer">
                 @foreach($dataset['documents'] as $k=>$v)
                     <div class="col-sm-12 cls_selectable" data-id="{{ $v->document_id }}" data-tid="{{ $v->tenancy_id }}">
@@ -201,6 +207,7 @@
             </div>
     
             <div class="col-sm-6">
+            <label class="control-lebel"><b>Upload Document</b></label>
               <div class="form-group">
                 <div class="row" id="doc_form_fields">
                   
@@ -250,6 +257,9 @@
         
       </div>
       <div class="modal-footer">
+        <span class="pull-left text-warning">
+          <i class="fa fa-warning"></i> Either you can select an existing document or upload new one.
+        </span>
         <button type="submit" class="btn btn-primary orange modalBtn">Save changes</button>
       </div>
       {{ Form::close() }} 
@@ -276,7 +286,36 @@
       $('.cls_selectable .alert-success').removeClass('alert-success').addClass('alert-info');
      // $(this).find('.alert').removeClass('alert-info').addClass('alert-success');
       $('[name="document_head_id"],[name="upfile"],[name="documentation_date"],[name="expiry_date"]').prop('disabled',false);
-    })
+    });
+
+    $('#frm_doc').validate({
+      rules:{
+        document_head_id:{
+          required:true,
+        },
+        upFile:{
+           required:true,
+        },
+        documentation_date:{
+          required:true,
+        },
+        expiry_date:{
+          required:true,
+        }
+      },
+     errorClass:'text-danger',
+     errorElement:'small',
+     errorPlacement:function(error,element){
+      if($(element).attr('name')=='documentation_date'){
+        error.insertAfter($(element).closest('.input-group'));
+      }
+      else if($(element).attr('name')=='expiry_date'){
+        error.insertAfter($(element).closest('.input-group'));
+      }else{
+         error.insertAfter($(element));
+      }
+     }
+    });
   });
 </script>
 <style type="text/css">

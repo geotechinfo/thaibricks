@@ -2,7 +2,7 @@
 
     $(function(){
 		$('[data-toggle="back"]').click(function(){window.history.go($(this).data('step'));});	  
-		$('.message').delay(5000).fadeOut(); 
+		//$('.message').delay(5000).fadeOut(); 
 		//window height and scroll	
 		/*
 		$(window).load(function(){ // On load

@@ -6,6 +6,11 @@
 {{ HTML::script('libraries/slimheader/classie.js') }}
 
 @section('content')
+<style type="text/css">
+  #infoWindow {
+        width: 100px;
+    }
+</style>
 <?php
 $location = new Location;
 $dataset['locations']=$location->get_location_with_sub();
@@ -36,7 +41,7 @@ foreach ($dataset['locations'] as $k=>$v){
       <div class="col-sm-12">
       	  <span>You are here:</span>
           <ul class="topBreadcrumbs">
-            <li><a href="javascript:;">Home</a></li>
+            <li><a href="{{URL::action('PagesController@index')}}">Home</a></li>
             <li><a href="javascript:;">Search Property</a></li>
           </ul>
       
@@ -51,11 +56,11 @@ foreach ($dataset['locations'] as $k=>$v){
     <h2>Searching for property here :</h2>
     <div role="tabpanel">
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="<?php echo (($dataset['transport']=='' && $dataset['gmap']==0)?'active':'');?>"><a href="{{URL::to('property/search')}}" >Search</a></li>
-        <li role="presentation" class="<?php echo ($dataset['transport']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=1" aria-controls="bts" role="tab" >BTS </a></li>
-        <li role="presentation" class="<?php echo ($dataset['transport']=='2'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=2" aria-controls="mrt" role="tab" >MRT</a></li>
-        <li role="presentation" class="<?php echo ($dataset['transport']=='3'?'active':'');?>"><a href="{{URL::to('property/search')}}?transport=3" aria-controls="alink" role="tab" >ALink</a></li>
-        <li role="presentation" class="<?php echo ($dataset['gmap']=='1'?'active':'');?>"><a href="{{URL::to('property/search')}}?location=1&gmap=1" aria-controls="alink" role="tab" >Google Map</a></li>
+        <li role="presentation" class="<?php echo (($dataset['transport']=='' && $dataset['gmap']==0)?'active':'');?>"><a href="{{URL::action('PropertiesController@search')}}" >Search</a></li>
+        <li role="presentation" class="<?php echo ($dataset['transport']=='1'?'active':'');?>"><a href="{{URL::to('/')}}/bangkok/property/search?transport=1" aria-controls="bts" role="tab" >BTS </a></li>
+        <li role="presentation" class="<?php echo ($dataset['transport']=='2'?'active':'');?>"><a href="{{URL::to('/')}}/bangkok/property/search?transport=2" aria-controls="mrt" role="tab" >MRT</a></li>
+        <li role="presentation" class="<?php echo ($dataset['transport']=='3'?'active':'');?>"><a href="{{URL::to('/')}}/bangkok/property/search?transport=3" aria-controls="alink" role="tab" >ALink</a></li>
+        <li role="presentation" class="<?php echo ($dataset['gmap']=='1'?'active':'');?>"><a href="{{URL::action('PropertiesController@search')}}?&gmap=1" aria-controls="alink" role="tab" >Google Map</a></li>
       </ul>
     </div>
     <div class="tab-content searchparam noPadding">
@@ -77,12 +82,12 @@ foreach ($dataset['locations'] as $k=>$v){
             {{ HTML::image(asset('images/icons/bts_big.png'), '', array('class' => '')) }}
           </div>
           <div class="col-md-8">
-            <div class="row">
+            <div class="row mlNoneLg">
             <input type="hidden" name="transport" value="1">  
             <?php
               foreach ($location_list[1]['Transport'][1]['Child'] as $key => $value) {
             ?>
-              <label class="col-sm-3">
+              <label class="col-sm-4">
                 <input type="radio" name="sub_transport[]" <?php echo (isset($_GET['sub_transport']) && in_array($value->transport_id, $_GET['sub_transport'])?'checked':'')?> value="{{$value->transport_id}}"> 
                 <span>{{$value->transport_name}}</span>
               </label>
@@ -103,17 +108,17 @@ foreach ($dataset['locations'] as $k=>$v){
       <div role="tabpanel" class="tab-pane <?php echo ($dataset['transport']=='2'?'active':'');?>" id="mrt">
         <fieldset class="search-form">
         <form action="{{URL::to('property/search')}}">
-          <div class="row">
+          <div class="row ">
           <div class="col-md-2 srch_icon_bg">
             {{ HTML::image(asset('images/icons/mrt_big.png'), '', array('class' => '')) }}
           </div>
           <div class="col-md-8">
-            <div class="row">
+            <div class="row mlNoneLg">
             <input type="hidden" name="transport" value="2">  
             <?php
               foreach ($location_list[1]['Transport'][2]['Child'] as $key => $value) {
             ?>
-              <label class="col-sm-3">
+              <label class="col-sm-4">
                 <input type="radio" name="sub_transport[]" <?php echo (isset($_GET['sub_transport']) && in_array($value->transport_id, $_GET['sub_transport'])?'checked':'')?> value="{{$value->transport_id}}"> 
                 <span>{{$value->transport_name}}</span>
               </label>
@@ -139,12 +144,12 @@ foreach ($dataset['locations'] as $k=>$v){
             {{ HTML::image(asset('images/icons/alink_big.png'), '', array('class' => '')) }}
           </div>
           <div class="col-md-8">
-            <div class="row">
+            <div class="row mlNoneLg">
             <input type="hidden" name="transport" value="3">  
             <?php
               foreach ($location_list[1]['Transport'][3]['Child'] as $key => $value) {
             ?>
-              <label class="col-sm-3">
+              <label class="col-sm-4">
                 <input type="radio" name="sub_transport[]" <?php echo (isset($_GET['sub_transport']) && in_array($value->transport_id, $_GET['sub_transport'])?'checked':'')?> value="{{$value->transport_id}}"> 
                 <span>{{$value->transport_name}}</span>
               </label>
@@ -185,66 +190,14 @@ foreach ($dataset['locations'] as $k=>$v){
   <div class="col-sm-9 propertylistwrap">
   	@if(Session::get('info'))
     <div class="margin-top-10 message">
-    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}<a href="javascript:void(0);" class="right closemessage"><span class="glyphicon glyphicon-remove"></span></a></p>
+    <p class="btn-info text-info padding-5"><span class="fa fa-info"></span>{{{ Session::get('info') }}}</p>
     </div>
     {{{ Session::forget('info') }}}
     @endif
   
     @if($dataset['gmap']==0)
-  	@foreach($dataset["properties"] as $property)
-  	<div class="propertylist clearfix new">
-      <div class="col-md-5"><div class="propertyimg" style="overflow:hidden;"><div class="propertymark"></div>
-        <!--<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>-->
-      	<a target="_blank" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">{{ HTML::image(asset('files/properties')."/".$property->media[0]->media_data, '', array('class' => 'img-responsive')) }}</a>
-      </div></div>
-      <div class="col-md-7 propertylist-body">
-        <h3 class="propertylist-heading uppercase">
-          <a target="_blank" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}">  {{{ $property->title }}} </a>
-        </h3>
-        <h5 class="uppercase">&#xe3f; {{{ number_format($property->price, 2, ".", ",") }}}</h5>
-        <small>{{{ $property->first_name }}} {{{ $property->last_name }}}</small>
-        <div class="otherinfo clearfix">
-        	<div class="pull-left">
-            <h5>{{{ $property->locationsub_name }}}, {{{ $property->location_name }}}</h5>
-            </div>
-            
-            
-        </div>
-        <p class="propertydesc">{{{ $property->description }}} <a target="_blank" href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="saveshortlist"><small>Read More</small></a></p>
-         <div class="row">
-         	<div class="col-sm-12">
-                 <div class="nearLocation">
-					<?php foreach($property->transports as $transports){ ?>
-                      <?php if($transports->type=='1'){ ?>
-                        <?php foreach($transports as $transport){ ?>
-                          
-                            <?php if(is_array($transport)){ ?>
-                            <?php foreach($transport as $location){ ?>
-                                <?php if(array_key_exists($location->transport_id, $property->selected_transports)){ ?>
-                                  <div class="text-center">
-                                    <div class="location" data-toggle="tooltip" title="<?php echo $location->transport_name; ?>" data-placement="bottom" style="background-image:url('<?php echo asset('images'); ?>/nearlocation/<?php echo $transports->transport_icon; ?>');"></div>
-                                    <!--<p>Near to <?php echo $location->transport_name; ?></p>-->
-                                  </div>
-                                <?php } ?>
-                            <?php } ?>
-                            <?php } ?>
-                        <?php } ?>
-                      <?php } ?>
-                    <?php } ?>
-                      
-                 </div>
-            </div>
-         </div>
-         
-         <div>
-              <div class="pull-right">
-                <!--<a href="{{URL::to('/property/show')}}/{{{ $property->property_id }}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>-->
-              	<a href="{{URL::to('/properties/')}}/{{seo_url($property->title)}}_{{{$property->property_code}}}" class="btn btn-primary upperclass viewproperty">VIEW PROPERTY DETAILS</a>
-              </div>
-              </div>
-      </div>
-    </div>
-    @endforeach
+    {{View::make('layouts.property_items',array('properties'=>$dataset["properties"]))}}
+  	
     @endif
     @if($dataset['gmap']==1)
 
@@ -258,8 +211,9 @@ foreach ($dataset['locations'] as $k=>$v){
               <div class="arrow">
                 <select class="form-control" id="gmaplocation">
                 <?php foreach ($loc as $key => $value) {
+                  $slug = str_replace(' ', '_', strtolower($value));
                   if($key!=''){
-                    echo '<option value="'.$key.'" '.((isset($_GET['location']) && $_GET['location']==$key)?'selected':'').'>'.$value.'</option>';
+                    echo '<option value="'.$slug.'" '.((Request::segment(1)==$slug)?'selected':'').'>'.$value.'</option>';
                   }
                 }?>
                   
@@ -309,7 +263,7 @@ foreach ($dataset['locations'] as $k=>$v){
 
                     //tot_lat = tot_lat + results[0].geometry.location.lat();
                     //tot_lng = tot_lng + results[0].geometry.location.lng();
-                    html = '<div style="height:50;width:100px"><a target="_blank" href="{{URL::to("properties")}}/{{seo_url($v->title)}}_{{$v->property_code}}">{{$v->title}}</a></div>';
+                    html = '<div style="padding:10px;"><a target="_blank" href="{{URL::to("properties")}}/{{seo_url($v->title)}}_{{$v->property_code}}">{{$v->title}}</a></div>';
                     map.setCenter(new google.maps.LatLng(results[0].geometry.location.lat(),results[0].geometry.location.lng()));
                     bindInfoWindow(marker, map, infoWindow, html);
 
@@ -335,16 +289,16 @@ foreach ($dataset['locations'] as $k=>$v){
     
   </div>
   <aside class="col-sm-3">
-  	<div class="ad-wrap">{{ HTML::image('images/demoimages/ad1.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad5.jpg', '', array('class' => '')) }}</div>
-    <div class="ad-wrap">{{ HTML::image('images/demoimages/ad7.jpg', '', array('class' => '')) }}</div>
+  	{{View::make('layouts.side_ad_block')}}
   </aside>
   
 </section>
 <script type="text/javascript">
   $(document).ready(function(){
     $('#gmaplocation').change(function(){
-      window.location.href="{{URL::to('property/search')}}?location="+$(this).val()+"&gmap=1";
+      //window.location.href="{{URL::to('property/search')}}?location="+$(this).val()+"&gmap=1";
+      //url = ($(this).find('option:selected').text()).toLowerCase().replace(' ','_');       
+      window.location.href="{{URL::to('/')}}/"+$(this).val()+'/property/search?&gmap=1';
     });
   });
 </script>

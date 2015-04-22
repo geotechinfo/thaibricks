@@ -34,6 +34,8 @@ foreach ($dataset['locations'] as $k=>$v){
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta content="" name="description" />
 <meta content="" name="author" />
+<link rel="shortcut icon" href="{{URL::to('/')}}/favicon.ico" type="image/x-icon" />
+<link rel="bookmark" href="{{URL::to('/')}}/favicon.ico" />
 <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
@@ -87,7 +89,7 @@ foreach ($dataset['locations'] as $k=>$v){
 <body>
 <!-- Left Menu-Logo-user section  -->
 <aside class="darkGrey leftMenuNav col-md-2">
-  <div class="media user-media logoWrap"> <a class="logo" href="{{URL::to('property/myproperties')}}"> {{ HTML::image('images/logo_icon.png', '', array('class' => 'logo')) }} </a> </div>
+  <div class="media user-media logoWrap"> <a class="logo" href="{{URL::action('PropertiesController@myproperties')}}"> {{ HTML::image('images/dashboard-logo.png', '', array('class' => 'logo')) }} </a> </div>
   <div class="welcomeuserWrap">
     <div class="user-panel">
       
@@ -101,18 +103,17 @@ foreach ($dataset['locations'] as $k=>$v){
     </div>
   </div>
   <ul class="sellermenu">
-    <li class="panel <?php echo (Route::current()->getName()=='property.myproperties'?'active':'')?>"> <a href="{{URL::to('/property/myproperties/')}}" > 
-        <span class="fa fa-map-marker"></span> <span class="leftLink">My
-        Properties</span> </a> 
+    <li class="panel <?php echo (Route::current()->getName()=='property.myproperties'?'active':'')?>"> <a href="{{URL::action('PropertiesController@myproperties')}}" > 
+        <span class="fa fa-map-marker"></span> <span class="leftLink">Properties</span> </a> 
     </li>
     <?php
       $ll_links = array('tenancy.tenancies','tenancy.transaction_list','tenancy.vendor_list');
     ?>
     <li class="panel"> <a data-target=".landlord-nav" class="accordion-toggle collapsed relativeAnchor" data-toggle="collapse" data-parent="#menu" href="#"> <span class="fa fa fa-list-alt"></span> <span class="leftLink">Landlord </span><span class="caret"></span> &nbsp; </a>
       <ul class="collapse landlord-nav <?php echo (in_array(Route::current()->getName(), $ll_links)=='tenancy'?'in':'')?>">
-        <li class="<?php echo (Route::current()->getName()=='tenancy.tenancies'?'active':'')?>"> <a href="{{URL::to('/tenancy/tenancies')}}" > <span class="fa fa-building-o"></span> <span class="leftLink">Tenancy</span> </a> </li>
-        <li class="<?php echo (Route::current()->getName()=='tenancy.transaction_list'?'active':'')?>"> <a href="{{URL::to('/transaction/list')}}" > <span class="fa fa-btc"></span> <span class="leftLink">Transaction</span> </a> </li>
-        <li class="<?php echo (Route::current()->getName()=='tenancy.vendor_list'?'active':'')?>"> <a href="{{URL::to('/vendor/list')}}" > <span class="fa fa-users"></span> <span class="leftLink">Vendor</span> </a> </li>
+        <li class="<?php echo (Route::current()->getName()=='tenancy.tenancies'?'active':'')?>"> <a href="{{URL::action('TenancyController@tenancies')}}" > <span class="fa fa-building-o"></span> <span class="leftLink">Tenancy</span> </a> </li>
+        <li class="<?php echo (Route::current()->getName()=='tenancy.transaction_list'?'active':'')?>"> <a href="{{URL::action('TenancyController@transaction_list')}}" > <span class="fa fa-btc"></span> <span class="leftLink">Transaction</span> </a> </li>
+        <li class="<?php echo (Route::current()->getName()=='tenancy.vendor_list'?'active':'')?>"> <a href="{{URL::action('TenancyController@vendor_list')}}" > <span class="fa fa-users"></span> <span class="leftLink">Vendor</span> </a> </li>
       </ul>
     </li>
     <!--
@@ -124,14 +125,11 @@ foreach ($dataset['locations'] as $k=>$v){
 
     ?>
     <li class="panel <?php echo (Request::segments()[0]=='user'?'active':'')?>"> 
-      <a data-target=".user-nav" class="accordion-toggle collapsed relativeAnchor" data-toggle="collapse" data-parent="#menu" href="#"> <span class="fa fa-pencil"></span> <span class="leftLink">Profile Management</span><span class="caret"></span></a>
+      <a data-target=".user-nav" class="accordion-toggle collapsed relativeAnchor" data-toggle="collapse" data-parent="#menu" href="#"> <span class="fa fa-pencil"></span> <span class="leftLink">My Profile</span><span class="caret"></span></a>
       <ul class="collapse user-nav <?php echo (in_array(Route::current()->getName(), $p_links)=='tenancy'?'in':'')?>">
-        <li class="<?php echo (Route::current()->getName()=='profile'?'active':'')?>"> <a href="{{URL::to('/profile')}}" > <span class="fa fa-edit"></span> <span class="leftLink">Edit Profile</span> </a> </li>
-        <li class="<?php echo (Route::current()->getName()=='profile.changepassword'?'active':'')?>"> <a href="{{URL::to('/profile/changepassword')}}" > <span class="fa fa-lock"></span> <span class="leftLink">Change Password </span></a> </li>
-        <li class="<?php echo (Route::current()->getName()=='profile.userimages'?'active':'')?>"> <a href="{{URL::to('/profile/userimages')}}" > <span class="fa fa-file-image-o"></span> <span class="leftLink">Change Images </span></a> </li>
-        <!--<li class=""> <a href="{{URL::to('/profile/profileimage')}}" > <span class="fa fa-user"></span> <span class="leftLink">Change Profile Image</span> </a> </li>
-        <li class=""> <a href="{{URL::to('/profile/bannerimage')}}" > <span class="fa fa-image"></span> <span class="leftLink">Change Banner</span> </a> </li>
-        -->
+        <li class="<?php echo (Route::current()->getName()=='profile'?'active':'')?>"> <a href="{{URL::action('UsersController@profile')}}" > <span class="fa fa-edit"></span> <span class="leftLink">Edit Profile</span> </a> </li>
+        <li class="<?php echo (Route::current()->getName()=='profile.changepassword'?'active':'')?>"> <a href="{{URL::action('UsersController@changepassword')}}" > <span class="fa fa-lock"></span> <span class="leftLink">Change Password </span></a> </li>
+        <li class="<?php echo (Route::current()->getName()=='profile.userimages'?'active':'')?>"> <a href="{{URL::action('UsersController@userimages')}}" > <span class="fa fa-file-image-o"></span> <span class="leftLink">Change Images </span></a> </li>
       </ul>
     </li>
   </ul>
@@ -156,20 +154,20 @@ foreach ($dataset['locations'] as $k=>$v){
             <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-plus-square-o"></span>Add
                 New<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{{URL::to('/property/create')}}"><span class="fa fa-map-marker"></span>Property</a></li>
+                <li><a href="{{URL::action('PropertiesController@create')}}"><span class="fa fa-map-marker"></span>Property</a></li>
                 <li class="divider"></li>
-                <li><a href="{{URL::to('/tenancy/create')}}"><span class="fa fa-building-o"></span>Tenancy</a></li>
+                <li><a href="{{URL::action('TenancyController@create')}}"><span class="fa fa-building-o"></span>Tenancy</a></li>
                 <li class="divider"></li>
-                <li><a href="{{URL::to('/tenancy/transaction')}}/0"><span class="fa fa-btc"></span>Transaction</a></li>
+                <li><a href="{{URL::action('TenancyController@transaction', ['0'])}}"><span class="fa fa-btc"></span>Transaction</a></li>
                 <!--
                 <li class="divider"></li>
                 <li><a href="javascript:void(0);"><span class="fa fa-users"></span>Vendor</a></li>-->
               </ul>
             </li>
-            <li><a href="javascript:void(0);"><span class="fa fa-envelope"></span>Contact
-                Us</a></li>
-            <li><a href="{{URL::to('/logout')}}"><span class="fa fa-sign-out"></span>Logout</a></li>
-            <li class="brick"><a href="{{URL::to('/')}}"><span class="fa fa-globe"></span>Visit
+            <!--<li><a href="javascript:void(0);"><span class="fa fa-envelope"></span>Contact
+                Us</a></li>-->
+            <li><a href="{{URL::action('UsersController@logout')}}"><span class="fa fa-sign-out"></span>Logout</a></li>
+            <li class="brick"><a href="{{URL::action('PagesController@index')}}"><span class="fa fa-globe"></span>Visit
                 Website</a></li>
           </ul>
         </div>
@@ -226,7 +224,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-  var locationJson = $.parseJSON('{{ json_encode($dataset['locations']) }}');
+  var locationJson = $.parseJSON('{{ addslashes( json_encode($dataset['locations']) )}}');
   function chnage_rule(){
       /*$("#location_sub").empty();
     if($("#location").val() == "Bangkok"){
@@ -338,7 +336,7 @@ $(document).ready(function(){
                 
                 var inpt_dst = $('<input/>')
                 .addClass('form-control cls_transport_distance nearbyDistance')
-                .attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer,'type':'number','min':'0'});
+                .attr({'name':'transport_dist[]', 'placeholder':'Km', 'value':kilometer,'type':'number','min':'0','disabled':(kilometer==undefined?true:false)});
                 var dv = $('<div/>').addClass('nrByHolder').append(inpu_chk).append(text)
                 col8.append(dv)
                 col4.append(inpt_dst);
@@ -358,7 +356,14 @@ $(document).ready(function(){
     }
     //console.log(obj);
     //$("#transport_system,#nearby_system").show();
-    
+    $(document).on('click','.nearbyScroll [name="transport_id[]"]',function(){
+      if($(this).prop('checked')){
+        $(this).closest('.row').find('[name="transport_dist[]"]').prop('disabled',false);
+      }else{
+        $(this).closest('.row').find('[name="transport_dist[]"]').prop('disabled',true);
+      }
+    });
+
     if($('.nearbygroup').length==0){
         $('#nearby_system').hide();
     }else{
